@@ -16,7 +16,7 @@ export const getTeam = async (id: number) => {
   if (!team) throw new Error("Team not found");
   if (team.user_id !== user.userId) throw new Error("Unauthorized");
 
-  return team
+  return team;
 };
 
 // read teams
@@ -32,7 +32,6 @@ export const getTeams = async () => {
 // create
 export const createTeam = async (name: string, image: string) => {
   const user = auth();
-
   if (!user.userId) return Error("Unauthorized");
 
   const [newTeam] = await db
@@ -50,16 +49,32 @@ export const createTeam = async (name: string, image: string) => {
 };
 
 // updateTeam
-// export const updateTeam = async (id: number, name: string, image: string) => {
-//   const user = auth();
-//   if (!user.userId) return Error("Unauthorized");
+export const updateTeam = async (id: number, name: string, image: string) => {
+  const user = auth();
+  if (!user.userId) return Error("Unauthorized");
 
-//   try {
-//     return updatedTeam;
-//   } catch (error) {
-//     // Handle other potential errors here
-//     console.error("Error updating team:", error);
-//     throw new Error("Error updating team");
-//   }
-// };
+  const [updatedTeam] = await db
+    .update(teams)
+    .set({
+      name,
+      image,
+      updatedAt: new Date(),
+    })
+    .where(eq(teams.id, id))
+    .returning();
+
+  return updatedTeam;
+};
+
 // deleteTeam
+export const deleteTeam = async (id: number) => {
+  const user = auth();
+  if (!user.userId) return Error("Unauthorized");
+
+  const [deletedTeam] = await db
+    .delete(teams)
+    .where(eq(teams.id, id))
+    .returning();
+
+  return deletedTeam;
+};
