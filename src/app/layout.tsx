@@ -1,17 +1,11 @@
-import "~/styles/globals.css";
+import "src/components/shared/ui/styles/globals.css";
 
-import {
-  ClerkProvider,
-  SignInButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-} from "@clerk/nextjs";
+import { ClerkProvider } from "@clerk/nextjs";
 
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
 import "@uploadthing/react/styles.css";
-import { UploadButton } from "~/utils/uploadthing";
+import Menubar from "~/components/widgets/menubar/ui";
 
 export const metadata: Metadata = {
   title: "Panel NUFL",
@@ -26,16 +20,8 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en" className={`${GeistSans.variable}`}>
-        <body>
-          <header>
-            <SignedOut>
-              <SignInButton />
-            </SignedOut>
-            <SignedIn>
-              <UploadButton endpoint="teamImage" />
-              <UserButton />
-            </SignedIn>
-          </header>
+        <body className="flex flex-row">
+          <Menubar />
           <main>{children}</main>
         </body>
       </html>
