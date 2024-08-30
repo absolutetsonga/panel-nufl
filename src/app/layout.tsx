@@ -22,7 +22,7 @@ export default function RootLayout({
       <html lang="en" className={`${GeistSans.variable}`}>
         <body className="flex flex-row">
           <Menubar />
-          <main>{children}</main>
+          <main className="flex-1">{children}</main>
         </body>
       </html>
     </ClerkProvider>

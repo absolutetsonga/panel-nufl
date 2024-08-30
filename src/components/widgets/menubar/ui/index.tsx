@@ -24,7 +24,6 @@ const Menubar = () => {
             ))}
           </CommandList>
         </Command>
-        {/* <UploadButton endpoint="teamImage" /> */}
         <UserButton />
       </SignedIn>
     </div>

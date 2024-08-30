@@ -30,6 +30,7 @@ export const ourFileRouter = {
       return { userId: user.userId };
     })
     .onUploadComplete(async ({ metadata, file }) => {
+      console.log(metadata.userId, file.url);
       return { url: file.url, uploadedBy: metadata.userId };
     }),
 } satisfies FileRouter;

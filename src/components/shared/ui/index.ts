@@ -1,3 +1,6 @@
 import PageContainer from "./page-container";
+import { Button } from "./button";
+import { Input } from "./input";
+import { Label } from "./label";
 
-export { PageContainer };
+export { Button, Input, Label, PageContainer };

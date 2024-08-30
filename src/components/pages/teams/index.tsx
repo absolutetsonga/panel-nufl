@@ -1,5 +1,11 @@
-import { PageContainer } from "~/components/shared/ui";
+"use client";
 
+import { PageContainer } from "~/components/shared/ui";
+import { TeamForm } from "~/components/widgets/forms/team-form";
 export const TeamsPage = () => {
-  return <PageContainer>Teams</PageContainer>;
+  return (
+    <PageContainer>
+      <TeamForm />
+    </PageContainer>
+  );
 };
