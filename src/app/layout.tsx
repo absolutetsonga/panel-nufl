@@ -10,6 +10,8 @@ import {
 
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
+import "@uploadthing/react/styles.css";
+import { UploadButton } from "~/utils/uploadthing";
 
 export const metadata: Metadata = {
   title: "Panel NUFL",
@@ -30,6 +32,7 @@ export default function RootLayout({
               <SignInButton />
             </SignedOut>
             <SignedIn>
+              <UploadButton endpoint="teamImage" />
               <UserButton />
             </SignedIn>
           </header>

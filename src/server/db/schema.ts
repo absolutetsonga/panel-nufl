@@ -18,8 +18,8 @@ import {
  */
 export const createTable = pgTableCreator((name) => `panel-nufl_${name}`);
 
-export const posts = createTable(
-  "post",
+export const teams = createTable(
+  "team",
   {
     id: serial("id").primaryKey(),
     name: varchar("name", { length: 256 }),
@@ -27,10 +27,10 @@ export const posts = createTable(
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
-      () => new Date()
+      () => new Date(),
     ),
   },
   (example) => ({
     nameIndex: index("name_idx").on(example.name),
-  })
+  }),
 );
