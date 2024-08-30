@@ -11,21 +11,20 @@ import Link from "next/link";
 const Menubar = () => {
   return (
     <div className="flex flex-col border-r-2 border-gray-400 p-4">
-      <Command>
-        <CommandList>
-          {COMMANDS.map((command) => (
-            <Link href={"/" + command.id} key={command.id}>
-              <CommandItem>{command.name}</CommandItem>
-            </Link>
-          ))}
-        </CommandList>
-      </Command>
-
       <SignedOut>
         <SignInButton />
       </SignedOut>
       <SignedIn>
-        <UploadButton endpoint="teamImage" />
+        <Command>
+          <CommandList>
+            {COMMANDS.map((command) => (
+              <Link href={"/" + command.id} key={command.id}>
+                <CommandItem>{command.name}</CommandItem>
+              </Link>
+            ))}
+          </CommandList>
+        </Command>
+        {/* <UploadButton endpoint="teamImage" /> */}
         <UserButton />
       </SignedIn>
     </div>

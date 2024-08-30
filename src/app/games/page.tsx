@@ -1,8 +1,6 @@
-import React from "react";
-import { PageContainer } from "~/components/shared/ui";
-
+import { GamesPage } from "~/components/pages/games";
 const page = () => {
-  return <PageContainer>Games</PageContainer>;
+  return <GamesPage />;
 };
 
 export default page;

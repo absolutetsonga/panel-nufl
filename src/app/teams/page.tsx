@@ -1,8 +1,6 @@
-import React from "react";
-import {PageContainer} from "~/components/shared/ui";
-
+import { TeamsPage } from "~/components/pages/teams";
 const page = () => {
-  return <PageContainer>Teams</PageContainer>;
+  return <TeamsPage />;
 };
 
 export default page;
