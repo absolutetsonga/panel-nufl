@@ -15,7 +15,9 @@ import {
 
 import { Button, Input } from "~/components/shared/ui";
 import { UploadButton } from "~/components/shared/lib/utils/uploadthing";
+
 import Image from "next/image";
+import { XIcon } from "lucide-react";
 
 import { useCreateTeam } from "~/components/shared/lib/hooks/team";
 
@@ -56,9 +58,9 @@ export const TeamForm = ({ toggle, setToggle }: Props) => {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-8 rounded-xl border-2 border-gray-400 p-4"
+          className="relative space-y-8 rounded-xl border-2 border-gray-400 p-4"
         >
-          <Button onClick={() => setToggle(false)}>Close</Button>
+          <Button onClick={() => setToggle(false)} className="absolute right-0 top-0"><XIcon/></Button>
 
           <FormField
             control={form.control}

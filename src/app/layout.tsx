@@ -19,14 +19,22 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{ children: React.ReactNode }>) {
+  modal,
+}: {
+  children: React.ReactNode;
+  modal: React.ReactNode;
+}) {
   return (
     <ReactQueryProvider>
       <ClerkProvider>
         <html lang="en" className={`${GeistSans.variable}`}>
           <body className="flex flex-row">
             <Menubar />
-            <main className="flex-1">{children}</main>
+            <main className="flex-1">
+              {children}
+              {modal}
+              <div id="modal-root" />
+            </main>
             <Toaster />
           </body>
         </html>

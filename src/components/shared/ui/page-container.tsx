@@ -1,5 +1,6 @@
 type Props = {
   children: React.ReactNode;
+  className?: string;
 };
 
 const PageContainer = ({ children }: Props) => {
