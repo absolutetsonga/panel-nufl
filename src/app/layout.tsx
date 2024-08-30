@@ -1,11 +1,14 @@
 import "src/components/shared/ui/styles/globals.css";
-
-import { ClerkProvider } from "@clerk/nextjs";
+import "@uploadthing/react/styles.css";
 
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
-import "@uploadthing/react/styles.css";
+
 import Menubar from "~/components/widgets/menubar/ui";
+import { Toaster } from "~/components/shared/ui/sonner";
+
+import { ReactQueryProvider } from "~/components/app/providers/query";
+import { ClerkProvider } from "@clerk/nextjs";
 
 export const metadata: Metadata = {
   title: "Panel NUFL",
@@ -18,13 +21,16 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <ClerkProvider>
-      <html lang="en" className={`${GeistSans.variable}`}>
-        <body className="flex flex-row">
-          <Menubar />
-          <main className="flex-1">{children}</main>
-        </body>
-      </html>
-    </ClerkProvider>
+    <ReactQueryProvider>
+      <ClerkProvider>
+        <html lang="en" className={`${GeistSans.variable}`}>
+          <body className="flex flex-row">
+            <Menubar />
+            <main className="flex-1">{children}</main>
+            <Toaster />
+          </body>
+        </html>
+      </ClerkProvider>
+    </ReactQueryProvider>
   );
 }

@@ -12,9 +12,12 @@ import {
   FormLabel,
   FormMessage,
 } from "~/components/entities/command/ui/form";
+
 import { Button, Input } from "~/components/shared/ui";
 import { UploadButton } from "~/components/shared/lib/utils/uploadthing";
 import Image from "next/image";
+
+import { useCreateTeam } from "~/components/shared/lib/hooks/team";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -26,6 +29,8 @@ const formSchema = z.object({
 });
 
 export const TeamForm = () => {
+  const { mutate: server_createTeam } = useCreateTeam();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -35,64 +40,68 @@ export const TeamForm = () => {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    server_createTeam(values);
   }
 
   return (
-    <div><Form {...form}>
-    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 border-2 border-gray-400 p-4 rounded-xl">
-      <FormField
-        control={form.control}
-        name="name"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Team Name</FormLabel>
-            <FormControl>
-              <Input placeholder="Team Name" {...field} />
-            </FormControl>
-            <FormDescription>Write down team name.</FormDescription>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-      <FormField
-        control={form.control}
-        name="image"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Team Image</FormLabel>
-            <FormControl>
-              <UploadButton
-                endpoint="teamImage"
-                onClientUploadComplete={(res) => {
-                  form.setValue("image", res[0]?.url ?? "");
-                  alert("Upload Completed");
-                }}
-                onUploadError={(error: Error) => {
-                  // Do something with the error.
-                  alert(`ERROR! ${error.message}`);
-                }}
-              />
-            </FormControl>
-            {field.value && (
-              <div className="mt-4">
-                <Image
-                  src={field.value}
-                  alt="Uploaded Team Logo"
-                  width={96}
-                  height={96}
-                  className="h-24 w-24 object-cover"
-                />
-              </div>
+    <div>
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-8 rounded-xl border-2 border-gray-400 p-4"
+        >
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Team Name</FormLabel>
+                <FormControl>
+                  <Input placeholder="Team Name" {...field} />
+                </FormControl>
+                <FormDescription>Write down team name.</FormDescription>
+                <FormMessage />
+              </FormItem>
             )}
-            <FormDescription>Upload here team logo.</FormDescription>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-      <Button type="submit">Submit</Button>
-    </form>
-  </Form></div>
-    
+          />
+          <FormField
+            control={form.control}
+            name="image"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Team Image</FormLabel>
+                <FormControl>
+                  <UploadButton
+                    endpoint="teamImage"
+                    onClientUploadComplete={(res) => {
+                      form.setValue("image", res[0]?.url ?? "");
+                      alert("Upload Completed");
+                    }}
+                    onUploadError={(error: Error) => {
+                      // Do something with the error.
+                      alert(`ERROR! ${error.message}`);
+                    }}
+                  />
+                </FormControl>
+                {field.value && (
+                  <div className="mt-4">
+                    <Image
+                      src={field.value}
+                      alt="Uploaded Team Logo"
+                      width={96}
+                      height={96}
+                      className="h-24 w-24 object-cover"
+                    />
+                  </div>
+                )}
+                <FormDescription>Upload here team logo.</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button type="submit">Submit</Button>
+        </form>
+      </Form>
+    </div>
   );
 };

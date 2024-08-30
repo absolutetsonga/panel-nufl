@@ -13,7 +13,9 @@ export const teams = createTable(
   "team",
   {
     id: serial("id").primaryKey(),
+    user_id: varchar("user_id", { length: 256 }),
     name: varchar("name", { length: 256 }),
+    image: varchar("image", { length: 1024 }),
     createdAt: timestamp("created_at", { withTimezone: true })
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
