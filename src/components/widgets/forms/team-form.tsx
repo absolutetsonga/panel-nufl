@@ -28,7 +28,12 @@ const formSchema = z.object({
   }),
 });
 
-export const TeamForm = () => {
+type Props = {
+  toggle: boolean;
+  setToggle: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export const TeamForm = ({ toggle, setToggle }: Props) => {
   const { mutate: server_createTeam } = useCreateTeam();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -41,7 +46,10 @@ export const TeamForm = () => {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     server_createTeam(values);
+    setToggle(false);
   }
+
+  if (!toggle) return <></>;
 
   return (
     <div>
@@ -50,6 +58,8 @@ export const TeamForm = () => {
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-8 rounded-xl border-2 border-gray-400 p-4"
         >
+          <Button onClick={() => setToggle(false)}>Close</Button>
+
           <FormField
             control={form.control}
             name="name"

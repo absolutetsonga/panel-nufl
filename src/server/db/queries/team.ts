@@ -35,5 +35,16 @@ export const createTeam = async (name: string, image: string) => {
 };
 
 // updateTeam
+// export const updateTeam = async (id: number, name: string, image: string) => {
+//   const user = auth();
+//   if (!user.userId) return Error("Unauthorized");
 
+//   try {
+//     return updatedTeam;
+//   } catch (error) {
+//     // Handle other potential errors here
+//     console.error("Error updating team:", error);
+//     throw new Error("Error updating team");
+//   }
+// };
 // deleteTeam

@@ -1,6 +1,6 @@
 import { toast } from "sonner";
 
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createTeam, getTeams } from "~/server/db/queries/team";
 
 interface ITeam {
@@ -18,13 +18,20 @@ export function useGetTeams() {
 
 // create
 export function useCreateTeam() {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: ({ name, image }: ITeam) => createTeam(name, image),
-    onSuccess: (data) => {
-      if (data) {
-        toast(`Team ${data.name ?? ""} created successfully`);
-      } else {
-        toast("Team creation failed.");
+    onSuccess: async (data) => {
+      try {
+        if (data) {
+          toast(`Team ${data.name ?? ""} created successfully`);
+        } else {
+          toast("Team creation failed.");
+        }
+        await queryClient.invalidateQueries({ queryKey: ["teams"] });
+      } catch (error) {
+        console.error("Error invalidating queries:", error);
       }
     },
     onError: (error) => {
@@ -33,3 +40,7 @@ export function useCreateTeam() {
     },
   });
 }
+
+// update
+
+// delete
