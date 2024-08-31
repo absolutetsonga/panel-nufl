@@ -1,5 +1,8 @@
 import "src/components/shared/ui/styles/globals.css";
 import "@uploadthing/react/styles.css";
+import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
+import { extractRouterConfig } from "uploadthing/server";
+import { ourFileRouter } from "~/app/api/uploadthing/core";
 
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
@@ -28,6 +31,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
             <Menubar />
             <main className="flex-1">{children}</main>
             <Toaster />
+            <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
           </body>
         </html>
       </ClerkProvider>
