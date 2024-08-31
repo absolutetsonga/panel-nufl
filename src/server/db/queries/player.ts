@@ -16,12 +16,6 @@ interface ICreatePlayer {
     | "Striker";
   major: string;
   age: number;
-  played_matches: number;
-  goals: number;
-  assists: number;
-  clean_sheets: number;
-  yellow_cards: number;
-  red_cards: number;
 }
 
 // read

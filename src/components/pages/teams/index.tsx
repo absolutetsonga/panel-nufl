@@ -5,9 +5,8 @@ import { useGetTeams } from "~/components/shared/lib/hooks/team";
 
 import { PageContainer } from "~/components/shared/ui";
 import { TeamCreateForm } from "~/components/widgets/forms/team-create-form";
-import { Button } from "~/components/shared/ui";
+import { CreateButton } from "~/components/entities/create-button";
 import { Heading1, Paragraph } from "~/components/shared/ui/typography";
-import { PlusIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -16,10 +15,7 @@ export const TeamsPage = () => {
 
   return (
     <PageContainer>
-      <CreateTeamButton
-        toggle={createTeamToggle}
-        setToggle={setCreateTeamToggle}
-      />
+      <CreateButton toggle={createTeamToggle} setToggle={setCreateTeamToggle} />
 
       <div className="flex flex-col gap-4 p-4">
         <Heading1>Teams</Heading1>
@@ -51,7 +47,7 @@ const PopulateTeams = () => {
         >
           <div className="flex flex-col items-center justify-center gap-4 rounded-xl border-2 border-gray-400 p-4">
             <Image
-              src={team.image ?? "/placeholder-image.png"} // Fallback image if `team.image` is empty
+              src={team.image ?? "/placeholder-image.png"}
               alt={team.name ?? "Team Image"}
               width={196}
               height={196}
@@ -62,18 +58,5 @@ const PopulateTeams = () => {
         </Link>
       ))}
     </div>
-  );
-};
-
-type Props = {
-  toggle: boolean;
-  setToggle: React.Dispatch<React.SetStateAction<boolean>>;
-};
-
-const CreateTeamButton = ({ toggle, setToggle }: Props) => {
-  return (
-    <Button onClick={() => setToggle(!toggle)}>
-      <PlusIcon />
-    </Button>
   );
 };

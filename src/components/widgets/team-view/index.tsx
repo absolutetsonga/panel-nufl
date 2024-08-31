@@ -9,7 +9,6 @@ import { useRouter } from "next/navigation";
 import { DeleteAlert } from "~/components/entities/delete-alert/ui";
 import { TeamActions } from "./components/team-actions";
 import { TeamUpdateForm } from "../forms/team-update-form";
-import { ITeam } from "~/components/shared/lib/models/team";
 
 type TeamViewProps = {
   team: {

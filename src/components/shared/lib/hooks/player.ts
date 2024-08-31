@@ -9,28 +9,49 @@ import {
 } from "~/server/db/queries/player";
 
 interface ICreatePlayer {
-    team_id: number;
-    fullname: string;
-    image: string;
-    position:
-        | "Goalkeeper"
-        | "Defender"
-        | "Left Winger"
-        | "Right Winger"
-        | "Striker";
-    major: string;
-    age: number;
-    played_matches: number;
-    goals: number;
-    assists: number;
-    clean_sheets: number;
-    yellow_cards: number;
-    red_cards: number;
+  team_id: number;
+  fullname: string;
+  image: string;
+  position:
+    | "Goalkeeper"
+    | "Defender"
+    | "Left Winger"
+    | "Right Winger"
+    | "Striker";
+  major: string;
+  age: string;
 }
 
+// read players
 export const useGetOneClubPlayers = (team_id: number) => {
   return useQuery({
     queryFn: async () => await getOneClubPlayers(team_id),
     queryKey: ["teams"],
+  });
+};
+
+// create player
+export const useCreatePlayer = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (data: ICreatePlayer) => {
+      return await createPlayer({ ...data, age: Number(data.age) });
+    },
+    onSuccess: async (data) => {
+      try {
+        if (data) {
+          toast(`Player ${data.fullname ?? ""} created successfully`);
+        } else {
+          toast("Player creation failed.");
+        }
+        await queryClient.invalidateQueries({ queryKey: ["teams"] });
+      } catch (error) {
+        console.error("Error invalidating queries:", error);
+      }
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
   });
 };

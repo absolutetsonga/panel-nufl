@@ -14,13 +14,13 @@ const TeamPage = (props: { teamId: string }) => {
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error loading team.</div>;
   if (!team) throw new Error("Team not found");
-  const { id, name, image, createdAt } = team;
+  const { id, name, image, createdAt, team_players } = team;
 
   return (
     <PageContainer>
       <div className="flex w-full flex-col items-center justify-center gap-10 md:flex-row">
         <TeamView team={{ id, name, image, createdAt }} />
-        <PlayersView team_players={team.team_players} />
+        <PlayersView team={{ team_players, team_id: id }} />
       </div>
     </PageContainer>
   );
