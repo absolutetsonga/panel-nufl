@@ -61,3 +61,33 @@ export const useCreatePlayer = () => {
     },
   });
 };
+
+// delete
+export const useDeletePlayer = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (player_id: number) => deletePlayer(player_id),
+    onSuccess: async (data) => {
+      try {
+        if (data && !(data instanceof Error)) {
+          toast(`Player deleted successfully`);
+          await queryClient.invalidateQueries({
+            queryKey: ["players", data.team_id],
+          });
+          await queryClient.invalidateQueries({
+            queryKey: ["team", data.team_id],
+          });
+        } else {
+          toast("Player deletion failed.");
+        }
+      } catch (error) {
+        console.error("Error invalidating queries:", error);
+        toast.error("Error");
+      }
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+};
