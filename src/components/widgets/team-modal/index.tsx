@@ -1,13 +1,16 @@
 "use client";
 
+import { redirect } from "next/navigation";
+
 import React, { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import {
   useDeleteTeam,
   useGetTeam,
   useUpdateTeam,
 } from "~/components/shared/lib/hooks/team";
-import { PencilIcon, Trash2Icon, CheckIcon } from "lucide-react";
+import { PencilIcon, Trash2Icon, CheckIcon, ArrowUpIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { UploadButton } from "~/components/shared/lib/utils/uploadthing";
 import { DeleteAlert } from "~/components/entities/delete-alert/ui";
@@ -73,6 +76,10 @@ export const TeamModalView = (props: { teamId: string }) => {
             className="h-6 w-6 cursor-pointer"
             onClick={() => setDeleteAlertToggle(true)}
           />
+          <ArrowUpIcon
+            className="h-6 w-6 cursor-pointer"
+            onClick={() => redirect(`/`)}
+          />
         </div>
 
         <div className="flex h-full w-4/5 flex-1 flex-shrink-0 flex-col border-l">
@@ -107,7 +114,7 @@ export const TeamModalView = (props: { teamId: string }) => {
                 <div>{team.createdAt.toLocaleDateString()}</div>
               </div>
             </>
-          )} 
+          )}
         </div>
       </div>
       {deleteAlertToggle && (

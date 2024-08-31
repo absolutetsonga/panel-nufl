@@ -17,24 +17,16 @@ export const metadata: Metadata = {
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
-export default function RootLayout({
-  children,
-  modal,
-}: {
-  children: React.ReactNode;
-  modal: React.ReactNode;
-}) {
+type RootLayoutProps = { children: React.ReactNode };
+
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <ReactQueryProvider>
       <ClerkProvider>
         <html lang="en" className={`${GeistSans.variable}`}>
           <body className="flex flex-row">
             <Menubar />
-            <main className="flex-1">
-              {children}
-              {modal}
-              <div id="modal-root" />
-            </main>
+            <main className="flex-1">{children}</main>
             <Toaster />
           </body>
         </html>
