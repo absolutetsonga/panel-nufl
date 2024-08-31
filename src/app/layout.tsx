@@ -24,7 +24,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
     <ReactQueryProvider>
       <ClerkProvider>
         <html lang="en" className={`${GeistSans.variable}`}>
-          <body className="flex flex-row">
+          <body className="relative flex flex-row">
             <Menubar />
             <main className="flex-1">{children}</main>
             <Toaster />
