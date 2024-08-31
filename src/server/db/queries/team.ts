@@ -1,7 +1,7 @@
 "use server";
 import { auth } from "@clerk/nextjs/server";
 import { db } from "..";
-import { teams } from "../schema";
+import { players, teams } from "../schema";
 import { eq } from "drizzle-orm";
 
 // read
@@ -14,9 +14,14 @@ export const getTeam = async (id: number) => {
   });
 
   if (!team) throw new Error("Team not found");
+
+  const team_players = await db.query.players.findMany({
+    where: eq(players.team_id, team.id),
+  });
+  
   if (team.user_id !== user.userId) throw new Error("Unauthorized");
 
-  return team;
+  return { ...team, team_players };
 };
 
 // read teams

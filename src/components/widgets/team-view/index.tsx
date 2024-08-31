@@ -4,26 +4,29 @@ import { redirect } from "next/navigation";
 
 import React, { useState } from "react";
 import Image from "next/image";
-import { useDeleteTeam, useGetTeam } from "~/components/shared/lib/hooks/team";
+import { useDeleteTeam } from "~/components/shared/lib/hooks/team";
 import { useRouter } from "next/navigation";
 import { DeleteAlert } from "~/components/entities/delete-alert/ui";
 import { TeamActions } from "./components/team-actions";
 import { TeamUpdateForm } from "../forms/team-update-form";
+import { ITeam } from "~/components/shared/lib/models/team";
 
-export const TeamModalView = (props: { teamId: string }) => {
-  const team_id = Number(props.teamId);
+type TeamViewProps = {
+  team: {
+    id: number;
+    name: string | null;
+    image: string | null;
+    createdAt: Date;
+  };
+};
+
+export const TeamView = ({ team }: TeamViewProps) => {
+  const { mutate: server_deleteTeam } = useDeleteTeam();
 
   const [isEditing, setIsEditing] = useState(false);
   const [deleteAlertToggle, setDeleteAlertToggle] = useState(false);
-  const { mutate: server_deleteTeam } = useDeleteTeam();
   const router = useRouter();
 
-  // Checkers
-  if (Number.isNaN(team_id)) throw new Error("Invalid team id");
-  const { data: team, isLoading, isError } = useGetTeam(team_id);
-  if (isLoading) return <div>Loading...</div>;
-  if (isError) return <div>Error loading team.</div>;
-  if (!team) throw new Error("Team not found");
   const { id, name, image } = team;
 
   const onDelete = (team_id: number) => {
@@ -32,12 +35,12 @@ export const TeamModalView = (props: { teamId: string }) => {
   };
 
   return (
-    <div className="max-w-[400px] border-[1px] border-black rounded-2xl overflow-hidden flex flex-col items-center justify-center">
+    <div className="flex max-w-[400px] flex-col items-center justify-center overflow-hidden rounded-2xl border-[1px] border-black">
       <div className="flex-shrink flex-grow">
         <Image
           src={image ?? "/placeholder-image.png"}
           alt={name ?? "Team Image"}
-          className="h-[200px] w-[200px] md:h-[400px] md:w-[400px] rounded-xl object-cover"
+          className="h-[200px] w-[200px] rounded-xl object-cover md:h-[400px] md:w-[400px]"
           width={400}
           height={400}
         />
