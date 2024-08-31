@@ -45,7 +45,13 @@ export const useCreatePlayer = () => {
         } else {
           toast("Player creation failed.");
         }
-        await queryClient.invalidateQueries({ queryKey: ["players"] });
+
+        await queryClient.invalidateQueries({
+          queryKey: ["players", data?.team_id],
+        });
+        await queryClient.invalidateQueries({
+          queryKey: ["team", data?.team_id],
+        });
       } catch (error) {
         console.error("Error invalidating queries:", error);
       }
