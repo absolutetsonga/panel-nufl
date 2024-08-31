@@ -11,6 +11,13 @@ import {
   FormLabel,
   FormMessage,
 } from "~/components/entities/command/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "~/components/shared/ui/select";
 import { CustomFormField } from "~/components/shared/ui/form-field";
 
 import { Button, Input } from "~/components/shared/ui";
@@ -79,7 +86,7 @@ export const PlayerCreateForm = ({ team_id, toggle, setToggle }: Props) => {
         >
           <Button
             onClick={() => setToggle(false)}
-            className="absolute right-2 top-2 p-1 text-gray-500 hover:text-gray-700"
+            className="absolute -right-2 -top-2 text-gray-500 hover:text-gray-700"
           >
             <XIcon />
           </Button>
@@ -100,15 +107,25 @@ export const PlayerCreateForm = ({ team_id, toggle, setToggle }: Props) => {
                 <FormLabel className="text-sm font-medium text-gray-700">
                   Player Position
                 </FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Ex: Goalkeeper"
-                    {...field}
-                    className="rounded-md focus:border-indigo-500 focus:ring-indigo-500"
-                  />
-                </FormControl>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select player position" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent className="bg-white">
+                    <SelectItem value="Goalkeeper">Goalkeeper</SelectItem>
+                    <SelectItem value="Defender">Defender</SelectItem>
+                    <SelectItem value="Left Winger">Left Winger</SelectItem>
+                    <SelectItem value="Right Winger">Right Winger</SelectItem>
+                    <SelectItem value="Striker">Striker</SelectItem>
+                  </SelectContent>
+                </Select>
                 <FormDescription className="text-[14px] text-gray-500">
-                  Write down player position.
+                  Select player position.
                 </FormDescription>
                 <FormMessage className="mt-2 text-[12px] text-red-600" />
               </FormItem>

@@ -26,7 +26,7 @@ interface ICreatePlayer {
 export const useGetOneClubPlayers = (team_id: number) => {
   return useQuery({
     queryFn: async () => await getOneClubPlayers(team_id),
-    queryKey: ["teams"],
+    queryKey: ["players"],
   });
 };
 
@@ -45,7 +45,7 @@ export const useCreatePlayer = () => {
         } else {
           toast("Player creation failed.");
         }
-        await queryClient.invalidateQueries({ queryKey: ["teams"] });
+        await queryClient.invalidateQueries({ queryKey: ["players"] });
       } catch (error) {
         console.error("Error invalidating queries:", error);
       }

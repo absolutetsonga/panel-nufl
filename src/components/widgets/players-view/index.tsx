@@ -6,8 +6,9 @@ import { PlayerCreateForm } from "../forms/player-create-form";
 import { CreateButton } from "~/components/entities/create-button";
 
 import type { ITeamPlayer } from "~/components/shared/lib/models/team";
-import { Heading3 } from "~/components/shared/ui/typography";
+import { Heading3, Paragraph } from "~/components/shared/ui/typography";
 import Image from "next/image";
+
 
 type PlayersViewProps = {
   team: {
@@ -22,10 +23,15 @@ export const PlayersView = ({ team }: PlayersViewProps) => {
 
   return (
     <div className="flex flex-col">
-      {!createPlayerToggle && <CreateButton
-        toggle={createPlayerToggle}
-        setToggle={setCreatePlayerToggle}
-      />}
+      {!createPlayerToggle && (
+        <div className="absolute right-2 top-2 flex flex-row items-center justify-center p-1 text-gray-500 hover:text-gray-700">
+          <Paragraph>Add new player</Paragraph>
+          <CreateButton
+            toggle={createPlayerToggle}
+            setToggle={setCreatePlayerToggle}
+          />
+        </div>
+      )}
 
       {!createPlayerToggle && (
         <div className="flex flex-col gap-4 p-4">
@@ -45,18 +51,22 @@ export const PlayersView = ({ team }: PlayersViewProps) => {
 
 const PopulatePlayers = ({ team_players }: { team_players: ITeamPlayer[] }) => {
   return (
-    <div className="grid grid-cols-1 items-center justify-center gap-4 lg:grid-cols-4">
+    <div className="grid grid-cols-1 items-center justify-center gap-4 lg:grid-cols-3">
       {team_players?.map((player) => (
         <div key={player.id}>
-          <div className="flex flex-col items-center justify-center gap-4 rounded-xl border-2 border-gray-400 p-4">
+          <div className="flex flex-row items-center justify-center gap-4 rounded-xl border-2 border-gray-400 p-2">
             <Image
               src={player.image ?? "/placeholder-image.png"}
               alt={player.fullname ?? "Player Image"}
-              width={196}
-              height={196}
-              className="h-[120px] w-[120px] rounded-xl object-cover md:h-[196px] md:w-[196px]"
+              width={96}
+              height={96}
+              className="h-[64px] w-[64px] rounded-full object-cover md:h-[96px] md:w-[96px]"
             />
-            <h1>{player.fullname}</h1>
+            
+            <div className="flex flex-col justify-center gap-2">
+              <h3>{player.fullname}</h3>
+              <p>Pos: {player.position}</p>
+            </div>
           </div>
         </div>
       ))}
