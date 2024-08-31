@@ -37,7 +37,7 @@ export const TeamModalView = (props: { teamId: string }) => {
         <Image
           src={image ?? "/placeholder-image.png"}
           alt={name ?? "Team Image"}
-          className="object-contain"
+          className="h-[200px] w-[200px] md:h-[400px] md:w-[400px] rounded-xl object-cover"
           width={400}
           height={400}
         />

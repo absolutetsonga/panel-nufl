@@ -35,7 +35,7 @@ type Props = {
   setToggle: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export const TeamForm = ({ toggle, setToggle }: Props) => {
+export const TeamCreateForm = ({ toggle, setToggle }: Props) => {
   const { mutate: server_createTeam } = useCreateTeam();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -54,25 +54,38 @@ export const TeamForm = ({ toggle, setToggle }: Props) => {
   if (!toggle) return <></>;
 
   return (
-    <div>
+    <div className="absolute bottom-0 left-0 right-0 top-0 z-10 flex flex-col items-center justify-center gap-4 rounded-lg bg-white p-8 shadow-lg md:p-12">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="relative space-y-8 rounded-xl border-2 border-gray-400 p-4"
+          className="relative space-y-8 rounded-xl border-2 border-gray-200 bg-gray-50 p-6 md:p-8"
         >
-          <Button onClick={() => setToggle(false)} className="absolute right-0 top-0"><XIcon/></Button>
+          <Button
+            onClick={() => setToggle(false)}
+            className="absolute right-2 top-2 p-1 text-gray-500 hover:text-gray-700"
+          >
+            <XIcon />
+          </Button>
 
           <FormField
             control={form.control}
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Team Name</FormLabel>
+                <FormLabel className="text-sm font-medium text-gray-700">
+                  Team Name
+                </FormLabel>
                 <FormControl>
-                  <Input placeholder="Team Name" {...field} />
+                  <Input
+                    placeholder="Team Name"
+                    {...field}
+                    className="rounded-md focus:border-indigo-500 focus:ring-indigo-500"
+                  />
                 </FormControl>
-                <FormDescription>Write down team name.</FormDescription>
-                <FormMessage />
+                <FormDescription className="text-[14px] text-gray-500">
+                  Write down team name.
+                </FormDescription>
+                <FormMessage className="mt-2 text-[12px] text-red-600" />
               </FormItem>
             )}
           />
@@ -81,7 +94,9 @@ export const TeamForm = ({ toggle, setToggle }: Props) => {
             name="image"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Team Image</FormLabel>
+                <FormLabel className="text-sm font-medium text-gray-700">
+                  Team Image
+                </FormLabel>
                 <FormControl>
                   <UploadButton
                     endpoint="teamImage"
@@ -96,22 +111,29 @@ export const TeamForm = ({ toggle, setToggle }: Props) => {
                   />
                 </FormControl>
                 {field.value && (
-                  <div className="mt-4">
+                  <div className="mt-4 w-full items-center justify-center">
                     <Image
                       src={field.value}
                       alt="Uploaded Team Logo"
                       width={96}
                       height={96}
-                      className="h-24 w-24 object-cover"
+                      className="h-24 w-24 rounded-full border-2 border-gray-300 object-cover"
                     />
                   </div>
                 )}
-                <FormDescription>Upload here team logo.</FormDescription>
-                <FormMessage />
+                <FormDescription className="text-[14px] text-gray-500">
+                  Upload here team logo.
+                </FormDescription>
+                <FormMessage className="mt-2 text-[12px] text-red-600" />
               </FormItem>
             )}
           />
-          <Button type="submit">Submit</Button>
+          <Button
+            type="submit"
+            className="w-full rounded-md bg-indigo-600 px-4 py-2 text-white transition duration-150 ease-in-out hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+          >
+            Submit
+          </Button>
         </form>
       </Form>
     </div>
