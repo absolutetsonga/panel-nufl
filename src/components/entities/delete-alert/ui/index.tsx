@@ -1,4 +1,4 @@
-import { alertDialogComponents } from "~/components/shared/ui";
+import { alertDialogComponents, Button } from "~/components/shared/ui";
 
 const {
   AlertDialog,
@@ -32,13 +32,13 @@ export const DeleteAlert = ({
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>{title}</AlertDialogTitle>
-          <AlertDialogDescription>
-            {description}
-          </AlertDialogDescription>
+          <AlertDialogDescription>{description}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel onClick={onCancel}>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={onConfirm}>Continue</AlertDialogAction>
+          <Button variant="destructive" className="bg-red-600 text-white">
+            <AlertDialogAction onClick={onConfirm}>Delete</AlertDialogAction>
+          </Button>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
