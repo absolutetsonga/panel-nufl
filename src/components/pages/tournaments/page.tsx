@@ -58,7 +58,7 @@ const PopulateTournaments = () => {
   return (
     <div className="grid grid-cols-1 items-center justify-center gap-4">
       {tournaments?.map((tr) => (
-        <div className="relative flex flex-col items-center justify-center gap-4 rounded-xl border-2 border-gray-400 p-8">
+        <div className="relative flex flex-col items-center justify-center gap-4 rounded-xl border-2 border-gray-400 p-8" key={tr.id}>
           <h1 className="text-[20px]">{tr.name}</h1>
 
           <div className="absolute right-1 top-1 flex flex-row items-center justify-center gap-2">
