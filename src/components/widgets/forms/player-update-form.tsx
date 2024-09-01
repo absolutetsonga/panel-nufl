@@ -19,38 +19,56 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/shared/ui/select";
-import { CustomFormField } from "~/components/shared/ui/form-field";
-
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "~/components/shared/ui/popover";
+import { Calendar } from "~/components/shared/ui/calendar";
 import { Button } from "~/components/shared/ui";
 import { UploadButton } from "~/components/shared/lib/utils/uploadthing";
 
-import { toast } from "sonner";
-import { XIcon } from "lucide-react";
+import { format } from "date-fns";
+import { CalendarIcon, XIcon } from "lucide-react";
 import Image from "next/image";
+import { cn } from "~/components/shared/lib/utils/clsx";
 
 const formSchema = z.object({
   fullname: z.string().min(2, {
     message: "Player fullname must be at least 2 characters.",
   }),
-  image: z.string().url({
-    message: "Please upload a valid player image URL.",
-  }),
+  image: z
+    .string()
+    .url()
+    .default(
+      "https://utfs.io/f/aeb9ab9b-7970-4eed-8fc1-92ac644c1165-clf4u5.jpg",
+    ),
   position: z.string(),
-  major: z.string().min(2, {
+  level_of_study: z.string().min(2, {
     message: "Sorry, major is mandatory.",
   }),
-  age: z.string(),
+  school: z.string().min(2, {
+    message: "Sorry, school is mandatory.",
+  }),
+  year: z.number().min(0, {
+    message: "Please, provide player's course year.",
+  }),
+  age: z.date({
+    required_error: "A date of birth is required.",
+  }),
 });
 
 type Props = {
   player: {
-    team_id: number;
     id: number;
+    team_id: number;
     fullname: string;
-    image: string | null;
+    image: string;
     position: string;
-    major: string;
-    age: number;
+    level_of_study: string;
+    school: string;
+    age: Date;
+    year: number;
   };
   toggle: boolean;
   setToggle: React.Dispatch<React.SetStateAction<boolean>>;
@@ -63,23 +81,18 @@ export const PlayerUpdateForm = ({ player, toggle, setToggle }: Props) => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       fullname: player.fullname,
-      image: player.image ?? "",
+      image: player.image,
       position: player.position,
-      major: player.major,
-      age: String(player.age) ?? "0",
+      school: player.school,
+      year: player.year,
+      age: new Date(),
     },
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    if (Number.isNaN(values.age)) {
-      toast.error("Age must be a number.");
-      return null;
-    }
-    const age = Number(values.age);
-
     server_updateTeam({
       player_id: player.id,
-      player: { ...values, age, team_id: player.team_id },
+      player: { ...values, team_id: player.team_id },
     });
     setToggle(false);
   }
@@ -103,14 +116,6 @@ export const PlayerUpdateForm = ({ player, toggle, setToggle }: Props) => {
           >
             <XIcon />
           </Button>
-
-          <CustomFormField
-            form={form}
-            name="fullname"
-            label="Player Full Name"
-            placeholder="Ex: John Doe"
-            description="Write down player full name."
-          />
 
           <FormField
             control={form.control}
@@ -145,20 +150,49 @@ export const PlayerUpdateForm = ({ player, toggle, setToggle }: Props) => {
             )}
           />
 
-          <CustomFormField
-            form={form}
-            name="major"
-            label="Player Major"
-            placeholder="Ex: Computer Science"
-            description="Write down player major."
-          />
-          <CustomFormField
-            form={form}
+          <FormField
+            control={form.control}
             name="age"
-            type="number"
-            label="Player Age"
-            placeholder="Ex: 19"
-            description="Write down player age."
+            render={({ field }) => (
+              <FormItem className="flex flex-col">
+                <FormLabel>Date of birth</FormLabel>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        variant={"outline"}
+                        className={cn(
+                          "w-[240px] pl-3 text-left font-normal",
+                          !field.value && "text-muted-foreground",
+                        )}
+                      >
+                        {field.value ? (
+                          format(field.value, "PPP")
+                        ) : (
+                          <span>Pick a date</span>
+                        )}
+                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={field.value}
+                      onSelect={field.onChange}
+                      disabled={(date) =>
+                        date > new Date() || date < new Date("1900-01-01")
+                      }
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
+                <FormDescription>
+                  Your date of birth is used to calculate your age.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
           />
 
           <div className="col-span-2">

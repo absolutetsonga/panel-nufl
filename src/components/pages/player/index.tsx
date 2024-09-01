@@ -28,9 +28,9 @@ export const PlayerPage = ({ playerId }: { playerId: string }) => {
   if (isError) return <PageContainer>Error loading player.</PageContainer>;
   if (!player) throw new Error("Player not found");
 
-  const onDelete = (id: number) => {
-    server_deletePlayer(player.id);
-    router.push(`/teams/${player.team_id}`);
+  const onDelete = (id: number, team_id: number) => {
+    server_deletePlayer(id);
+    router.push(`/teams/${team_id}`);
   };
 
   return (
@@ -66,7 +66,7 @@ export const PlayerPage = ({ playerId }: { playerId: string }) => {
             trigger="Delete?"
             title={`Delete Team`}
             description="Are you sure? This action cannot be undone. This will permanently delete this team and remove all games, scores, players, their goals, assists, clean sheets data with this team from our servers. In special cases we recommend to contact with developer to delete the team."
-            onConfirm={() => onDelete(player.id)}
+            onConfirm={() => onDelete(player.id, player.team_id)}
             onCancel={() => setDeleteToggle(false)}
           />
         )}

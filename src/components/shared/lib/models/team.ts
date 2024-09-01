@@ -8,15 +8,28 @@ export interface ITeam {
   team_players: ITeamPlayer[];
 }
 
+export interface ICreateAndUpdatePlayer {
+  team_id: number;
+  fullname: string;
+  image: string;
+  position: string;
+  level_of_study: string;
+  school: string;
+  age: Date;
+  year: number;
+}
+
 export interface ITeamPlayer {
   id: number;
   team_id: number;
   user_id: string;
+  age: Date;
   fullname: string;
-  image: string | null;
+  image: string;
+  year: number;
+  school: string;
+  level_of_study: string;
   position: string;
-  major: string;
-  age: number;
   played_matches: number;
   goals: number;
   assists: number;

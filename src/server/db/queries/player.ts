@@ -4,14 +4,7 @@ import { db } from "..";
 import { players } from "../schema";
 import { eq } from "drizzle-orm";
 
-interface ICreatePlayer {
-  team_id: number;
-  fullname: string;
-  image: string;
-  position: string;
-  major: string;
-  age: number;
-}
+import type { ICreateAndUpdatePlayer } from "~/components/shared/lib/models/team";
 
 // read
 export const getPlayer = async (id: number) => {
@@ -25,6 +18,7 @@ export const getPlayer = async (id: number) => {
   if (!player) throw new Error("Player not found");
   if (player.user_id !== user.userId) throw new Error("Unauthorized");
 
+  console.log(player);
   return player;
 };
 
@@ -39,7 +33,7 @@ export const getOneClubPlayers = async (team_id: number) => {
 };
 
 // create player
-export const createPlayer = async (player: ICreatePlayer) => {
+export const createPlayer = async (player: ICreateAndUpdatePlayer) => {
   const user = auth();
   if (!user.userId) throw new Error("Unauthorized");
 
@@ -57,7 +51,10 @@ export const createPlayer = async (player: ICreatePlayer) => {
 };
 
 // update player
-export const updatePlayer = async (id: number, player: ICreatePlayer) => {
+export const updatePlayer = async (
+  id: number,
+  player: ICreateAndUpdatePlayer,
+) => {
   const user = auth();
   if (!user.userId) return Error("Unauthorized");
 
@@ -66,17 +63,10 @@ export const updatePlayer = async (id: number, player: ICreatePlayer) => {
   });
 
   if (tema_player?.user_id !== user.userId) throw new Error("Unauthorized");
-  if (Number.isNaN(player.age)) throw new Error("Invalid age");
-
-  const age = Number(player.age);
 
   const [updatedPlayer] = await db
     .update(players)
-    .set({
-      ...player,
-      age,
-      updatedAt: new Date(),
-    })
+    .set({ ...player, updatedAt: new Date() })
     .where(eq(players.id, id))
     .returning();
 

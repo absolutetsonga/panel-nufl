@@ -7,15 +7,7 @@ import {
   getOneClubPlayers,
   updatePlayer,
 } from "~/server/db/queries/player";
-
-interface ICreatePlayer {
-  team_id: number;
-  fullname: string;
-  image: string;
-  position: string
-  major: string;
-  age: number;
-}
+import { ICreateAndUpdatePlayer } from "../models/team";
 
 // read players
 export const useGetOneClubPlayers = (team_id: number) => {
@@ -38,7 +30,7 @@ export const useCreatePlayer = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: ICreatePlayer) => {
+    mutationFn: async (data: ICreateAndUpdatePlayer) => {
       return await createPlayer(data);
     },
     onSuccess: async (data) => {
@@ -75,7 +67,7 @@ export const useUpdatePlayer = () => {
       player,
     }: {
       player_id: number;
-      player: ICreatePlayer;
+      player: ICreateAndUpdatePlayer;
     }) => updatePlayer(player_id, player),
     onSuccess: async (data) => {
       try {

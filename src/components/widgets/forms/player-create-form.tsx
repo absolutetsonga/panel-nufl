@@ -18,14 +18,23 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/shared/ui/select";
-import { CustomFormField } from "~/components/shared/ui/form-field";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "~/components/shared/ui/popover";
+import { format } from "date-fns";
+
+import { Calendar } from "~/components/shared/ui/calendar";
 
 import { Button, Input } from "~/components/shared/ui";
 import { UploadButton } from "~/components/shared/lib/utils/uploadthing";
 
 import Image from "next/image";
-import { XIcon } from "lucide-react";
+import { CalendarIcon, XIcon } from "lucide-react";
 import { useCreatePlayer } from "~/components/shared/lib/hooks/player";
+import { cn } from "~/components/shared/lib/utils/clsx";
+import { useState } from "react";
 import { toast } from "sonner";
 
 const formSchema = z.object({
@@ -34,22 +43,23 @@ const formSchema = z.object({
   }),
   image: z
     .string()
-    .url({
-      message: "Please upload a valid player image URL.",
-    })
-    .default("https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png"),
-  position: z.enum(
-    ["Goalkeeper", "Defender", "Left Winger", "Right Winger", "Striker"],
-    {
-      errorMap: () => {
-        return { message: "Please select a valid position" };
-      },
-    },
-  ),
-  major: z.string().min(2, {
+    .url()
+    .default(
+      "https://utfs.io/f/aeb9ab9b-7970-4eed-8fc1-92ac644c1165-clf4u5.jpg",
+    ),
+  position: z.string(),
+  level_of_study: z.string().min(2, {
     message: "Sorry, major is mandatory.",
   }),
-  age: z.string(),
+  school: z.string().min(2, {
+    message: "Sorry, school is mandatory.",
+  }),
+  year: z.string().min(1, {
+    message: "Please, provide player's course year.",
+  }),
+  age: z.date({
+    required_error: "A date of birth is required.",
+  }),
 });
 
 type Props = {
@@ -60,18 +70,20 @@ type Props = {
 
 export const PlayerCreateForm = ({ team_id, toggle, setToggle }: Props) => {
   const { mutate: server_createTeam } = useCreatePlayer();
+  const [isFoundation, setIsFoundation] = useState(true);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    if (Number.isNaN(values.age)) {
-      toast.error("Age must be a number.");
+    const number_year = Number(values.year);
+    if (Number.isNaN(number_year)) {
+      toast("Course year must be integer");
       return null;
     }
-    const age = Number(values.age);
-    server_createTeam({ ...values, age, team_id });
+
+    server_createTeam({ ...values, team_id, year: number_year });
     setToggle(false);
   }
 
@@ -95,12 +107,27 @@ export const PlayerCreateForm = ({ team_id, toggle, setToggle }: Props) => {
             <XIcon />
           </Button>
 
-          <CustomFormField
-            form={form}
+          <FormField
+            control={form.control}
             name="fullname"
-            label="Player Full Name"
-            placeholder="Ex: John Doe"
-            description="Write down player full name."
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-sm font-medium text-gray-700">
+                  Player Name
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Ex: John Doe"
+                    {...field}
+                    className="rounded-md focus:border-indigo-500 focus:ring-indigo-500"
+                  />
+                </FormControl>
+                <FormDescription className="text-[14px] text-gray-500">
+                  Write down player full name.
+                </FormDescription>
+                <FormMessage className="mt-2 text-[12px] text-red-600" />
+              </FormItem>
+            )}
           />
 
           <FormField
@@ -136,20 +163,173 @@ export const PlayerCreateForm = ({ team_id, toggle, setToggle }: Props) => {
             )}
           />
 
-          <CustomFormField
-            form={form}
-            name="major"
-            label="Player Major"
-            placeholder="Ex: Computer Science"
-            description="Write down player major."
+          <FormField
+            control={form.control}
+            name="level_of_study"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-sm font-medium text-gray-700">
+                  Level of Study
+                </FormLabel>
+                <Select
+                  onValueChange={(value) => {
+                    field.onChange(value);
+                    setIsFoundation(value === "FOUND");
+                    if (value === "FOUND") {
+                      setIsFoundation(true);
+                      form.setValue("school", "CPS");
+                      form.setValue("year", "0");
+                    } else {
+                      setIsFoundation(false);
+                      form.setValue("school", "");
+                      form.setValue("year", "");
+                    }
+                  }}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Click to choose..." />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent className="bg-white">
+                    <SelectItem value="FOUND">Foundation</SelectItem>
+                    <SelectItem value="UG">Undergraduate</SelectItem>
+                    <SelectItem value="GR">Graduate</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormDescription className="text-[14px] text-gray-500">
+                  Select Level of Study
+                </FormDescription>
+                <FormMessage className="mt-2 text-[12px] text-red-600" />
+              </FormItem>
+            )}
           />
-          <CustomFormField
-            form={form}
+
+          {!isFoundation && (
+            <FormField
+              control={form.control}
+              name="school"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-sm font-medium text-gray-700">
+                    School Name
+                  </FormLabel>
+                  <Select
+                    disabled={isFoundation}
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Click to choose..." />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent className="bg-white">
+                      <SelectItem value="SEDS">SEDS</SelectItem>
+                      <SelectItem value="SSH">SSH</SelectItem>
+                      <SelectItem value="NUSOM">NUSOM</SelectItem>
+                      <SelectItem value="GSB">GSB</SelectItem>
+                      <SelectItem value="GSE">GSE</SelectItem>
+                      <SelectItem value="GSPP">GSPP</SelectItem>
+                      <SelectItem value="SMG">SMG</SelectItem>
+                      <SelectItem value="SHSS">SHSS</SelectItem>
+                      <SelectItem value="CPS" className="hidden">
+                        CPS
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormDescription className="text-[14px] text-gray-500">
+                    Select School
+                  </FormDescription>
+                  <FormMessage className="mt-2 text-[12px] text-red-600" />
+                </FormItem>
+              )}
+            />
+          )}
+
+          {!isFoundation && (
+            <FormField
+              control={form.control}
+              name="year"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-sm font-medium text-gray-700">
+                    Course Year
+                  </FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Click to choose..." />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent className="bg-white">
+                      <SelectItem value={"0"} className="hidden">
+                        0
+                      </SelectItem>
+                      <SelectItem value={"1"}>1</SelectItem>
+                      <SelectItem value={"2"}>2</SelectItem>
+                      <SelectItem value={"3"}>3</SelectItem>
+                      <SelectItem value={"4"}>4</SelectItem>
+                      <SelectItem value={"5"}>5</SelectItem>
+                      <SelectItem value={"6"}>6</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormDescription className="text-[14px] text-gray-500">
+                    Select Course Year
+                  </FormDescription>
+                  <FormMessage className="mt-2 text-[12px] text-red-600" />
+                </FormItem>
+              )}
+            />
+          )}
+
+          <FormField
+            control={form.control}
             name="age"
-            type="number"
-            label="Player Age"
-            placeholder="Ex: 19"
-            description="Write down player age."
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Date of birth</FormLabel>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        variant={"outline"}
+                        className={cn(
+                          "w-full pl-3 text-left font-normal",
+                          !field.value && "text-muted-foreground",
+                        )}
+                      >
+                        {field.value ? (
+                          format(field.value, "PPP")
+                        ) : (
+                          <span>Pick a date</span>
+                        )}
+                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      className="z-20 bg-white"
+                      mode="single"
+                      fromDate={new Date(1950, 0o1, 0o1)}
+                      toDate={new Date()}
+                      selected={field.value}
+                      onSelect={field.onChange}
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
+                <FormDescription>
+                  Date of birth will be used to calculate your age.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
           />
 
           <div className="col-span-2">
