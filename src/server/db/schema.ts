@@ -16,7 +16,7 @@ export const teams = createTable(
   {
     id: serial("id").primaryKey(),
     user_id: varchar("user_id", { length: 256 }),
-    tournament_id: integer("tournament_id"),
+    tournament_id: integer("tournament_id").notNull(),
     name: varchar("name", { length: 256 }),
     image: varchar("image", { length: 1024 }),
     createdAt: timestamp("created_at", { withTimezone: true })
