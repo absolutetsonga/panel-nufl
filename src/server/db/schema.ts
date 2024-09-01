@@ -6,6 +6,7 @@ import {
   timestamp,
   varchar,
   integer,
+  boolean,
 } from "drizzle-orm/pg-core";
 
 export const createTable = pgTableCreator((name) => `panel-nufl_${name}`);
@@ -15,6 +16,7 @@ export const teams = createTable(
   {
     id: serial("id").primaryKey(),
     user_id: varchar("user_id", { length: 256 }),
+    tournament_id: integer("tournament_id"),
     name: varchar("name", { length: 256 }),
     image: varchar("image", { length: 1024 }),
     createdAt: timestamp("created_at", { withTimezone: true })
@@ -39,6 +41,7 @@ export const players = createTable("player", {
   position: varchar("position", { length: 256 }).notNull().default(""),
   major: varchar("major", { length: 256 }).notNull().default(""),
   age: integer("age").notNull().default(0),
+  course_year: integer("course_year").notNull().default(0),
   played_matches: integer("played_matches").notNull().default(0),
   goals: integer("goals").notNull().default(0),
   assists: integer("assists").notNull().default(0),
@@ -52,4 +55,50 @@ export const players = createTable("player", {
   updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
     () => new Date(),
   ),
+});
+
+export const tournaments = createTable("tournament", {
+  id: serial("id").primaryKey(),
+  user_id: varchar("user_id", { length: 256 }).notNull(),
+  name: varchar("name", { length: 256 }),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
+    () => new Date(),
+  ),
+});
+
+export const games = createTable("game", {
+  id: serial("id").primaryKey(),
+  home_team_id: integer("home_team_id").notNull(),
+  away_team_id: integer("away_team_id").notNull(),
+  goals: integer("goal_id").notNull(),
+});
+
+export const goals = createTable("goal", {
+  id: serial("id").primaryKey(),
+  game_id: integer("game_id").notNull(),
+  player_id: integer("player_id").notNull(),
+  is_own_goal: boolean("is_own_goal").default(false),
+});
+
+export const assists = createTable("assist", {
+  id: serial("id").primaryKey(),
+  game_id: integer("game_id").notNull(),
+  player_id: integer("player_id").notNull(),
+  goal_id: integer("goal_id").default(0),
+});
+
+export const clean_sheets = createTable("clean sheet", {
+  id: serial("id").primaryKey(),
+  game_id: integer("game_id").notNull(),
+  player_id: integer("player_id").notNull(),
+});
+
+export const cards = createTable("card", {
+  id: serial("id").primaryKey(),
+  game_id: integer("game_id").notNull(),
+  player_id: integer("player_id").notNull(),
+  is_yellow: boolean("is_yellow").default(false),
 });

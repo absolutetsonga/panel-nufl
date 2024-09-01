@@ -12,7 +12,7 @@ interface ICreatePlayer {
   team_id: number;
   fullname: string;
   image: string;
-  position: string;
+  position: string
   major: string;
   age: number;
 }

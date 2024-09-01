@@ -7,4 +7,8 @@ export const COMMANDS = [
     id: "games",
     name: "Games",
   },
+  {
+    id: "tournaments",
+    name: "Tournaments",
+  },
 ];
