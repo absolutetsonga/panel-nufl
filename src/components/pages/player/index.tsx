@@ -67,7 +67,7 @@ export const PlayerPage = ({ playerId }: { playerId: string }) => {
             title={`Delete Team`}
             description="Are you sure? This action cannot be undone. This will permanently delete this team and remove all games, scores, players, their goals, assists, clean sheets data with this team from our servers. In special cases we recommend to contact with developer to delete the team."
             onConfirm={() => onDelete(player.id)}
-            onCancel={() => setDeleteAlertToggle(false)}
+            onCancel={() => setDeleteToggle(false)}
           />
         )}
       </div>

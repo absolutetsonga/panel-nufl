@@ -55,13 +55,7 @@ type Props = {
     id: number;
     fullname: string;
     image: string | null;
-    position:
-      | "Goalkeeper"
-      | "Defender"
-      | "Left Winger"
-      | "Right Winger"
-      | "Striker"
-      | undefined;
+    position: string;
     major: string;
     age: number;
   };
