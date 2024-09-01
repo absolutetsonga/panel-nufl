@@ -46,7 +46,7 @@ const formSchema = z.object({
   major: z.string().min(2, {
     message: "Sorry, major is mandatory.",
   }),
-  age: z.number(),
+  age: z.string(),
 });
 
 type Props = {
@@ -79,7 +79,7 @@ export const PlayerUpdateForm = ({ player, toggle, setToggle }: Props) => {
       image: player.image ?? "",
       position: player.position ?? undefined,
       major: player.major,
-      age: player.age ?? 0,
+      age: String(player.age) ?? "0",
     },
   });
 

@@ -87,7 +87,7 @@ export const useUpdatePlayer = () => {
         if (data && !(data instanceof Error)) {
           toast(`Player updated successfully`);
           await queryClient.invalidateQueries({
-            queryKey: ["players", data.team_id],
+            queryKey: ["players", data.id],
           });
           await queryClient.invalidateQueries({
             queryKey: ["team", data.team_id],

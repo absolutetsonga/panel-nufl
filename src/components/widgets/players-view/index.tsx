@@ -26,7 +26,7 @@ export const PlayersView = ({ team }: PlayersViewProps) => {
         <div className="relative flex flex-col gap-4 p-4">
           <Heading3>Players</Heading3>
           <PopulatePlayers team_players={team_players} />
-          <div className="absolute right-2 top-2 flex flex-row items-center justify-center p-1 text-gray-500 hover:text-gray-700">
+          <div className="absolute -right-10 top-2 flex flex-row items-center justify-center p-1 text-gray-500 hover:text-gray-700">
             <CreateButton
               toggle={createPlayerToggle}
               setToggle={setCreatePlayerToggle}

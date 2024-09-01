@@ -71,11 +71,15 @@ export const updatePlayer = async (id: number, player: ICreatePlayer) => {
   });
 
   if (tema_player?.user_id !== user.userId) throw new Error("Unauthorized");
+  if (Number.isNaN(player.age)) throw new Error("Invalid age");
+
+  const age = Number(player.age);
 
   const [updatedPlayer] = await db
     .update(players)
     .set({
       ...player,
+      age,
       updatedAt: new Date(),
     })
     .where(eq(players.id, id))
