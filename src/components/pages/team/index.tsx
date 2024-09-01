@@ -11,8 +11,8 @@ const TeamPage = (props: { teamId: string }) => {
   if (Number.isNaN(team_id)) throw new Error("Invalid team id");
 
   const { data: team, isLoading, isError } = useGetTeam(team_id);
-  if (isLoading) return <div>Loading...</div>;
-  if (isError) return <div>Error loading team.</div>;
+  if (isLoading) return <PageContainer>Loading...</PageContainer>;
+  if (isError) return <PageContainer>Error loading team.</PageContainer>;
   if (!team) throw new Error("Team not found");
   const { id, name, image, createdAt, team_players } = team;
 

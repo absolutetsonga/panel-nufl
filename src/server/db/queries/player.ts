@@ -66,6 +66,12 @@ export const updatePlayer = async (id: number, player: ICreatePlayer) => {
   const user = auth();
   if (!user.userId) return Error("Unauthorized");
 
+  const tema_player = await db.query.players.findFirst({
+    where: (model, { eq }) => eq(model.id, id),
+  });
+
+  if (tema_player?.user_id !== user.userId) throw new Error("Unauthorized");
+
   const [updatedPlayer] = await db
     .update(players)
     .set({
@@ -82,7 +88,7 @@ export const updatePlayer = async (id: number, player: ICreatePlayer) => {
 export const deletePlayer = async (id: number) => {
   const user = auth();
   if (!user.userId) return Error("Unauthorized");
-  
+
   const player = await db.query.players.findFirst({
     where: (model, { eq }) => eq(model.id, id),
   });

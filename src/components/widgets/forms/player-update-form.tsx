@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { useUpdatePlayer } from "~/components/shared/lib/hooks/player";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -20,24 +21,20 @@ import {
 } from "~/components/shared/ui/select";
 import { CustomFormField } from "~/components/shared/ui/form-field";
 
-import { Button, Input } from "~/components/shared/ui";
+import { Button } from "~/components/shared/ui";
 import { UploadButton } from "~/components/shared/lib/utils/uploadthing";
 
-import Image from "next/image";
-import { XIcon } from "lucide-react";
-import { useCreatePlayer } from "~/components/shared/lib/hooks/player";
 import { toast } from "sonner";
+import { XIcon } from "lucide-react";
+import Image from "next/image";
 
 const formSchema = z.object({
   fullname: z.string().min(2, {
     message: "Player fullname must be at least 2 characters.",
   }),
-  image: z
-    .string()
-    .url({
-      message: "Please upload a valid player image URL.",
-    })
-    .default("https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png"),
+  image: z.string().url({
+    message: "Please upload a valid player image URL.",
+  }),
   position: z.enum(
     ["Goalkeeper", "Defender", "Left Winger", "Right Winger", "Striker"],
     {
@@ -49,20 +46,41 @@ const formSchema = z.object({
   major: z.string().min(2, {
     message: "Sorry, major is mandatory.",
   }),
-  age: z.string(),
+  age: z.number(),
 });
 
 type Props = {
-  team_id: number;
+  player: {
+    team_id: number;
+    id: number;
+    fullname: string;
+    image: string | null;
+    position:
+      | "Goalkeeper"
+      | "Defender"
+      | "Left Winger"
+      | "Right Winger"
+      | "Striker"
+      | undefined;
+    major: string;
+    age: number;
+  };
   toggle: boolean;
   setToggle: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export const PlayerCreateForm = ({ team_id, toggle, setToggle }: Props) => {
-  const { mutate: server_createTeam } = useCreatePlayer();
+export const PlayerUpdateForm = ({ player, toggle, setToggle }: Props) => {
+  const { mutate: server_updateTeam } = useUpdatePlayer();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      fullname: player.fullname,
+      image: player.image ?? "",
+      position: player.position ?? undefined,
+      major: player.major,
+      age: player.age ?? 0,
+    },
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
@@ -71,7 +89,11 @@ export const PlayerCreateForm = ({ team_id, toggle, setToggle }: Props) => {
       return null;
     }
     const age = Number(values.age);
-    server_createTeam({ ...values, age, team_id });
+
+    server_updateTeam({
+      player_id: player.id,
+      player: { ...values, age, team_id: player.team_id },
+    });
     setToggle(false);
   }
 

@@ -23,19 +23,15 @@ export const PlayersView = ({ team }: PlayersViewProps) => {
   return (
     <div className="flex flex-col">
       {!createPlayerToggle && (
-        <div className="absolute right-2 top-2 flex flex-row items-center justify-center p-1 text-gray-500 hover:text-gray-700">
-          <Paragraph>Add new player</Paragraph>
-          <CreateButton
-            toggle={createPlayerToggle}
-            setToggle={setCreatePlayerToggle}
-          />
-        </div>
-      )}
-
-      {!createPlayerToggle && (
-        <div className="flex flex-col gap-4 p-4">
+        <div className="relative flex flex-col gap-4 p-4">
           <Heading3>Players</Heading3>
           <PopulatePlayers team_players={team_players} />
+          <div className="absolute right-2 top-2 flex flex-row items-center justify-center p-1 text-gray-500 hover:text-gray-700">
+            <CreateButton
+              toggle={createPlayerToggle}
+              setToggle={setCreatePlayerToggle}
+            />
+          </div>
         </div>
       )}
 
@@ -54,7 +50,7 @@ const PopulatePlayers = ({ team_players }: { team_players: ITeamPlayer[] }) => {
       {team_players?.map((player) => (
         <div key={player.id}>
           <Link href={`/players/${player.id}`}>
-            <div className="flex flex-row items-center justify-center gap-4 rounded-xl border-2 border-gray-400 p-2">
+            <div className="flex flex-row items-center gap-4 rounded-xl border-2 border-gray-400 p-4">
               <Image
                 src={player.image ?? "/placeholder-image.png"}
                 alt={player.fullname ?? "Player Image"}
@@ -65,7 +61,7 @@ const PopulatePlayers = ({ team_players }: { team_players: ITeamPlayer[] }) => {
 
               <div className="flex flex-col justify-center gap-2">
                 <h3>{player.fullname}</h3>
-                <p>Pos: {player.position}</p>
+                <p>{player.position}</p>
               </div>
             </div>
           </Link>

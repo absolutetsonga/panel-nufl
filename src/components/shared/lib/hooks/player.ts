@@ -19,7 +19,7 @@ interface ICreatePlayer {
     | "Right Winger"
     | "Striker";
   major: string;
-  age: string;
+  age: number;
 }
 
 // read players
@@ -30,13 +30,21 @@ export const useGetOneClubPlayers = (team_id: number) => {
   });
 };
 
+// read player
+export const useGetPlayer = (player_id: number) => {
+  return useQuery({
+    queryFn: async () => await getPlayer(player_id),
+    queryKey: ["players", player_id],
+  });
+};
+
 // create player
 export const useCreatePlayer = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (data: ICreatePlayer) => {
-      return await createPlayer({ ...data, age: Number(data.age) });
+      return await createPlayer(data);
     },
     onSuccess: async (data) => {
       try {
@@ -62,6 +70,40 @@ export const useCreatePlayer = () => {
   });
 };
 
+// update
+export const useUpdatePlayer = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({
+      player_id,
+      player,
+    }: {
+      player_id: number;
+      player: ICreatePlayer;
+    }) => updatePlayer(player_id, player),
+    onSuccess: async (data) => {
+      try {
+        if (data && !(data instanceof Error)) {
+          toast(`Player updated successfully`);
+          await queryClient.invalidateQueries({
+            queryKey: ["players", data.team_id],
+          });
+          await queryClient.invalidateQueries({
+            queryKey: ["team", data.team_id],
+          });
+        } else {
+          toast("Player update failed");
+        }
+      } catch (error) {
+        console.error("Error invalidating queries:", error);
+      }
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+};
 // delete
 export const useDeletePlayer = () => {
   const queryClient = useQueryClient();

@@ -34,7 +34,7 @@ export const TeamView = ({ team }: TeamViewProps) => {
   };
 
   return (
-    <div className="flex max-w-[400px] flex-col items-center justify-center overflow-hidden rounded-2xl border-[1px] border-black">
+    <div className="flex w-full sm:max-w-[400px] flex-col items-center justify-center overflow-hidden rounded-2xl border-[1px] border-black">
       <div className="flex-shrink flex-grow">
         <Image
           src={image ?? "/placeholder-image.png"}
