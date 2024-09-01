@@ -2,17 +2,15 @@
 import { auth } from "@clerk/nextjs/server";
 import { db } from "..";
 import { tournaments } from "../schema";
-import { eq } from "drizzle-orm";
+import { ConsoleLogWriter, eq } from "drizzle-orm";
 
 interface ICreateTournament {
   name: string;
-  user_id: string;
 }
 
 interface IUpdateTournament {
   id: number;
   name: string;
-  user_id: string;
 }
 
 // get by user
@@ -20,20 +18,32 @@ export const getTournaments = async () => {
   const user = auth();
   if (!user.userId) throw new Error("Unauthorized");
 
-  return await db.query.tournaments.findMany({
+  const user_tournaments = await db.query.tournaments.findMany({
     where: eq(tournaments.user_id, user.userId),
   });
+  console.log(user_tournaments);
+  return user_tournaments;
 };
 
 // create
 export const createTournament = async (tournament: ICreateTournament) => {
   const user = auth();
-  if (!user.userId) return Error("Unauthorized");
+  if (!user.userId) throw new Error("Unauthorized");
+
+  const existingTournament = await db.query.tournaments.findFirst({
+    where: eq(tournaments.user_id, user.userId),
+  });
+
+  if (existingTournament) {
+    throw new Error(
+      "Sorry, you already have a tournament. If you want to create new, delete the oldest.",
+    );
+  }
 
   const [newTournament] = await db
     .insert(tournaments)
     .values({
-      ...tournament,
+      name: tournament.name,
       user_id: user.userId,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -46,7 +56,7 @@ export const createTournament = async (tournament: ICreateTournament) => {
 // update
 export const updateTournament = async (tournament: IUpdateTournament) => {
   const user = auth();
-  if (!user.userId) return Error("Unauthorized");
+  if (!user.userId) throw new Error("Unauthorized");
 
   const user_tournament = await db.query.tournaments.findFirst({
     where: (model, { eq }) => eq(model.id, tournament.id),
@@ -69,7 +79,7 @@ export const updateTournament = async (tournament: IUpdateTournament) => {
 // delete
 export const deleteTournament = async (id: number) => {
   const user = auth();
-  if (!user.userId) return Error("Unauthorized");
+  if (!user.userId) throw new Error("Unauthorized");
 
   const tournament = await db.query.tournaments.findFirst({
     where: (model, { eq }) => eq(model.id, id),

@@ -1,0 +1,96 @@
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import React from "react";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "~/components/entities/command/ui/form";
+
+import { Button, Input } from "~/components/shared/ui";
+
+import { XIcon } from "lucide-react";
+
+import { useCreateTournament } from "~/components/shared/lib/hooks/tournament";
+
+const formSchema = z.object({
+  name: z.string().min(2, {
+    message: "Tounament name must be at least 2 characters.",
+  }),
+});
+
+type Props = {
+  toggle: boolean;
+  setToggle: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export const TournamentCreateForm = ({ toggle, setToggle }: Props) => {
+  const { mutate: server_createTournament } = useCreateTournament();
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+    },
+  });
+
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    server_createTournament(values);
+    setToggle(false);
+  }
+
+  if (!toggle) return <></>;
+
+  return (
+    <div className="z-10 flex flex-col items-center justify-center gap-4 rounded-lg bg-white shadow-lg">
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="relative space-y-8 rounded-xl border-2 border-gray-200 bg-gray-50 p-6 md:p-8"
+        >
+          <Button
+            onClick={() => setToggle(false)}
+            className="absolute right-2 top-2 p-1 text-gray-500 hover:text-gray-700"
+          >
+            <XIcon />
+          </Button>
+
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-sm font-medium text-gray-700">
+                  Tournament Name
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Team Name"
+                    {...field}
+                    className="rounded-md focus:border-indigo-500 focus:ring-indigo-500"
+                  />
+                </FormControl>
+                <FormDescription className="text-[14px] text-gray-500">
+                  Write down tournament name.
+                </FormDescription>
+                <FormMessage className="mt-2 text-[12px] text-red-600" />
+              </FormItem>
+            )}
+          />
+          <Button
+            type="submit"
+            className="w-full rounded-md bg-indigo-600 px-4 py-2 text-white transition duration-150 ease-in-out hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+          >
+            Submit
+          </Button>
+        </form>
+      </Form>
+    </div>
+  );
+};

@@ -9,13 +9,11 @@ import {
 
 interface ICreateTournament {
   name: string;
-  user_id: string;
 }
 
 interface IUpdateTournament {
   id: number;
   name: string;
-  user_id: string;
 }
 
 // read
