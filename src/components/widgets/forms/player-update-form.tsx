@@ -35,14 +35,7 @@ const formSchema = z.object({
   image: z.string().url({
     message: "Please upload a valid player image URL.",
   }),
-  position: z.enum(
-    ["Goalkeeper", "Defender", "Left Winger", "Right Winger", "Striker"],
-    {
-      errorMap: () => {
-        return { message: "Please select a valid position" };
-      },
-    },
-  ),
+  position: z.string(),
   major: z.string().min(2, {
     message: "Sorry, major is mandatory.",
   }),
@@ -71,7 +64,7 @@ export const PlayerUpdateForm = ({ player, toggle, setToggle }: Props) => {
     defaultValues: {
       fullname: player.fullname,
       image: player.image ?? "",
-      position: player.position ?? undefined,
+      position: player.position,
       major: player.major,
       age: String(player.age) ?? "0",
     },

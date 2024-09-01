@@ -8,12 +8,7 @@ interface ICreatePlayer {
   team_id: number;
   fullname: string;
   image: string;
-  position:
-    | "Goalkeeper"
-    | "Defender"
-    | "Left Winger"
-    | "Right Winger"
-    | "Striker";
+  position: string;
   major: string;
   age: number;
 }
