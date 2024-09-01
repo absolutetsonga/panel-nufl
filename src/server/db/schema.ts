@@ -37,7 +37,7 @@ export const players = createTable("player", {
   user_id: varchar("user_id", { length: 256 }).notNull(),
 
   fullname: varchar("fullname", { length: 256 }).notNull(),
-  image: varchar("image", { length: 1024 }).default(sql`null`),
+  image: varchar("image", { length: 1024 }).notNull(),
   position: varchar("position", { length: 256 }).notNull().default(""),
   school: varchar("school", { length: 256 }).notNull().default(""),
   level_of_study: varchar("level_of_study", { length: 256 }).notNull().default(""),
