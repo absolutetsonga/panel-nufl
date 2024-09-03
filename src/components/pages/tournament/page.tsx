@@ -14,7 +14,7 @@ import { CreateButton } from "~/components/entities/create-button";
 import { DeleteAlert } from "~/components/entities/delete-alert/ui";
 import { TournamentUpdateForm } from "~/components/widgets/forms/tournament-update-form";
 
-export const TournamentsPage = () => {
+export const TournamentPage = () => {
   const [createTournamentToggle, setCreateTournamentToggle] = useState(false);
 
   return (

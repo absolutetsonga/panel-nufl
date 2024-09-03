@@ -92,7 +92,7 @@ export const assists = createTable("assist", {
   goal_id: integer("goal_id").default(0),
 });
 
-export const clean_sheets = createTable("clean sheet", {
+export const clean_sheets = createTable("clean_sheet", {
   id: serial("id").primaryKey(),
   game_id: integer("game_id").notNull(),
   player_id: integer("player_id").notNull(),
