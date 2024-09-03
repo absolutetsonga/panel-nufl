@@ -37,48 +37,48 @@ export const PlayerView = ({ player }: { player: ITeamPlayer }) => {
       <div className="mt-6 space-y-2">
         <h2 className="text-xl font-semibold text-indigo-600">Details</h2>
 
-        <p className="text-gray-700">
+        <p className="text-slate-50">
           <strong className="font-semibold text-gray-800">
             Level of Study:
           </strong>{" "}
           {level_of_study}
         </p>
-        <p className="text-gray-700">
+        <p className="text-slate-50">
           <strong className="font-semibold text-gray-800">Course Year:</strong>{" "}
           {year}
         </p>
-        <p className="text-gray-700">
+        <p className="text-slate-50">
           <strong className="font-semibold text-gray-800">School:</strong>{" "}
           {school}
         </p>
 
-        <p className="text-gray-700">
+        <p className="text-slate-50">
           <strong className="font-semibold text-gray-800">Age:</strong>{" "}
           {age.toLocaleString()}
         </p>
-        <p className="text-gray-700">
+        <p className="text-slate-50">
           <strong className="font-semibold text-gray-800">
             Played Matches:
           </strong>{" "}
           {played_matches}
         </p>
-        <p className="text-gray-700">
+        <p className="text-slate-50">
           <strong className="font-semibold text-gray-800">Goals:</strong>{" "}
           {goals}
         </p>
-        <p className="text-gray-700">
+        <p className="text-slate-50">
           <strong className="font-semibold text-gray-800">Assists:</strong>{" "}
           {assists}
         </p>
-        <p className="text-gray-700">
+        <p className="text-slate-50">
           <strong className="font-semibold text-gray-800">Clean Sheets:</strong>{" "}
           {clean_sheets}
         </p>
-        <p className="text-gray-700">
+        <p className="text-slate-50">
           <strong className="font-semibold text-gray-800">Yellow Cards:</strong>{" "}
           {yellow_cards}
         </p>
-        <p className="text-gray-700">
+        <p className="text-slate-50">
           <strong className="font-semibold text-gray-800">Red Cards:</strong>{" "}
           {red_cards}
         </p>

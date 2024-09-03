@@ -102,7 +102,7 @@ export const PlayerCreateForm = ({ team_id, toggle, setToggle }: Props) => {
         >
           <Button
             onClick={() => setToggle(false)}
-            className="absolute -right-2 -top-2 text-gray-500 hover:text-gray-700"
+            className="absolute -right-2 -top-2 text-slate-300 hover:text-slate-50"
           >
             <XIcon />
           </Button>
@@ -112,17 +112,17 @@ export const PlayerCreateForm = ({ team_id, toggle, setToggle }: Props) => {
             name="fullname"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-sm font-medium text-gray-700">
+                <FormLabel className="text-sm font-medium text-slate-50">
                   Player Name
                 </FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Ex: John Doe"
+                    placeholder="ex: John Doe"
                     {...field}
-                    className="rounded-md focus:border-indigo-500 focus:ring-indigo-500"
+                    className="bg-black rounded-md focus:border-indigo-500 focus:ring-indigo-500"
                   />
                 </FormControl>
-                <FormDescription className="text-[14px] text-gray-500">
+                <FormDescription className="text-[14px] text-slate-300">
                   Write down player full name.
                 </FormDescription>
                 <FormMessage className="mt-2 text-[12px] text-red-600" />
@@ -135,7 +135,7 @@ export const PlayerCreateForm = ({ team_id, toggle, setToggle }: Props) => {
             name="position"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-sm font-medium text-gray-700">
+                <FormLabel className="text-sm font-medium text-slate-50">
                   Player Position
                 </FormLabel>
                 <Select
@@ -147,7 +147,7 @@ export const PlayerCreateForm = ({ team_id, toggle, setToggle }: Props) => {
                       <SelectValue placeholder="Select player position" />
                     </SelectTrigger>
                   </FormControl>
-                  <SelectContent className="bg-white">
+                  <SelectContent className="bg-black">
                     <SelectItem value="Goalkeeper">Goalkeeper</SelectItem>
                     <SelectItem value="Defender">Defender</SelectItem>
                     <SelectItem value="Left Winger">Left Winger</SelectItem>
@@ -155,7 +155,7 @@ export const PlayerCreateForm = ({ team_id, toggle, setToggle }: Props) => {
                     <SelectItem value="Striker">Striker</SelectItem>
                   </SelectContent>
                 </Select>
-                <FormDescription className="text-[14px] text-gray-500">
+                <FormDescription className="text-[14px] text-slate-300">
                   Select player position.
                 </FormDescription>
                 <FormMessage className="mt-2 text-[12px] text-red-600" />
@@ -168,7 +168,7 @@ export const PlayerCreateForm = ({ team_id, toggle, setToggle }: Props) => {
             name="level_of_study"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-sm font-medium text-gray-700">
+                <FormLabel className="text-sm font-medium text-slate-50">
                   Level of Study
                 </FormLabel>
                 <Select
@@ -192,13 +192,13 @@ export const PlayerCreateForm = ({ team_id, toggle, setToggle }: Props) => {
                       <SelectValue placeholder="Click to choose..." />
                     </SelectTrigger>
                   </FormControl>
-                  <SelectContent className="bg-white">
+                  <SelectContent className="bg-black">
                     <SelectItem value="FOUND">Foundation</SelectItem>
                     <SelectItem value="UG">Undergraduate</SelectItem>
                     <SelectItem value="GR">Graduate</SelectItem>
                   </SelectContent>
                 </Select>
-                <FormDescription className="text-[14px] text-gray-500">
+                <FormDescription className="text-[14px] text-slate-300">
                   Select Level of Study
                 </FormDescription>
                 <FormMessage className="mt-2 text-[12px] text-red-600" />
@@ -212,7 +212,7 @@ export const PlayerCreateForm = ({ team_id, toggle, setToggle }: Props) => {
               name="school"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-sm font-medium text-gray-700">
+                  <FormLabel className="text-sm font-medium text-slate-50">
                     School Name
                   </FormLabel>
                   <Select
@@ -225,7 +225,7 @@ export const PlayerCreateForm = ({ team_id, toggle, setToggle }: Props) => {
                         <SelectValue placeholder="Click to choose..." />
                       </SelectTrigger>
                     </FormControl>
-                    <SelectContent className="bg-white">
+                    <SelectContent className="bg-black">
                       <SelectItem value="SEDS">SEDS</SelectItem>
                       <SelectItem value="SSH">SSH</SelectItem>
                       <SelectItem value="NUSOM">NUSOM</SelectItem>
@@ -239,7 +239,7 @@ export const PlayerCreateForm = ({ team_id, toggle, setToggle }: Props) => {
                       </SelectItem>
                     </SelectContent>
                   </Select>
-                  <FormDescription className="text-[14px] text-gray-500">
+                  <FormDescription className="text-[14px] text-slate-300">
                     Select School
                   </FormDescription>
                   <FormMessage className="mt-2 text-[12px] text-red-600" />
@@ -254,7 +254,7 @@ export const PlayerCreateForm = ({ team_id, toggle, setToggle }: Props) => {
               name="year"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-sm font-medium text-gray-700">
+                  <FormLabel className="text-sm font-medium text-slate-50">
                     Course Year
                   </FormLabel>
                   <Select
@@ -266,7 +266,7 @@ export const PlayerCreateForm = ({ team_id, toggle, setToggle }: Props) => {
                         <SelectValue placeholder="Click to choose..." />
                       </SelectTrigger>
                     </FormControl>
-                    <SelectContent className="bg-white">
+                    <SelectContent className="bg-black">
                       <SelectItem value={"0"} className="hidden">
                         0
                       </SelectItem>
@@ -278,7 +278,7 @@ export const PlayerCreateForm = ({ team_id, toggle, setToggle }: Props) => {
                       <SelectItem value={"6"}>6</SelectItem>
                     </SelectContent>
                   </Select>
-                  <FormDescription className="text-[14px] text-gray-500">
+                  <FormDescription className="text-[14px] text-slate-300">
                     Select Course Year
                   </FormDescription>
                   <FormMessage className="mt-2 text-[12px] text-red-600" />
@@ -314,7 +314,7 @@ export const PlayerCreateForm = ({ team_id, toggle, setToggle }: Props) => {
                   </PopoverTrigger>
                   <PopoverContent className="w-auto p-0" align="start">
                     <Calendar
-                      className="z-20 bg-white"
+                      className="z-20 bg-black"
                       mode="single"
                       fromDate={new Date(1950, 0o1, 0o1)}
                       toDate={new Date()}
@@ -338,7 +338,7 @@ export const PlayerCreateForm = ({ team_id, toggle, setToggle }: Props) => {
               name="image"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-sm font-medium text-gray-700">
+                  <FormLabel className="text-sm font-medium text-slate-50">
                     Player Image
                   </FormLabel>
                   <FormControl>
@@ -363,7 +363,7 @@ export const PlayerCreateForm = ({ team_id, toggle, setToggle }: Props) => {
                       />
                     </div>
                   )}
-                  <FormDescription className="text-[14px] text-gray-500">
+                  <FormDescription className="text-[14px] text-slate-300">
                     Upload here player image.
                   </FormDescription>
                   <FormMessage className="mt-2 text-[12px] text-red-600" />

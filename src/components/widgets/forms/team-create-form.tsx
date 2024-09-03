@@ -54,7 +54,7 @@ export const TeamCreateForm = ({ toggle, setToggle }: Props) => {
   if (!toggle) return <></>;
 
   return (
-    <div className="absolute bottom-0 left-0 right-0 top-0 z-10 flex flex-col items-center justify-center gap-4 rounded-lg bg-white p-8 shadow-lg md:p-12">
+    <div className="absolute bottom-0 left-0 right-0 top-0 z-10 flex flex-col items-center justify-center gap-4 rounded-lg bg-black p-8 shadow-lg md:p-12">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -62,7 +62,7 @@ export const TeamCreateForm = ({ toggle, setToggle }: Props) => {
         >
           <Button
             onClick={() => setToggle(false)}
-            className="absolute right-2 top-2 p-1 text-gray-500 hover:text-gray-700"
+            className="absolute right-2 top-2 p-1 text-slate-300 hover:text-slate-50"
           >
             <XIcon />
           </Button>
@@ -72,7 +72,7 @@ export const TeamCreateForm = ({ toggle, setToggle }: Props) => {
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-sm font-medium text-gray-700">
+                <FormLabel className="text-sm font-medium text-slate-50">
                   Team Name
                 </FormLabel>
                 <FormControl>
@@ -82,7 +82,7 @@ export const TeamCreateForm = ({ toggle, setToggle }: Props) => {
                     className="rounded-md focus:border-indigo-500 focus:ring-indigo-500"
                   />
                 </FormControl>
-                <FormDescription className="text-[14px] text-gray-500">
+                <FormDescription className="text-[14px] text-slate-300">
                   Write down team name.
                 </FormDescription>
                 <FormMessage className="mt-2 text-[12px] text-red-600" />
@@ -94,7 +94,7 @@ export const TeamCreateForm = ({ toggle, setToggle }: Props) => {
             name="image"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-sm font-medium text-gray-700">
+                <FormLabel className="text-sm font-medium text-slate-50">
                   Team Image
                 </FormLabel>
                 <FormControl>
@@ -121,7 +121,7 @@ export const TeamCreateForm = ({ toggle, setToggle }: Props) => {
                     />
                   </div>
                 )}
-                <FormDescription className="text-[14px] text-gray-500">
+                <FormDescription className="text-[14px] text-slate-300">
                   Upload here team logo.
                 </FormDescription>
                 <FormMessage className="mt-2 text-[12px] text-red-600" />

@@ -112,7 +112,7 @@ export const PlayerUpdateForm = ({ player, toggle, setToggle }: Props) => {
         >
           <Button
             onClick={() => setToggle(false)}
-            className="absolute -right-2 -top-2 text-gray-500 hover:text-gray-700"
+            className="absolute -right-2 -top-2 text-slate-300 hover:text-slate-50"
           >
             <XIcon />
           </Button>
@@ -122,7 +122,7 @@ export const PlayerUpdateForm = ({ player, toggle, setToggle }: Props) => {
             name="position"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-sm font-medium text-gray-700">
+                <FormLabel className="text-sm font-medium text-slate-50">
                   Player Position
                 </FormLabel>
                 <Select
@@ -134,7 +134,7 @@ export const PlayerUpdateForm = ({ player, toggle, setToggle }: Props) => {
                       <SelectValue placeholder="Select player position" />
                     </SelectTrigger>
                   </FormControl>
-                  <SelectContent className="bg-white">
+                  <SelectContent className="bg-black">
                     <SelectItem value="Goalkeeper">Goalkeeper</SelectItem>
                     <SelectItem value="Defender">Defender</SelectItem>
                     <SelectItem value="Left Winger">Left Winger</SelectItem>
@@ -142,7 +142,7 @@ export const PlayerUpdateForm = ({ player, toggle, setToggle }: Props) => {
                     <SelectItem value="Striker">Striker</SelectItem>
                   </SelectContent>
                 </Select>
-                <FormDescription className="text-[14px] text-gray-500">
+                <FormDescription className="text-[14px] text-slate-300">
                   Select player position.
                 </FormDescription>
                 <FormMessage className="mt-2 text-[12px] text-red-600" />
@@ -201,7 +201,7 @@ export const PlayerUpdateForm = ({ player, toggle, setToggle }: Props) => {
               name="image"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-sm font-medium text-gray-700">
+                  <FormLabel className="text-sm font-medium text-slate-50">
                     Player Image
                   </FormLabel>
                   <FormControl>
@@ -226,7 +226,7 @@ export const PlayerUpdateForm = ({ player, toggle, setToggle }: Props) => {
                       />
                     </div>
                   )}
-                  <FormDescription className="text-[14px] text-gray-500">
+                  <FormDescription className="text-[14px] text-slate-300">
                     Upload here player image.
                   </FormDescription>
                   <FormMessage className="mt-2 text-[12px] text-red-600" />

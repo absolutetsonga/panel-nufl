@@ -30,7 +30,7 @@ export const CustomFormField = <TFieldValues extends FieldValues>({
 }: FormFieldProps<TFieldValues>) => {
   return (
     <FormItem>
-      <FormLabel className="text-sm font-medium text-gray-700">
+      <FormLabel className="text-sm font-medium text-slate-50">
         {label}
       </FormLabel>
       <FormControl>
@@ -46,7 +46,7 @@ export const CustomFormField = <TFieldValues extends FieldValues>({
         )}
       </FormControl>
       {description && (
-        <FormDescription className="text-[14px] text-gray-500">
+        <FormDescription className="text-[14px] text-slate-300">
           {description}
         </FormDescription>
       )}
