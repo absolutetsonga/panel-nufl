@@ -314,7 +314,7 @@ export const PlayerCreateForm = ({ team_id, toggle, setToggle }: Props) => {
                   </PopoverTrigger>
                   <PopoverContent className="w-auto p-0" align="start">
                     <Calendar
-                      className="z-20 bg-black"
+                      className="z-20 bg-white text-black"
                       mode="single"
                       fromDate={new Date(1950, 0o1, 0o1)}
                       toDate={new Date()}
