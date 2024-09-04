@@ -18,7 +18,7 @@ const TeamPage = (props: { teamId: string }) => {
   const { id, name, image, createdAt, team_players } = team;
 
   return (
-    <PageContainer>
+    <PageContainer justify={"normal"}>
       <div className="flex w-full flex-col justify-center gap-10">
         <TeamView team={{ id, name, image, createdAt }} />
         <PlayersView team={{ team_players, team_id: id }} />

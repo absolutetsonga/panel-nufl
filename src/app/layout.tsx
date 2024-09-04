@@ -17,7 +17,12 @@ export const metadata: Metadata = {
   title: "Panel NUFL",
   description:
     "The NUFL Admin Panel is a interface designed for managing operations of the Nazarbayev University Football League (NUFL). Admin panel is a platform for administrators to handle various aspects of the league, including team and player management, game scheduling, scoring, and other statistical tracking.",
-  icons: [{ rel: "icon", url: "/favicon.ico" }],
+  icons: [
+    {
+      rel: "icon",
+      url: "https://utfs.io/f/10eeb70a-84b1-4991-9621-0d2fdacd5ef4-hru0oc.png",
+    },
+  ],
 };
 
 type RootLayoutProps = { children: React.ReactNode };
