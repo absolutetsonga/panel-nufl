@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+import type { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import React from "react";
@@ -19,12 +19,6 @@ import { XIcon } from "lucide-react";
 
 import { useCreateTournament } from "~/components/shared/lib/hooks/tournament";
 import { tournamentSchema } from "./schemas";
-
-const formSchema = z.object({
-  name: z.string().min(2, {
-    message: "Tounament name must be at least 2 characters.",
-  }),
-});
 
 type Props = {
   toggle: boolean;

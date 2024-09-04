@@ -18,7 +18,6 @@ export const getPlayer = async (id: number) => {
   if (!player) throw new Error("Player not found");
   if (player.user_id !== user.userId) throw new Error("Unauthorized");
 
-  console.log(player);
   return player;
 };
 
@@ -37,14 +36,13 @@ export const createPlayer = async (player: ICreateAndUpdatePlayer) => {
   const user = auth();
   if (!user.userId) throw new Error("Unauthorized");
 
-  let age;
-  player.age ? (age = player.age) : (age = new Date());
+  const player_age = player.age ? player.age : new Date();
 
   const [newPlayer] = await db
     .insert(players)
     .values({
       ...player,
-      age,
+      age: player_age,
       user_id: user.userId,
       createdAt: new Date(),
       updatedAt: new Date(),

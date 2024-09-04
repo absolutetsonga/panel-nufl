@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { ITeamPlayer } from "~/components/shared/lib/models/team";
+import type { ITeamPlayer } from "~/components/shared/lib/models/team";
 
 function getAge(birthday: Date) {
   const today = new Date();

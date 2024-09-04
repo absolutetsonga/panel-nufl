@@ -17,7 +17,7 @@ export const playerSchema = z.object({
   school: z.string().min(2, {
     message: "Sorry, school is mandatory.",
   }),
-  year: z.string().min(1, {
+  year: z.number().min(0, {
     message: "Please, provide course year.",
   }),
   age: z.date().optional(),

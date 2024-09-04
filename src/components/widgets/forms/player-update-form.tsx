@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { useUpdatePlayer } from "~/components/shared/lib/hooks/player";
-import { z } from "zod";
+import type { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 
@@ -45,7 +45,7 @@ type Props = {
     level_of_study: string;
     school: string;
     age: Date;
-    year: string;
+    year: number;
   };
   toggle: boolean;
   setToggle: React.Dispatch<React.SetStateAction<boolean>>;
@@ -237,7 +237,7 @@ export const PlayerUpdateForm = ({ player, toggle, setToggle }: Props) => {
                 </FormLabel>
                 <Select
                   onValueChange={field.onChange}
-                  defaultValue={field.value}
+                  defaultValue={String(field.value)}
                 >
                   <FormControl>
                     <SelectTrigger>

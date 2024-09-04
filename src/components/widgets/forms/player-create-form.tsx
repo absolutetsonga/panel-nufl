@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import type { z } from "zod";
 
 import {
   Form,
@@ -37,6 +37,7 @@ import { cn } from "~/components/shared/lib/utils/clsx";
 import { useState } from "react";
 import { toast } from "sonner";
 import { playerSchema } from "./schemas";
+import { SelectForm } from "~/components/entities/select-form/intex";
 
 type Props = {
   team_id: number;
@@ -68,6 +69,23 @@ export const PlayerCreateForm = ({ team_id, toggle, setToggle }: Props) => {
   }
 
   if (!toggle) return <></>;
+
+  type ItemValue = {
+    value: string;
+    name: string;
+    isHidden: boolean;
+  };
+
+  const itemValues: ItemValue[] = [
+    { value: "SEDS", name: "SEDS", isHidden: false },
+    { value: "SSH", name: "SSH", isHidden: false },
+    { value: "NUSOM", name: "NUSOM", isHidden: false },
+    { value: "GSB", name: "GSB", isHidden: false },
+    { value: "GSE", name: "GSE", isHidden: false },
+    { value: "GSPP", name: "GSPP", isHidden: false },
+    { value: "SMG", name: "SMG", isHidden: false },
+    { value: "CPS", name: "CPS", isHidden: true },
+  ];
 
   return (
     <div className="flex flex-col items-center justify-center gap-4 rounded-lg p-6 shadow-lg">
@@ -154,11 +172,11 @@ export const PlayerCreateForm = ({ team_id, toggle, setToggle }: Props) => {
                     if (value === "FOUND") {
                       setIsFoundation(true);
                       form.setValue("school", "CPS");
-                      form.setValue("year", "0");
+                      form.setValue("year", 0);
                     } else {
                       setIsFoundation(false);
                       form.setValue("school", "");
-                      form.setValue("year", "");
+                      form.setValue("year", 1);
                     }
                   }}
                   defaultValue={field.value}
@@ -191,30 +209,12 @@ export const PlayerCreateForm = ({ team_id, toggle, setToggle }: Props) => {
                   <FormLabel className="text-sm font-medium text-slate-50">
                     School Name
                   </FormLabel>
-                  <Select
-                    disabled={isFoundation}
+                  <SelectForm
+                    itemValues={itemValues}
                     onValueChange={field.onChange}
                     defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Click to choose..." />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent className="bg-black">
-                      <SelectItem value="SEDS">SEDS</SelectItem>
-                      <SelectItem value="SSH">SSH</SelectItem>
-                      <SelectItem value="NUSOM">NUSOM</SelectItem>
-                      <SelectItem value="GSB">GSB</SelectItem>
-                      <SelectItem value="GSE">GSE</SelectItem>
-                      <SelectItem value="GSPP">GSPP</SelectItem>
-                      <SelectItem value="SMG">SMG</SelectItem>
-                      <SelectItem value="SHSS">SHSS</SelectItem>
-                      <SelectItem value="CPS" className="hidden">
-                        CPS
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
+                    disabled={isFoundation}
+                  />
                   <FormDescription className="text-[14px] text-slate-300">
                     Select School
                   </FormDescription>
@@ -235,7 +235,7 @@ export const PlayerCreateForm = ({ team_id, toggle, setToggle }: Props) => {
                   </FormLabel>
                   <Select
                     onValueChange={field.onChange}
-                    defaultValue={field.value}
+                    defaultValue={String(field.value)}
                   >
                     <FormControl>
                       <SelectTrigger>
@@ -326,7 +326,7 @@ export const PlayerCreateForm = ({ team_id, toggle, setToggle }: Props) => {
                       }}
                       onUploadError={(error: Error) => {
                         console.error(error);
-                        toast(`Something went wrong: ${error}`);
+                        toast(`Something went wrong.`);
                       }}
                     />
                   </FormControl>

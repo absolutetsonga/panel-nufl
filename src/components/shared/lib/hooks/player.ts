@@ -7,7 +7,7 @@ import {
   getOneClubPlayers,
   updatePlayer,
 } from "~/server/db/queries/player";
-import { ICreateAndUpdatePlayer } from "../models/team";
+import type { ICreateAndUpdatePlayer } from "../models/team";
 
 // read players
 export const useGetOneClubPlayers = (team_id: number) => {

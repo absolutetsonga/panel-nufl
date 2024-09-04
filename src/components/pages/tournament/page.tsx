@@ -1,6 +1,6 @@
 "use client";
 
-import { PencilIcon, Trash2Icon, XIcon } from "lucide-react";
+import { PencilIcon, Trash2Icon } from "lucide-react";
 import {
   useDeleteTournament,
   useGetTournaments,

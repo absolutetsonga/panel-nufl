@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import { PlayerCreateForm } from "../forms/player-create-form";
 import { CreateButton } from "~/components/entities/create-button";
-import { Heading3, Paragraph } from "~/components/shared/ui/typography";
+import { Heading3 } from "~/components/shared/ui/typography";
 import Image from "next/image";
 import Link from "next/link";
 import type { ITeamPlayer } from "~/components/shared/lib/models/team";

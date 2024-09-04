@@ -2,7 +2,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { db } from "..";
 import { tournaments } from "../schema";
-import { ConsoleLogWriter, eq } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 
 interface ICreateTournament {
   name: string;

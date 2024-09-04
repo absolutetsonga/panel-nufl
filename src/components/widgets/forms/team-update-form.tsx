@@ -1,5 +1,4 @@
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import React from "react";
@@ -17,6 +16,8 @@ import { UploadButton } from "~/components/shared/lib/utils/uploadthing";
 
 import { useUpdateTeam } from "~/components/shared/lib/hooks/team";
 import { teamSchema } from "./schemas";
+
+import type { z } from "zod";
 
 type Props = {
   toggle: boolean;
@@ -65,7 +66,7 @@ export const TeamUpdateForm = ({ toggle, setToggle, team }: Props) => {
           <FormField
             control={form.control}
             name="image"
-            render={({ field }) => (
+            render={() => (
               <FormItem className="flex items-center justify-center">
                 <FormLabel className="w-1/3">Team Image</FormLabel>
                 <FormControl className="w-2/3">
