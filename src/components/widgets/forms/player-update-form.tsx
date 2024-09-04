@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { useUpdatePlayer } from "~/components/shared/lib/hooks/player";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
 
 import {
   Form,
@@ -25,38 +26,14 @@ import {
   PopoverTrigger,
 } from "~/components/shared/ui/popover";
 import { Calendar } from "~/components/shared/ui/calendar";
-import { Button } from "~/components/shared/ui";
+import { Button, Input } from "~/components/shared/ui";
 import { UploadButton } from "~/components/shared/lib/utils/uploadthing";
 
 import { format } from "date-fns";
 import { CalendarIcon, XIcon } from "lucide-react";
 import Image from "next/image";
 import { cn } from "~/components/shared/lib/utils/clsx";
-
-const formSchema = z.object({
-  fullname: z.string().min(2, {
-    message: "Player fullname must be at least 2 characters.",
-  }),
-  image: z
-    .string()
-    .url()
-    .default(
-      "https://utfs.io/f/aeb9ab9b-7970-4eed-8fc1-92ac644c1165-clf4u5.jpg",
-    ),
-  position: z.string(),
-  level_of_study: z.string().min(2, {
-    message: "Sorry, major is mandatory.",
-  }),
-  school: z.string().min(2, {
-    message: "Sorry, school is mandatory.",
-  }),
-  year: z.number().min(0, {
-    message: "Please, provide player's course year.",
-  }),
-  age: z.date({
-    required_error: "A date of birth is required.",
-  }),
-});
+import { playerSchema } from "./schemas";
 
 type Props = {
   player: {
@@ -68,7 +45,7 @@ type Props = {
     level_of_study: string;
     school: string;
     age: Date;
-    year: number;
+    year: string;
   };
   toggle: boolean;
   setToggle: React.Dispatch<React.SetStateAction<boolean>>;
@@ -77,8 +54,8 @@ type Props = {
 export const PlayerUpdateForm = ({ player, toggle, setToggle }: Props) => {
   const { mutate: server_updateTeam } = useUpdatePlayer();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof playerSchema>>({
+    resolver: zodResolver(playerSchema),
     defaultValues: {
       fullname: player.fullname,
       image: player.image,
@@ -89,10 +66,17 @@ export const PlayerUpdateForm = ({ player, toggle, setToggle }: Props) => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(values: z.infer<typeof playerSchema>) {
+    const number_year = Number(values.year);
+
+    if (Number.isNaN(number_year)) {
+      toast("Course year must be integer");
+      return null;
+    }
+
     server_updateTeam({
       player_id: player.id,
-      player: { ...values, team_id: player.team_id },
+      player: { ...values, team_id: player.team_id, year: number_year },
     });
     setToggle(false);
   }
@@ -116,6 +100,29 @@ export const PlayerUpdateForm = ({ player, toggle, setToggle }: Props) => {
           >
             <XIcon />
           </Button>
+
+          <FormField
+            control={form.control}
+            name="fullname"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-sm font-medium text-slate-50">
+                  Player Name
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="ex: John Doe"
+                    {...field}
+                    className="rounded-md bg-black focus:border-indigo-500 focus:ring-indigo-500"
+                  />
+                </FormControl>
+                <FormDescription className="text-[14px] text-slate-300">
+                  Write down player full name.
+                </FormDescription>
+                <FormMessage className="mt-2 text-[12px] text-red-600" />
+              </FormItem>
+            )}
+          />
 
           <FormField
             control={form.control}
@@ -152,9 +159,116 @@ export const PlayerUpdateForm = ({ player, toggle, setToggle }: Props) => {
 
           <FormField
             control={form.control}
+            name="level_of_study"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-sm font-medium text-slate-50">
+                  Level of Study
+                </FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Click to choose..." />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent className="bg-black">
+                    <SelectItem value="FOUND">Foundation</SelectItem>
+                    <SelectItem value="UG">Undergraduate</SelectItem>
+                    <SelectItem value="GR">Graduate</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormDescription className="text-[14px] text-slate-300">
+                  Select Level of Study
+                </FormDescription>
+                <FormMessage className="mt-2 text-[12px] text-red-600" />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="school"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-sm font-medium text-slate-50">
+                  School Name
+                </FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Click to choose..." />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent className="bg-black">
+                    <SelectItem value="SEDS">SEDS</SelectItem>
+                    <SelectItem value="SSH">SSH</SelectItem>
+                    <SelectItem value="NUSOM">NUSOM</SelectItem>
+                    <SelectItem value="GSB">GSB</SelectItem>
+                    <SelectItem value="GSE">GSE</SelectItem>
+                    <SelectItem value="GSPP">GSPP</SelectItem>
+                    <SelectItem value="SMG">SMG</SelectItem>
+                    <SelectItem value="SHSS">SHSS</SelectItem>
+                    <SelectItem value="CPS" className="hidden">
+                      CPS
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormDescription className="text-[14px] text-slate-300">
+                  Select School
+                </FormDescription>
+                <FormMessage className="mt-2 text-[12px] text-red-600" />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="year"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-sm font-medium text-slate-50">
+                  Course Year
+                </FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Click to choose..." />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent className="bg-black">
+                    <SelectItem value={"0"} className="hidden">
+                      0
+                    </SelectItem>
+                    <SelectItem value={"1"}>1</SelectItem>
+                    <SelectItem value={"2"}>2</SelectItem>
+                    <SelectItem value={"3"}>3</SelectItem>
+                    <SelectItem value={"4"}>4</SelectItem>
+                    <SelectItem value={"5"}>5</SelectItem>
+                    <SelectItem value={"6"}>6</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormDescription className="text-[14px] text-slate-300">
+                  Select Course Year
+                </FormDescription>
+                <FormMessage className="mt-2 text-[12px] text-red-600" />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
             name="age"
             render={({ field }) => (
-              <FormItem className="flex flex-col">
+              <FormItem>
                 <FormLabel>Date of birth</FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
@@ -162,7 +276,7 @@ export const PlayerUpdateForm = ({ player, toggle, setToggle }: Props) => {
                       <Button
                         variant={"outline"}
                         className={cn(
-                          "w-[240px] pl-3 text-left font-normal",
+                          "w-full pl-3 text-left font-normal",
                           !field.value && "text-muted-foreground",
                         )}
                       >
@@ -177,18 +291,18 @@ export const PlayerUpdateForm = ({ player, toggle, setToggle }: Props) => {
                   </PopoverTrigger>
                   <PopoverContent className="w-auto p-0" align="start">
                     <Calendar
+                      className="z-20 bg-white text-black"
                       mode="single"
+                      fromDate={new Date(1950, 0o1, 0o1)}
+                      toDate={new Date()}
                       selected={field.value}
                       onSelect={field.onChange}
-                      disabled={(date) =>
-                        date > new Date() || date < new Date("1900-01-01")
-                      }
                       initialFocus
                     />
                   </PopoverContent>
                 </Popover>
                 <FormDescription>
-                  Your date of birth is used to calculate your age.
+                  Date of birth will be used to calculate your age.
                 </FormDescription>
                 <FormMessage />
               </FormItem>

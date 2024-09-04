@@ -36,29 +36,7 @@ import { useCreatePlayer } from "~/components/shared/lib/hooks/player";
 import { cn } from "~/components/shared/lib/utils/clsx";
 import { useState } from "react";
 import { toast } from "sonner";
-
-const formSchema = z.object({
-  fullname: z.string().min(2, {
-    message: "Player fullname must be at least 2 characters.",
-  }),
-  image: z
-    .string()
-    .url()
-    .default(
-      "https://utfs.io/f/aeb9ab9b-7970-4eed-8fc1-92ac644c1165-clf4u5.jpg",
-    ),
-  position: z.string(),
-  level_of_study: z.string().min(2, {
-    message: "Sorry, major is mandatory.",
-  }),
-  school: z.string().min(2, {
-    message: "Sorry, school is mandatory.",
-  }),
-  year: z.string().min(1, {
-    message: "Please, provide player's course year.",
-  }),
-  age: z.date().optional(),
-});
+import { playerSchema } from "./schemas";
 
 type Props = {
   team_id: number;
@@ -70,11 +48,11 @@ export const PlayerCreateForm = ({ team_id, toggle, setToggle }: Props) => {
   const { mutate: server_createTeam } = useCreatePlayer();
   const [isFoundation, setIsFoundation] = useState(true);
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof playerSchema>>({
+    resolver: zodResolver(playerSchema),
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(values: z.infer<typeof playerSchema>) {
     const number_year = Number(values.year);
     if (Number.isNaN(number_year)) {
       toast("Course year must be integer");
@@ -323,7 +301,7 @@ export const PlayerCreateForm = ({ team_id, toggle, setToggle }: Props) => {
                   </PopoverContent>
                 </Popover>
                 <FormDescription>
-                  Date of birth will be used to calculate your age.
+                  Date of birth will be used to calculate age of player.
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -344,9 +322,11 @@ export const PlayerCreateForm = ({ team_id, toggle, setToggle }: Props) => {
                       endpoint="playerImage"
                       onClientUploadComplete={(res) => {
                         form.setValue("image", res[0]?.url ?? "");
+                        toast("You successfully uploaded image");
                       }}
                       onUploadError={(error: Error) => {
                         console.error(error);
+                        toast(`Something went wrong: ${error}`);
                       }}
                     />
                   </FormControl>
