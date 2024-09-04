@@ -16,15 +16,7 @@ import { Button, Input } from "~/components/shared/ui";
 import { UploadButton } from "~/components/shared/lib/utils/uploadthing";
 
 import { useUpdateTeam } from "~/components/shared/lib/hooks/team";
-
-const formSchema = z.object({
-  name: z.string().min(2, {
-    message: "Team name must be at least 2 characters.",
-  }),
-  image: z.string().url({
-    message: "Please upload a valid team image URL.",
-  }),
-});
+import { teamSchema } from "./schemas";
 
 type Props = {
   toggle: boolean;
@@ -35,15 +27,15 @@ type Props = {
 export const TeamUpdateForm = ({ toggle, setToggle, team }: Props) => {
   const { mutate: server_updateTeam } = useUpdateTeam();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof teamSchema>>({
+    resolver: zodResolver(teamSchema),
     defaultValues: {
       name: team.name ?? "",
       image: team.image ?? "",
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(values: z.infer<typeof teamSchema>) {
     server_updateTeam({ id: team.id, name: values.name, image: values.image });
     setToggle(false);
   }

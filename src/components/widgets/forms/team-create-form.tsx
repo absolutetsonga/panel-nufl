@@ -20,15 +20,7 @@ import Image from "next/image";
 import { XIcon } from "lucide-react";
 
 import { useCreateTeam } from "~/components/shared/lib/hooks/team";
-
-const formSchema = z.object({
-  name: z.string().min(2, {
-    message: "Team name must be at least 2 characters.",
-  }),
-  image: z.string().url({
-    message: "Please upload a valid team image URL.",
-  }),
-});
+import { teamSchema } from "./schemas";
 
 type Props = {
   toggle: boolean;
@@ -38,15 +30,15 @@ type Props = {
 export const TeamCreateForm = ({ toggle, setToggle }: Props) => {
   const { mutate: server_createTeam } = useCreateTeam();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof teamSchema>>({
+    resolver: zodResolver(teamSchema),
     defaultValues: {
       name: "",
       image: "",
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(values: z.infer<typeof teamSchema>) {
     server_createTeam(values);
     setToggle(false);
   }

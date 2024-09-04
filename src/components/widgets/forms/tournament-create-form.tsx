@@ -18,6 +18,7 @@ import { Button, Input } from "~/components/shared/ui";
 import { XIcon } from "lucide-react";
 
 import { useCreateTournament } from "~/components/shared/lib/hooks/tournament";
+import { tournamentSchema } from "./schemas";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -33,14 +34,14 @@ type Props = {
 export const TournamentCreateForm = ({ toggle, setToggle }: Props) => {
   const { mutate: server_createTournament } = useCreateTournament();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof tournamentSchema>>({
+    resolver: zodResolver(tournamentSchema),
     defaultValues: {
       name: "",
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(values: z.infer<typeof tournamentSchema>) {
     server_createTournament(values);
     setToggle(false);
   }

@@ -22,3 +22,18 @@ export const playerSchema = z.object({
   }),
   age: z.date().optional(),
 });
+
+export const teamSchema = z.object({
+  name: z.string().min(2, {
+    message: "Team name must be at least 2 characters.",
+  }),
+  image: z.string().url({
+    message: "Please upload a valid team image URL.",
+  }),
+});
+
+export const tournamentSchema = z.object({
+  name: z.string().min(2, {
+    message: "Tounament name must be at least 2 characters.",
+  }),
+});
