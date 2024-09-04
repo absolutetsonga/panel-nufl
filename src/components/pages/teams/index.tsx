@@ -17,7 +17,7 @@ export const TeamsPage = () => {
     <PageContainer>
       <CreateButton toggle={createTeamToggle} setToggle={setCreateTeamToggle} />
 
-      <div className="flex flex-col gap-4 p-4">
+      <div className="flex w-full flex-col gap-4 p-4">
         <Heading1>Teams</Heading1>
         <PopulateTeams />
       </div>
@@ -38,22 +38,22 @@ const PopulateTeams = () => {
   if (teams?.length === 0) return <Paragraph>No teams found.</Paragraph>;
 
   return (
-    <div className="grid grid-cols-1 items-center justify-center gap-4 lg:grid-cols-4">
+    <div className="grid grid-cols-1 items-center justify-center gap-4 md:grid-cols-2 lg:grid-cols-4">
       {teams?.map((team) => (
         <Link
           href={`/?modal=teams/${team.id}`}
           as={`/teams/${team.id}`}
           key={team.id}
         >
-          <div className="flex flex-col items-center justify-center gap-4 rounded-xl border-2 border-gray-400 p-4">
+          <div className="flex w-full flex-row items-center justify-between rounded-xl border-[1px] border-slate-400 pl-4 shadow-lg transition-all hover:scale-105">
+            <h1>{team.name}</h1>
             <Image
               src={team.image ?? "/placeholder-image.png"}
               alt={team.name ?? "Team Image"}
               width={196}
               height={196}
-              className="h-[120px] w-[120px] rounded-xl object-cover md:h-[196px] md:w-[196px]"
+              className="h-[40px] w-[40px] rounded-xl object-cover md:h-[92px] md:w-[92px]"
             />
-            <h1>{team.name}</h1>
           </div>
         </Link>
       ))}
