@@ -55,9 +55,9 @@ const PopulatePlayers = ({ team_players }: { team_players: ITeamPlayer[] }) => {
               <Image
                 src={player.image ?? "/placeholder-image.png"}
                 alt={player.fullname ?? "Player Image"}
-                width={96}
-                height={96}
-                className="h-[64px] w-[64px] rounded-full object-cover md:h-[96px] md:w-[96px]"
+                width={64}
+                height={64}
+                className="h-[64px] w-[64px] rounded-full object-cover"
               />
 
               <div className="flex flex-col justify-center gap-2">
