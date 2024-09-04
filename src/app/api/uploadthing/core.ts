@@ -21,8 +21,6 @@ export const ourFileRouter = {
     image: { maxFileSize: "16MB", maxFileCount: 1 },
   })
     .middleware(async (req) => {
-      console.log(req);
-
       const user = auth();
       // eslint-disable-next-line @typescript-eslint/only-throw-error
       if (!user.userId) throw new UploadThingError("Unauthorized");
@@ -30,7 +28,6 @@ export const ourFileRouter = {
       return { userId: user.userId };
     })
     .onUploadComplete(async ({ metadata, file }) => {
-      console.log(metadata.userId, file.url);
       return { url: file.url, uploadedBy: metadata.userId };
     }),
 } satisfies FileRouter;

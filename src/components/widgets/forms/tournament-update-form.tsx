@@ -55,7 +55,7 @@ export const TournamentUpdateForm = ({
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="relative space-y-8 rounded-xl border-2 border-gray-200 bg-gray-50 p-6 md:p-8"
+          className="relative space-y-8 rounded-xl border-2 border-gray-900 bg-gray-800 p-6 md:p-8"
         >
           <Button
             onClick={() => setToggle(false)}
@@ -76,7 +76,7 @@ export const TournamentUpdateForm = ({
                   <Input
                     placeholder="Team Name"
                     {...field}
-                    className="rounded-md focus:border-indigo-500 focus:ring-indigo-500"
+                    className="rounded-md text-black focus:border-indigo-500 focus:ring-indigo-500"
                   />
                 </FormControl>
                 <FormDescription className="text-[14px] text-slate-300">

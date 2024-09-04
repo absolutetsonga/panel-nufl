@@ -21,7 +21,6 @@ export const getTournaments = async () => {
   const user_tournaments = await db.query.tournaments.findMany({
     where: eq(tournaments.user_id, user.userId),
   });
-  console.log(user_tournaments);
   return user_tournaments;
 };
 

@@ -14,12 +14,15 @@ export const TeamsPage = () => {
   const [createTeamToggle, setCreateTeamToggle] = useState(false);
 
   return (
-    <PageContainer>
-      <CreateButton toggle={createTeamToggle} setToggle={setCreateTeamToggle} />
-
-      <div className="flex w-full flex-col gap-4 p-4">
+    <PageContainer justify="normal">
+      <div className="relative flex w-full flex-col gap-4 p-4">
         <Heading1>Teams</Heading1>
         <PopulateTeams />
+        <CreateButton
+          toggle={createTeamToggle}
+          setToggle={setCreateTeamToggle}
+          className="absolute right-0"
+        />
       </div>
 
       <TeamCreateForm

@@ -21,6 +21,7 @@ import { XIcon } from "lucide-react";
 
 import { useCreateTeam } from "~/components/shared/lib/hooks/team";
 import { teamSchema } from "./schemas";
+import { toast } from "sonner";
 
 type Props = {
   toggle: boolean;
@@ -50,11 +51,11 @@ export const TeamCreateForm = ({ toggle, setToggle }: Props) => {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="relative space-y-8 rounded-xl border-2 border-gray-200 bg-gray-50 p-6 md:p-8"
+          className="relative space-y-8 rounded-xl border-2 border-gray-900 bg-gray-800 p-6 md:p-8"
         >
           <Button
             onClick={() => setToggle(false)}
-            className="absolute right-2 top-2 p-1 text-slate-300 hover:text-slate-50"
+            className="absolute right-2 top-2 p-1 text-slate-200 hover:text-white"
           >
             <XIcon />
           </Button>
@@ -64,17 +65,17 @@ export const TeamCreateForm = ({ toggle, setToggle }: Props) => {
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-sm font-medium text-slate-50">
+                <FormLabel className="text-sm font-medium text-white">
                   Team Name
                 </FormLabel>
                 <FormControl>
                   <Input
                     placeholder="Team Name"
                     {...field}
-                    className="rounded-md focus:border-indigo-500 focus:ring-indigo-500"
+                    className="rounded-md text-black focus:border-indigo-500 focus:ring-indigo-500"
                   />
                 </FormControl>
-                <FormDescription className="text-[14px] text-slate-300">
+                <FormDescription className="text-[14px] text-slate-200">
                   Write down team name.
                 </FormDescription>
                 <FormMessage className="mt-2 text-[12px] text-red-600" />
@@ -86,19 +87,20 @@ export const TeamCreateForm = ({ toggle, setToggle }: Props) => {
             name="image"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-sm font-medium text-slate-50">
+                <FormLabel className="text-sm font-medium text-white">
                   Team Image
                 </FormLabel>
                 <FormControl>
                   <UploadButton
+                    className="max-w-min"
                     endpoint="teamImage"
                     onClientUploadComplete={(res) => {
                       form.setValue("image", res[0]?.url ?? "");
-                      alert("Upload Completed");
+                      toast("You successfully uploaded image");
                     }}
                     onUploadError={(error: Error) => {
-                      // Do something with the error.
-                      alert(`ERROR! ${error.message}`);
+                      console.log(error);
+                      toast("Something went wrong. Check logs.");
                     }}
                   />
                 </FormControl>
@@ -113,7 +115,7 @@ export const TeamCreateForm = ({ toggle, setToggle }: Props) => {
                     />
                   </div>
                 )}
-                <FormDescription className="text-[14px] text-slate-300">
+                <FormDescription className="text-[14px] text-slate-200">
                   Upload here team logo.
                 </FormDescription>
                 <FormMessage className="mt-2 text-[12px] text-red-600" />
