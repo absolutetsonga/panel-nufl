@@ -21,7 +21,7 @@ export const PlayersView = ({ team }: PlayersViewProps) => {
   const [createPlayerToggle, setCreatePlayerToggle] = useState(false);
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col">
       {!createPlayerToggle && (
         <div className="relative flex flex-col gap-4 p-4">
           <div className="flex flex-row items-center justify-between">

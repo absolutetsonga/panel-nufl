@@ -48,6 +48,7 @@ type Props = {
 export const PlayerCreateForm = ({ team_id, toggle, setToggle }: Props) => {
   const { mutate: server_createTeam } = useCreatePlayer();
   const [isFoundation, setIsFoundation] = useState(true);
+  const [newImage, setNewImage] = useState<string>();
 
   const form = useForm<z.infer<typeof playerSchema>>({
     resolver: zodResolver(playerSchema),
@@ -92,16 +93,16 @@ export const PlayerCreateForm = ({ team_id, toggle, setToggle }: Props) => {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit, onInvalid)}
-          className="flex w-full flex-col gap-4"
+          className="relative flex w-full flex-col gap-4"
         >
           <Button
             onClick={() => setToggle(false)}
-            className="absolute -right-2 -top-2 text-slate-300 hover:text-slate-50"
+            className="absolute -right-2 top-0 text-slate-300 hover:text-slate-50"
           >
             <XIcon />
           </Button>
 
-          <div className="flex flex-col items-center justify-center gap-4 md:flex-row">
+          <div className="mt-10 flex flex-col items-center justify-center gap-4 md:flex-row">
             <FormField
               control={form.control}
               name="fullname"
@@ -240,7 +241,7 @@ export const PlayerCreateForm = ({ team_id, toggle, setToggle }: Props) => {
                       />
                     </PopoverContent>
                   </Popover>
-                  <FormDescription>
+                  <FormDescription className="text-[14px] text-slate-300">
                     Used to calculate age of player.
                   </FormDescription>
                   <FormMessage />
@@ -283,7 +284,9 @@ export const PlayerCreateForm = ({ team_id, toggle, setToggle }: Props) => {
                       Course Year
                     </FormLabel>
                     <Select
-                      onValueChange={field.onChange}
+                      onValueChange={(value) => {
+                        field.onChange(Number(value));
+                      }}
                       defaultValue={String(field.value)}
                     >
                       <FormControl>
@@ -313,54 +316,56 @@ export const PlayerCreateForm = ({ team_id, toggle, setToggle }: Props) => {
             )}
           </div>
 
-          <div className="col-span-2">
-            <FormField
-              control={form.control}
-              name="image"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-sm font-medium text-slate-50">
-                    Player Image
-                  </FormLabel>
-                  <FormControl>
-                    <UploadButton
-                      endpoint="playerImage"
-                      onClientUploadComplete={(res) => {
-                        form.setValue("image", res[0]?.url ?? "");
-                        toast("You successfully uploaded image");
-                      }}
-                      onUploadError={(error: Error) => {
-                        console.error(error);
-                        toast(`Something went wrong.`);
-                      }}
+          <FormField
+            control={form.control}
+            name="image"
+            render={({ field }) => (
+              <FormItem className="max-w-min">
+                <FormLabel className="text-sm font-medium text-slate-50">
+                  Player Image
+                </FormLabel>
+                <FormControl className="">
+                  <UploadButton
+                    endpoint="playerImage"
+                    onClientUploadComplete={(res) => {
+                      const newImage = res[0]?.url ?? "";
+                      setNewImage(newImage);
+                      form.setValue("image", newImage);
+                      toast("You successfully uploaded image");
+                    }}
+                    onUploadError={(error: Error) => {
+                      console.error(error);
+                      toast(`Something went wrong.`);
+                    }}
+                  />
+                </FormControl>
+                <FormDescription className="text-[14px] text-slate-300">
+                  Upload here player image.
+                </FormDescription>
+                <FormMessage className="mt-2 text-[12px] text-red-600" />
+                {field.value && (
+                  <div className="mt-4 w-full items-center justify-center">
+                    <Image
+                      src={field.value}
+                      alt="Uploaded Player Image"
+                      width={96}
+                      height={96}
+                      className="h-24 w-24 rounded-full border-2 border-gray-300 object-cover"
                     />
-                  </FormControl>
-                  {field.value && (
-                    <div className="mt-4 w-full items-center justify-center">
-                      <Image
-                        src={field.value}
-                        alt="Uploaded Player Image"
-                        width={96}
-                        height={96}
-                        className="h-24 w-24 rounded-full border-2 border-gray-300 object-cover"
-                      />
-                    </div>
-                  )}
-                  <FormDescription className="text-[14px] text-slate-300">
-                    Upload here player image.
-                  </FormDescription>
-                  <FormMessage className="mt-2 text-[12px] text-red-600" />
-                </FormItem>
-              )}
-            />
-          </div>
+                  </div>
+                )}
+              </FormItem>
+            )}
+          />
 
-          <Button
-            type="submit"
-            className="w-full rounded-md bg-indigo-600 px-4 py-2 text-white transition duration-150 ease-in-out hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-          >
-            Submit
-          </Button>
+          <div className="w-[200px]">
+            <Button
+              type="submit"
+              className="w-full rounded-md bg-indigo-600 px-4 py-2 text-white transition duration-150 ease-in-out hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            >
+              Submit
+            </Button>
+          </div>
         </form>
       </Form>
     </div>

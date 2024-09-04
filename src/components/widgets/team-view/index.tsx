@@ -32,15 +32,15 @@ export const TeamView = ({ team }: TeamViewProps) => {
   };
 
   return (
-    <div className="flex flex-row">
+    <div className="flex md:max-w-5xl flex-col items-center md:flex-row">
       <Image
         src={image ?? "/placeholder-image.png"}
         alt={name ?? "Team Image"}
-        className="h-[200px] w-[200px] rounded-xl object-cover"
+        className="h-[90px] w-[90px] md:h-[200px] md:w-[200px] rounded-xl object-cover"
         width={200}
         height={200}
       />
-      <div className="flex flex-col flex-1">
+      <div className="flex flex-1 flex-col">
         <div className="flex h-full flex-1 flex-shrink-0 flex-col">
           {isEditing && (
             <TeamUpdateForm
@@ -54,7 +54,9 @@ export const TeamView = ({ team }: TeamViewProps) => {
               <div className="border-b p-2 text-center text-xl">
                 {team.name}
               </div>
-              <div className="p-2">Created On: {team.createdAt.toLocaleDateString()}</div>
+              <div className="p-2">
+                Created On: {team.createdAt.toLocaleDateString()}
+              </div>
             </>
           )}
         </div>
