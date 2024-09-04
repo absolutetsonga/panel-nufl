@@ -15,7 +15,7 @@ export interface ICreateAndUpdatePlayer {
   position: string;
   level_of_study: string;
   school: string;
-  age: Date;
+  age?: Date;
   year: number;
 }
 

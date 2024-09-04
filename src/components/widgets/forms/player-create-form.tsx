@@ -57,9 +57,7 @@ const formSchema = z.object({
   year: z.string().min(1, {
     message: "Please, provide player's course year.",
   }),
-  age: z.date({
-    required_error: "A date of birth is required.",
-  }),
+  age: z.date().optional(),
 });
 
 type Props = {
@@ -119,7 +117,7 @@ export const PlayerCreateForm = ({ team_id, toggle, setToggle }: Props) => {
                   <Input
                     placeholder="ex: John Doe"
                     {...field}
-                    className="bg-black rounded-md focus:border-indigo-500 focus:ring-indigo-500"
+                    className="rounded-md bg-black focus:border-indigo-500 focus:ring-indigo-500"
                   />
                 </FormControl>
                 <FormDescription className="text-[14px] text-slate-300">

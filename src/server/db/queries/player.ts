@@ -37,10 +37,14 @@ export const createPlayer = async (player: ICreateAndUpdatePlayer) => {
   const user = auth();
   if (!user.userId) throw new Error("Unauthorized");
 
+  let age;
+  player.age ? (age = player.age) : (age = new Date());
+
   const [newPlayer] = await db
     .insert(players)
     .values({
       ...player,
+      age,
       user_id: user.userId,
       createdAt: new Date(),
       updatedAt: new Date(),

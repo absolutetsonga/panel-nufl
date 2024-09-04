@@ -34,6 +34,8 @@ export const PlayerView = ({ player }: { player: ITeamPlayer }) => {
     red_cards,
   } = player;
 
+  const player_age = getAge(player.age);
+
   return (
     <div className="mx-auto max-w-md rounded-xl p-6 pt-10 shadow-md">
       <div className="flex flex-col items-center gap-2">
@@ -70,14 +72,14 @@ export const PlayerView = ({ player }: { player: ITeamPlayer }) => {
 
         <p className="text-slate-50">
           <strong className="font-semibold text-slate-50">Age:</strong>{" "}
-          {getAge(age)} years
+          {player_age ? player_age : "null"}
         </p>
 
         <p className="text-slate-50">
           <strong className="font-semibold text-slate-50">
             Birthday Date:
           </strong>{" "}
-          {age.toLocaleDateString()}
+          {player_age ? age.toLocaleDateString() : "null"}
         </p>
 
         <p className="text-slate-50">
