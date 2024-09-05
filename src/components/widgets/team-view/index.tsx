@@ -5,8 +5,8 @@ import Image from "next/image";
 import { useDeleteTeam } from "~/components/shared/lib/hooks/team";
 import { useRouter } from "next/navigation";
 import { DeleteAlert } from "~/components/entities/delete-alert/ui";
-import { TeamActions } from "./components/team-actions";
 import { TeamUpdateForm } from "../forms/team/team-update-form";
+import { PencilIcon, Trash2Icon } from "lucide-react";
 
 type TeamViewProps = {
   team: {
@@ -33,13 +33,15 @@ export const TeamView = ({ team }: TeamViewProps) => {
 
   return (
     <div className="flex flex-col items-center md:max-w-5xl md:flex-row">
-      <Image
-        src={image ?? "/placeholder-image.png"}
-        alt={name ?? "Team Image"}
-        className="h-[90px] w-[90px] rounded-xl object-cover md:h-[200px] md:w-[200px]"
-        width={200}
-        height={200}
-      />
+      {!isEditing && (
+        <Image
+          src={image ?? "/placeholder-image.png"}
+          alt={name ?? "Team Image"}
+          className="h-[90px] w-[90px] rounded-xl object-cover md:h-[200px] md:w-[200px]"
+          width={200}
+          height={200}
+        />
+      )}
       <div className="flex flex-1 flex-col">
         <div className="flex h-full flex-1 flex-shrink-0 flex-col">
           {isEditing && (
@@ -60,11 +62,19 @@ export const TeamView = ({ team }: TeamViewProps) => {
             </>
           )}
         </div>
-        <TeamActions
-          isEditing={isEditing}
-          onEditToggle={setIsEditing}
-          onDeleteToggle={() => setDeleteAlertToggle(true)}
-        />
+        {!isEditing && (
+          <div className="flex flex-row items-center justify-between gap-2 px-4 py-2">
+            <PencilIcon
+              className="h-6 w-6 cursor-pointer"
+              onClick={() => setIsEditing(true)}
+            />
+
+            <Trash2Icon
+              className="h-6 w-6 cursor-pointer"
+              onClick={() => setDeleteAlertToggle(true)}
+            />
+          </div>
+        )}
 
         {deleteAlertToggle && (
           <DeleteAlert

@@ -17,25 +17,26 @@ export const TeamsPage = () => {
     <PageContainer justify="normal">
       <div className="relative flex w-full flex-col gap-4 p-4">
         <Heading1>Teams</Heading1>
-        <PopulateTeams />
+        {!createTeamToggle && <PopulateTeams />}
         <CreateButton
           toggle={createTeamToggle}
           setToggle={setCreateTeamToggle}
           className="absolute right-0"
         />
+        {createTeamToggle && (
+          <TeamCreateForm
+            toggle={createTeamToggle}
+            setToggle={setCreateTeamToggle}
+          />
+        )}
       </div>
-
-      <TeamCreateForm
-        toggle={createTeamToggle}
-        setToggle={setCreateTeamToggle}
-      />
     </PageContainer>
   );
 };
 
 const PopulateTeams = () => {
   const { data: teams, isLoading, isError, error } = useGetTeams();
-  console.log(error);
+
   if (isLoading) return <Paragraph>Loading...</Paragraph>;
   if (isError) return <Paragraph>Error loading teams.</Paragraph>;
   if (teams?.length === 0) return <Paragraph>No teams found.</Paragraph>;

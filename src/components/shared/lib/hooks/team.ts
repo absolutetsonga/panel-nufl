@@ -70,12 +70,12 @@ export function useUpdateTeam() {
       updateTeam(id, name, image),
     onSuccess: async (data) => {
       try {
-        if (data) {
+        if (data && !(data instanceof Error)) {
           toast(`Team ${data.name ?? ""} updated successfully`);
+          await queryClient.invalidateQueries({ queryKey: ["team", data.id] });
         } else {
           toast("Team update failed.");
         }
-        await queryClient.invalidateQueries({ queryKey: ["teams"] });
       } catch (error) {
         console.error("Error invalidating queries:", error);
       }

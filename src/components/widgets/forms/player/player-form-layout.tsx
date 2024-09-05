@@ -72,7 +72,6 @@ export const PlayerFormLayout = ({
   setIsFoundation,
   newImage,
   setNewImage,
-  toggle,
   setToggle,
   form,
   onSubmit,
