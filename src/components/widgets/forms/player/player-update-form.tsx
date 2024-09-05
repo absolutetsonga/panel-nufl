@@ -33,7 +33,9 @@ import { format } from "date-fns";
 import { CalendarIcon, XIcon } from "lucide-react";
 import Image from "next/image";
 import { cn } from "~/components/shared/lib/utils/clsx";
-import { playerSchema } from "./schemas";
+import { playerSchema } from "../schemas";
+import { PlayerFormLayout } from "./player-form-layout";
+import { useState } from "react";
 
 type Props = {
   player: {
@@ -53,6 +55,7 @@ type Props = {
 
 export const PlayerUpdateForm = ({ player, toggle, setToggle }: Props) => {
   const { mutate: server_updateTeam } = useUpdatePlayer();
+  const [newImage, setNewImage] = useState<string>();
 
   const form = useForm<z.infer<typeof playerSchema>>({
     resolver: zodResolver(playerSchema),
@@ -85,11 +88,38 @@ export const PlayerUpdateForm = ({ player, toggle, setToggle }: Props) => {
     console.error(form.formState.errors);
   }
 
+  type ItemValue = {
+    value: string;
+    name: string;
+    isHidden: boolean;
+  };
+
+  const itemValues: ItemValue[] = [
+    { value: "SEDS", name: "SEDS", isHidden: false },
+    { value: "SSH", name: "SSH", isHidden: false },
+    { value: "NUSOM", name: "NUSOM", isHidden: false },
+    { value: "GSB", name: "GSB", isHidden: false },
+    { value: "GSE", name: "GSE", isHidden: false },
+    { value: "GSPP", name: "GSPP", isHidden: false },
+    { value: "SMG", name: "SMG", isHidden: false },
+    { value: "CPS", name: "CPS", isHidden: true },
+  ];
+
   if (!toggle) return <></>;
 
   return (
     <div className="flex flex-col items-center justify-center gap-4 rounded-lg p-6 shadow-lg">
-      <Form {...form}>
+      <PlayerFormLayout
+        toggle={toggle}
+        setToggle={setToggle}
+        form={form}
+        onSubmit={onSubmit}
+        onInvalid={onInvalid}
+        itemValues={itemValues}
+        newImage={newImage}
+        setNewImage={setNewImage}
+      />
+      {/* <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit, onInvalid)}
           className="relative grid grid-cols-2 gap-6 rounded-xl"
@@ -356,7 +386,7 @@ export const PlayerUpdateForm = ({ player, toggle, setToggle }: Props) => {
             Submit
           </Button>
         </form>
-      </Form>
+      </Form> */}
     </div>
   );
 };

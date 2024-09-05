@@ -18,7 +18,7 @@ import { Button, Input } from "~/components/shared/ui";
 import { XIcon } from "lucide-react";
 
 import { useCreateTournament } from "~/components/shared/lib/hooks/tournament";
-import { tournamentSchema } from "./schemas";
+import { tournamentSchema } from "../schemas";
 
 type Props = {
   toggle: boolean;

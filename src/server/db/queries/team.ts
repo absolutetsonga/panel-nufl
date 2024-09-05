@@ -37,14 +37,16 @@ export const getTeams = async () => {
 // create
 export const createTeam = async (name: string, image: string) => {
   const user = auth();
-  if (!user.userId) return Error("Unauthorized");
+  if (!user.userId) throw new Error("Unauthorized");
 
   const tournament = await db.query.tournaments.findFirst({
     where: eq(tournaments.user_id, user.userId),
   });
 
   if (!tournament) {
-    return Error("No tournament found for this user. Please make sure you created tournament.");
+    throw new Error(
+      "No tournament found for this user. Please make sure you created tournament.",
+    );
   }
 
   const [newTeam] = await db

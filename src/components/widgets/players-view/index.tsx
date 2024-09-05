@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import { PlayerCreateForm } from "../forms/player-create-form";
+import { PlayerCreateForm } from "../forms/player/player-create-form";
 import { CreateButton } from "~/components/entities/create-button";
 import { Heading3 } from "~/components/shared/ui/typography";
 import Image from "next/image";
@@ -21,7 +21,7 @@ export const PlayersView = ({ team }: PlayersViewProps) => {
   const [createPlayerToggle, setCreatePlayerToggle] = useState(false);
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col md:max-w-5xl">
       {!createPlayerToggle && (
         <div className="relative flex flex-col gap-4 p-4">
           <div className="flex flex-row items-center justify-between">

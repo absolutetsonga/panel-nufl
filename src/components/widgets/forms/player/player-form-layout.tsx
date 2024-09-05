@@ -1,6 +1,5 @@
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import type { z } from "zod";
+import { Dispatch, SetStateAction } from "react";
+import { UseFormReturn } from "react-hook-form";
 
 import {
   Form,
@@ -32,64 +31,57 @@ import { UploadButton } from "~/components/shared/lib/utils/uploadthing";
 
 import Image from "next/image";
 import { CalendarIcon, XIcon } from "lucide-react";
-import { useCreatePlayer } from "~/components/shared/lib/hooks/player";
 import { cn } from "~/components/shared/lib/utils/clsx";
-import { useState } from "react";
 import { toast } from "sonner";
-import { playerSchema } from "./schemas";
+import { playerSchema } from "../schemas";
 import { SelectForm } from "~/components/entities/select-form/intex";
-
-type Props = {
-  team_id: number;
-  toggle: boolean;
-  setToggle: React.Dispatch<React.SetStateAction<boolean>>;
+import { z } from "zod";
+type ItemValue = {
+  value: string;
+  name: string;
+  isHidden: boolean;
 };
 
-export const PlayerCreateForm = ({ team_id, toggle, setToggle }: Props) => {
-  const { mutate: server_createTeam } = useCreatePlayer();
-  const [isFoundation, setIsFoundation] = useState(true);
-  const [newImage, setNewImage] = useState<string>();
+type Props = {
+  isFoundation?: boolean;
+  setIsFoundation?: Dispatch<SetStateAction<boolean>>;
+  toggle: boolean;
+  setToggle: React.Dispatch<React.SetStateAction<boolean>>;
+  newImage: string | undefined;
+  setNewImage: Dispatch<SetStateAction<string | undefined>>;
+  form: UseFormReturn<
+    {
+      image: string;
+      fullname: string;
+      position: string;
+      school: string;
+      level_of_study: string;
+      year: number;
+      age?: Date | undefined;
+    },
+    any,
+    undefined
+  >;
 
-  const form = useForm<z.infer<typeof playerSchema>>({
-    resolver: zodResolver(playerSchema),
-  });
+  onSubmit: (values: z.infer<typeof playerSchema>) => null | undefined;
+  onInvalid: () => void;
+  itemValues: ItemValue[];
+};
 
-  function onSubmit(values: z.infer<typeof playerSchema>) {
-    const number_year = Number(values.year);
-    if (Number.isNaN(number_year)) {
-      toast("Course year must be integer");
-      return null;
-    }
-
-    server_createTeam({ ...values, team_id, year: number_year });
-    setToggle(false);
-  }
-
-  function onInvalid() {
-    console.error(form.formState.errors);
-  }
-
-  if (!toggle) return <></>;
-
-  type ItemValue = {
-    value: string;
-    name: string;
-    isHidden: boolean;
-  };
-
-  const itemValues: ItemValue[] = [
-    { value: "SEDS", name: "SEDS", isHidden: false },
-    { value: "SSH", name: "SSH", isHidden: false },
-    { value: "NUSOM", name: "NUSOM", isHidden: false },
-    { value: "GSB", name: "GSB", isHidden: false },
-    { value: "GSE", name: "GSE", isHidden: false },
-    { value: "GSPP", name: "GSPP", isHidden: false },
-    { value: "SMG", name: "SMG", isHidden: false },
-    { value: "CPS", name: "CPS", isHidden: true },
-  ];
-
+export const PlayerFormLayout = ({
+  isFoundation,
+  setIsFoundation,
+  newImage,
+  setNewImage,
+  toggle,
+  setToggle,
+  itemValues,
+  form,
+  onSubmit,
+  onInvalid,
+}: Props) => {
   return (
-    <div className="flex max-w-5xl flex-col items-center justify-center gap-4 rounded-lg p-6 shadow-lg">
+    <div className="flex max-w-5xl flex-col gap-4 rounded-lg p-6 shadow-lg">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit, onInvalid)}
@@ -172,15 +164,17 @@ export const PlayerCreateForm = ({ team_id, toggle, setToggle }: Props) => {
                   <Select
                     onValueChange={(value) => {
                       field.onChange(value);
-                      setIsFoundation(value === "FOUND");
-                      if (value === "FOUND") {
-                        setIsFoundation(true);
-                        form.setValue("school", "CPS");
-                        form.setValue("year", 0);
-                      } else {
-                        setIsFoundation(false);
-                        form.setValue("school", "");
-                        form.setValue("year", 1);
+                      if (setIsFoundation) {
+                        setIsFoundation(value === "FOUND");
+                        if (value === "FOUND") {
+                          setIsFoundation(true);
+                          form.setValue("school", "CPS");
+                          form.setValue("year", 0);
+                        } else {
+                          setIsFoundation(false);
+                          form.setValue("school", "");
+                          form.setValue("year", 1);
+                        }
                       }
                     }}
                     defaultValue={field.value}

@@ -7,12 +7,12 @@ import {
 } from "~/components/shared/lib/hooks/tournament";
 import { useState } from "react";
 
-import { TournamentCreateForm } from "~/components/widgets/forms/tournament-create-form";
+import { TournamentCreateForm } from "~/components/widgets/forms/tournament/tournament-create-form";
 import { PageContainer } from "~/components/shared/ui";
 import { Heading1, Paragraph } from "~/components/shared/ui/typography";
 import { CreateButton } from "~/components/entities/create-button";
 import { DeleteAlert } from "~/components/entities/delete-alert/ui";
-import { TournamentUpdateForm } from "~/components/widgets/forms/tournament-update-form";
+import { TournamentUpdateForm } from "~/components/widgets/forms/tournament/tournament-update-form";
 
 export const TournamentPage = () => {
   const [createTournamentToggle, setCreateTournamentToggle] = useState(false);

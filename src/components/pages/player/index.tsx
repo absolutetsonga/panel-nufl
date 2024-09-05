@@ -10,7 +10,7 @@ import {
 } from "~/components/shared/lib/hooks/player";
 
 import { PageContainer } from "~/components/shared/ui";
-import { PlayerUpdateForm } from "~/components/widgets/forms/player-update-form";
+import { PlayerUpdateForm } from "~/components/widgets/forms/player/player-update-form";
 import { PlayerView } from "./player-view";
 import { DeleteAlert } from "~/components/entities/delete-alert/ui";
 

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useGetTeams } from "~/components/shared/lib/hooks/team";
 
 import { PageContainer } from "~/components/shared/ui";
-import { TeamCreateForm } from "~/components/widgets/forms/team-create-form";
+import { TeamCreateForm } from "~/components/widgets/forms/team/team-create-form";
 import { CreateButton } from "~/components/entities/create-button";
 import { Heading1, Paragraph } from "~/components/shared/ui/typography";
 import Image from "next/image";
@@ -34,8 +34,8 @@ export const TeamsPage = () => {
 };
 
 const PopulateTeams = () => {
-  const { data: teams, isLoading, isError } = useGetTeams();
-
+  const { data: teams, isLoading, isError, error } = useGetTeams();
+  console.log(error);
   if (isLoading) return <Paragraph>Loading...</Paragraph>;
   if (isError) return <Paragraph>Error loading teams.</Paragraph>;
   if (teams?.length === 0) return <Paragraph>No teams found.</Paragraph>;

@@ -20,7 +20,7 @@ import Image from "next/image";
 import { XIcon } from "lucide-react";
 
 import { useCreateTeam } from "~/components/shared/lib/hooks/team";
-import { teamSchema } from "./schemas";
+import { teamSchema } from "../schemas";
 import { toast } from "sonner";
 
 type Props = {

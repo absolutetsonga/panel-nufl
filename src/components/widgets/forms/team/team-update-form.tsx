@@ -15,7 +15,7 @@ import { Button, Input } from "~/components/shared/ui";
 import { UploadButton } from "~/components/shared/lib/utils/uploadthing";
 
 import { useUpdateTeam } from "~/components/shared/lib/hooks/team";
-import { teamSchema } from "./schemas";
+import { teamSchema } from "../schemas";
 
 import type { z } from "zod";
 
