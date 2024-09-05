@@ -40,23 +40,6 @@ export const PlayerCreateForm = ({ team_id, toggle, setToggle }: Props) => {
 
   if (!toggle) return <></>;
 
-  type ItemValue = {
-    value: string;
-    name: string;
-    isHidden: boolean;
-  };
-
-  const itemValues: ItemValue[] = [
-    { value: "SEDS", name: "SEDS", isHidden: false },
-    { value: "SSH", name: "SSH", isHidden: false },
-    { value: "NUSOM", name: "NUSOM", isHidden: false },
-    { value: "GSB", name: "GSB", isHidden: false },
-    { value: "GSE", name: "GSE", isHidden: false },
-    { value: "GSPP", name: "GSPP", isHidden: false },
-    { value: "SMG", name: "SMG", isHidden: false },
-    { value: "CPS", name: "CPS", isHidden: true },
-  ];
-
   return (
     <div className="flex max-w-5xl flex-col gap-4 rounded-lg p-6 shadow-lg">
       <PlayerFormLayout
@@ -69,7 +52,6 @@ export const PlayerCreateForm = ({ team_id, toggle, setToggle }: Props) => {
         form={form}
         onSubmit={onSubmit}
         onInvalid={onInvalid}
-        itemValues={itemValues}
       />
     </div>
   );

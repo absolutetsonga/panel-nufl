@@ -36,11 +36,11 @@ import { toast } from "sonner";
 import { playerSchema } from "../schemas";
 import { SelectForm } from "~/components/entities/select-form/intex";
 import { z } from "zod";
-type ItemValue = {
-  value: string;
-  name: string;
-  isHidden: boolean;
-};
+import {
+  levelOfStudyItemValues,
+  numberOfYearsItemValues,
+  schoolNameItemValues,
+} from "./constants";
 
 type Props = {
   isFoundation?: boolean;
@@ -65,7 +65,6 @@ type Props = {
 
   onSubmit: (values: z.infer<typeof playerSchema>) => null | undefined;
   onInvalid: () => void;
-  itemValues: ItemValue[];
 };
 
 export const PlayerFormLayout = ({
@@ -75,7 +74,6 @@ export const PlayerFormLayout = ({
   setNewImage,
   toggle,
   setToggle,
-  itemValues,
   form,
   onSubmit,
   onInvalid,
@@ -161,7 +159,8 @@ export const PlayerFormLayout = ({
                   <FormLabel className="text-sm font-medium text-slate-50">
                     Level of Study
                   </FormLabel>
-                  <Select
+                  <SelectForm
+                    itemValues={levelOfStudyItemValues}
                     onValueChange={(value) => {
                       field.onChange(value);
                       if (setIsFoundation) {
@@ -178,18 +177,7 @@ export const PlayerFormLayout = ({
                       }
                     }}
                     defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Click to choose..." />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent className="bg-black">
-                      <SelectItem value="FOUND">Foundation</SelectItem>
-                      <SelectItem value="UG">Undergraduate</SelectItem>
-                      <SelectItem value="GR">Graduate</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  />
                   <FormDescription className="text-[14px] text-slate-300">
                     Select Level of Study
                   </FormDescription>
@@ -255,10 +243,9 @@ export const PlayerFormLayout = ({
                       School Name
                     </FormLabel>
                     <SelectForm
-                      itemValues={itemValues}
+                      itemValues={schoolNameItemValues}
                       onValueChange={field.onChange}
                       defaultValue={field.value}
-                      disabled={isFoundation}
                     />
                     <FormDescription className="text-[14px] text-slate-300">
                       Select School
@@ -277,29 +264,13 @@ export const PlayerFormLayout = ({
                     <FormLabel className="text-sm font-medium text-slate-50">
                       Course Year
                     </FormLabel>
-                    <Select
+                    <SelectForm
+                      itemValues={numberOfYearsItemValues}
                       onValueChange={(value) => {
                         field.onChange(Number(value));
                       }}
                       defaultValue={String(field.value)}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Click to choose..." />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent className="bg-black">
-                        <SelectItem value={"0"} className="hidden">
-                          0
-                        </SelectItem>
-                        <SelectItem value={"1"}>1</SelectItem>
-                        <SelectItem value={"2"}>2</SelectItem>
-                        <SelectItem value={"3"}>3</SelectItem>
-                        <SelectItem value={"4"}>4</SelectItem>
-                        <SelectItem value={"5"}>5</SelectItem>
-                        <SelectItem value={"6"}>6</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    />
                     <FormDescription className="text-[14px] text-slate-300">
                       Select Course Year
                     </FormDescription>
