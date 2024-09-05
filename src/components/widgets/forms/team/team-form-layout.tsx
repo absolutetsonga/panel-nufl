@@ -1,8 +1,3 @@
-import { UseFormReturn } from "react-hook-form";
-import { teamSchema } from "../schemas";
-import type { z } from "zod";
-import Image from "next/image";
-
 import {
   Form,
   FormControl,
@@ -17,6 +12,11 @@ import { XIcon } from "lucide-react";
 import { Input } from "~/components/shared/ui";
 import { UploadButton } from "~/components/shared/lib/utils/uploadthing";
 import { toast } from "sonner";
+import Image from "next/image";
+
+import type { UseFormReturn } from "react-hook-form";
+import type { teamSchema } from "../schemas";
+import type { z } from "zod";
 
 type Props = {
   toggle: boolean;
@@ -26,6 +26,7 @@ type Props = {
       name: string;
       image: string;
     },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     any,
     undefined
   >;

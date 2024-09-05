@@ -1,6 +1,3 @@
-import { Dispatch, SetStateAction } from "react";
-import { UseFormReturn } from "react-hook-form";
-
 import {
   Form,
   FormControl,
@@ -22,25 +19,30 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "~/components/shared/ui/popover";
-import { format } from "date-fns";
 
+import { SelectForm } from "~/components/entities/select-form/intex";
 import { Calendar } from "~/components/shared/ui/calendar";
-
 import { Button, Input } from "~/components/shared/ui";
 import { UploadButton } from "~/components/shared/lib/utils/uploadthing";
+import { CalendarIcon, XIcon } from "lucide-react";
+import { toast } from "sonner";
 
 import Image from "next/image";
-import { CalendarIcon, XIcon } from "lucide-react";
-import { cn } from "~/components/shared/lib/utils/clsx";
-import { toast } from "sonner";
+
 import { playerSchema } from "../schemas";
-import { SelectForm } from "~/components/entities/select-form/intex";
-import { z } from "zod";
+
+import { format } from "date-fns";
+import { cn } from "~/components/shared/lib/utils/clsx";
+
 import {
   levelOfStudyItemValues,
   numberOfYearsItemValues,
   schoolNameItemValues,
 } from "./constants";
+
+import type { Dispatch, SetStateAction } from "react";
+import type { UseFormReturn } from "react-hook-form";
+import type { z } from "zod";
 
 type Props = {
   isFoundation?: boolean;
@@ -59,6 +61,7 @@ type Props = {
       year: number;
       age?: Date | undefined;
     },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     any,
     undefined
   >;
@@ -70,7 +73,6 @@ type Props = {
 export const PlayerFormLayout = ({
   isFoundation,
   setIsFoundation,
-  newImage,
   setNewImage,
   setToggle,
   form,

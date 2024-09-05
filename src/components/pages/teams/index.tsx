@@ -35,7 +35,7 @@ export const TeamsPage = () => {
 };
 
 const PopulateTeams = () => {
-  const { data: teams, isLoading, isError, error } = useGetTeams();
+  const { data: teams, isLoading, isError } = useGetTeams();
 
   if (isLoading) return <Paragraph>Loading...</Paragraph>;
   if (isError) return <Paragraph>Error loading teams.</Paragraph>;

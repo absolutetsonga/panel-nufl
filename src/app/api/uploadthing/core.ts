@@ -20,7 +20,7 @@ export const ourFileRouter = {
   playerImage: f({
     image: { maxFileSize: "16MB", maxFileCount: 1 },
   })
-    .middleware(async (req) => {
+    .middleware(async (_) => {
       const user = auth();
       // eslint-disable-next-line @typescript-eslint/only-throw-error
       if (!user.userId) throw new UploadThingError("Unauthorized");

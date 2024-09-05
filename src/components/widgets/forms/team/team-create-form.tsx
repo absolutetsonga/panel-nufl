@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { TeamFormLayout } from "./team-form-layout";
 import { teamSchema } from "../schemas";
 
-import { Dispatch, SetStateAction } from "react";
+import type { Dispatch, SetStateAction } from "react";
 import type { z } from "zod";
 
 type Props = {
