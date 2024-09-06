@@ -73,6 +73,7 @@ export const tournaments = createTable("tournament", {
 
 export const games = createTable("game", {
   id: serial("id").primaryKey(),
+  user_id: varchar("user_id", { length: 256 }).notNull(),
   home_team_id: integer("home_team_id").notNull(),
   away_team_id: integer("away_team_id").notNull(),
   goals: integer("goal_id").notNull(),
@@ -80,6 +81,7 @@ export const games = createTable("game", {
 
 export const goals = createTable("goal", {
   id: serial("id").primaryKey(),
+  user_id: varchar("user_id", { length: 256 }).notNull(),
   game_id: integer("game_id").notNull(),
   player_id: integer("player_id").notNull(),
   is_own_goal: boolean("is_own_goal").default(false),
@@ -87,6 +89,7 @@ export const goals = createTable("goal", {
 
 export const assists = createTable("assist", {
   id: serial("id").primaryKey(),
+  user_id: varchar("user_id", { length: 256 }).notNull(),
   game_id: integer("game_id").notNull(),
   player_id: integer("player_id").notNull(),
   goal_id: integer("goal_id").default(0),
@@ -94,12 +97,14 @@ export const assists = createTable("assist", {
 
 export const clean_sheets = createTable("clean_sheet", {
   id: serial("id").primaryKey(),
+  user_id: varchar("user_id", { length: 256 }).notNull(),
   game_id: integer("game_id").notNull(),
   player_id: integer("player_id").notNull(),
 });
 
 export const cards = createTable("card", {
   id: serial("id").primaryKey(),
+  user_id: varchar("user_id", { length: 256 }).notNull(),
   game_id: integer("game_id").notNull(),
   player_id: integer("player_id").notNull(),
   is_yellow: boolean("is_yellow").default(false),

@@ -42,7 +42,7 @@ const PopulateTeams = () => {
   if (teams?.length === 0) return <Paragraph>No teams found.</Paragraph>;
 
   return (
-    <div className="grid grid-cols-1 items-center justify-center gap-4 md:grid-cols-2 lg:grid-cols-4">
+    <div className="grid grid-cols-1 items-center justify-center gap-4 md:grid-cols-2 lg:grid-cols-3">
       {teams?.map((team) => (
         <Link
           href={`/?modal=teams/${team.id}`}
