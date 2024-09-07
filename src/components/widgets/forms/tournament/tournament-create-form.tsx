@@ -40,13 +40,17 @@ export const TournamentCreateForm = ({ toggle, setToggle }: Props) => {
     setToggle(false);
   }
 
+  function onInvalid() {
+    console.error(form.formState.errors);
+  }
+
   if (!toggle) return <></>;
 
   return (
     <div className="z-10 flex flex-col items-center justify-center gap-4 rounded-lg bg-black shadow-lg">
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit(onSubmit)}
+          onSubmit={form.handleSubmit(onSubmit, onInvalid)}
           className="relative space-y-8 rounded-xl border-2 border-gray-900 bg-gray-800 p-6 md:p-8"
         >
           <Button

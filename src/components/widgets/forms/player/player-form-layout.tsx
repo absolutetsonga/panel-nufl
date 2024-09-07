@@ -20,7 +20,7 @@ import {
   PopoverTrigger,
 } from "~/components/shared/ui/popover";
 
-import { SelectForm } from "~/components/entities/select-form/intex";
+import { SelectForm } from "~/components/entities/select-form";
 import { Calendar } from "~/components/shared/ui/calendar";
 import { Button, Input } from "~/components/shared/ui";
 import { UploadButton } from "~/components/shared/lib/utils/uploadthing";
@@ -28,8 +28,6 @@ import { CalendarIcon, XIcon } from "lucide-react";
 import { toast } from "sonner";
 
 import Image from "next/image";
-
-import { playerSchema } from "../schemas";
 
 import { format } from "date-fns";
 import { cn } from "~/components/shared/lib/utils/clsx";
@@ -40,9 +38,10 @@ import {
   schoolNameItemValues,
 } from "./constants";
 
+import type { z } from "zod";
 import type { Dispatch, SetStateAction } from "react";
 import type { UseFormReturn } from "react-hook-form";
-import type { z } from "zod";
+import type { playerSchema } from "../schemas";
 
 type Props = {
   isFoundation?: boolean;

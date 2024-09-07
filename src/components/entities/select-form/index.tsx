@@ -31,7 +31,7 @@ export const SelectForm = ({
           <SelectValue placeholder="Select player position" />
         </SelectTrigger>
       </FormControl>
-      <SelectContent className="bg-black">
+      <SelectContent className="bg-black ">
         {itemValues.map((iv) => (
           <SelectItem
             key={iv.name}

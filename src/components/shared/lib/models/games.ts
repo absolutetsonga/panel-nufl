@@ -3,9 +3,26 @@ export interface IGame {
   user_id: string;
   home_team_id: number;
   away_team_id: number;
-  goals: number;
+
+  venue: string;
+  date: Date;
+  home_team_score: number;
+  away_team_score: number;
+  result: string;
+  match_report: string;
+
+  createdAt: Date;
+  updatedAt: Date;
 }
 
+export interface ICreateAndUpdateGame {
+  home_team_id: number;
+  away_team_id: number;
+  gameweek_number: number;
+  venue: string;
+  date: Date;
+  match_report: string;
+}
 export interface IGoal {
   id: number;
   user_id: string;

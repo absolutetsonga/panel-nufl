@@ -19,7 +19,7 @@ export const TournamentPage = () => {
 
   return (
     <PageContainer justify="normal">
-      <div className="flex w-full flex-col gap-4 p-4">
+      <div className="relative flex w-full flex-col gap-4 p-4">
         <Heading1>Tournaments</Heading1>
         <PopulateTournaments />
         <CreateButton

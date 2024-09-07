@@ -1,4 +1,7 @@
+import { date } from "drizzle-orm/mysql-core";
+import { vector } from "drizzle-orm/pg-core";
 import { z } from "zod";
+import { goals } from "~/server/db/schema";
 
 export const playerSchema = z.object({
   fullname: z.string().min(2, {
@@ -36,4 +39,14 @@ export const tournamentSchema = z.object({
   name: z.string().min(2, {
     message: "Tounament name must be at least 2 characters.",
   }),
+});
+
+export const gameSchema = z.object({
+  home_team_id: z.number(),
+  away_team_id: z.number(),
+  date: z.date(),
+  venue: z.string().min(2, {
+    message: "Please select a venue.",
+  }),
+  match_report: z.string().default(""),
 });

@@ -1,10 +1,14 @@
 "use server";
 import { auth } from "@clerk/nextjs/server";
 import { db } from "..";
-import { games } from "../schema";
-import { eq } from "drizzle-orm";
+import { games, gameweeks, teams } from "../schema";
+import { eq, desc, aliasedTable } from "drizzle-orm";
 
-import type { IGame } from "~/components/shared/lib/models/games";
+import type {
+  ICreateAndUpdateGame,
+  IGame,
+} from "~/components/shared/lib/models/games";
+import { ITeam } from "~/components/shared/lib/models/team";
 
 // read
 export const getGame = async (id: number) => {
@@ -26,19 +30,33 @@ export const getAllGames = async () => {
   const user = auth();
   if (!user.userId) throw new Error("Unauthorized");
 
-  return await db.query.games.findMany({
-    where: (model, { eq }) => eq(model.user_id, user.userId),
+  const gamesWithTeams = await db.query.games.findMany({
+    where: eq(games.user_id, user.userId),
+    with: {
+      home_team: true,
+      away_team: true,
+    },
+    orderBy: desc(games.date),
   });
+  
+  return gamesWithTeams;
 };
 
 // create game
-export const createGame = async (game: IGame) => {
+export const createGame = async (game: ICreateAndUpdateGame) => {
   const user = auth();
   if (!user.userId) throw new Error("Unauthorized");
 
   const [newGame] = await db
     .insert(games)
-    .values({ ...game })
+    .values({
+      ...game,
+      gameweek_id: 1,
+      user_id: user.userId,
+      result: "Not Started",
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    })
     .returning();
 
   return newGame;

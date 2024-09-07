@@ -1,6 +1,6 @@
 import { toast } from "sonner";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import type { IGame } from "../models/games";
+import type { ICreateAndUpdateGame, IGame } from "../models/games";
 import {
   createGame,
   deleteGame,
@@ -29,7 +29,7 @@ export const useCreateGame = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: IGame) => {
+    mutationFn: async (data: ICreateAndUpdateGame) => {
       return await createGame(data);
     },
     onSuccess: async (data) => {
@@ -37,7 +37,7 @@ export const useCreateGame = () => {
         if (data && !(data instanceof Error)) {
           toast(`Game created successfully`);
           await queryClient.invalidateQueries({
-            queryKey: ["games", data.user_id],
+            queryKey: ["games"],
           });
         } else {
           toast("Game creation failed.");
@@ -63,10 +63,10 @@ export const useDeleteGame = () => {
         if (data && !(data instanceof Error)) {
           toast(`Game deleted successfully`);
           await queryClient.invalidateQueries({
-            queryKey: ["games", data.user_id],
+            queryKey: ["games"],
           });
           await queryClient.invalidateQueries({
-            queryKey: ["games", data.user_id],
+            queryKey: ["games"],
           });
         } else {
           toast("Game deletion failed.");

@@ -30,7 +30,7 @@ export const getTeams = async () => {
   if (!user.userId) throw new Error("Unauthorized");
 
   return await db.query.teams.findMany({
-    where: eq(teams.user_id, user.userId),
+    where: eq(teams.user_id, user.userId)
   });
 };
 
