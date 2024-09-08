@@ -152,9 +152,20 @@ export const gamesRelations = relations(games, ({ one }) => ({
     references: [teams.id],
     relationName: "away_team",
   }),
+  gameweek: one(gameweeks, {
+    fields: [games.gameweek_id],
+    references: [gameweeks.id],
+  }),
 }));
 
 export const teamsRelations = relations(teams, ({ many }) => ({
   home_games: many(games, { relationName: "home_team" }),
   away_games: many(games, { relationName: "away_team" }),
 }));
+
+export const gameweeksRelations = relations(gameweeks, ({ many }) => ({
+  games: many(games),
+}));
+
+// i need to create relations for gameweeks and games
+// gameweeks can have many games, and game can have one gameweek

@@ -41,9 +41,16 @@ export const tournamentSchema = z.object({
   }),
 });
 
+export const gameweekSchema = z.object({
+  number: z.number().min(1, {
+    message: "Please, provide a gameweek number.",
+  }),
+});
+
 export const gameSchema = z.object({
   home_team_id: z.number(),
   away_team_id: z.number(),
+  gameweek_number: z.number(),
   date: z.date(),
   venue: z.string().min(2, {
     message: "Please select a venue.",

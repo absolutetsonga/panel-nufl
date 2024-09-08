@@ -2,7 +2,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { db } from "..";
 import { gameweeks, tournaments } from "../schema";
-import { eq, desc } from "drizzle-orm";
+import { eq, asc } from "drizzle-orm";
 
 // read
 export const getGameweek = async (id: number) => {
@@ -26,7 +26,15 @@ export const getGameweeks = async () => {
 
   return await db.query.gameweeks.findMany({
     where: eq(gameweeks.user_id, user.userId),
-    orderBy: desc(gameweeks.createdAt),
+    with: {
+      games: {
+        with: {
+          home_team: true,
+          away_team: true,
+        },
+      },
+    },
+    orderBy: asc(gameweeks.number),
   });
 };
 
