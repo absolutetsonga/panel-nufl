@@ -15,6 +15,7 @@ import {
 import Image from "next/image";
 import { useGetAllGameweeks } from "~/components/shared/lib/hooks/gameweeks";
 import { GameweekCreateForm } from "~/components/widgets/forms/gameweeks/create-gameweek-form";
+import type { IGameInGameweeks } from "~/components/shared/lib/models/games";
 
 function extractUppercase(text: string): string {
   return text
@@ -51,13 +52,11 @@ export const GamesPage = () => {
 
 export const PopulateGameweeks = () => {
   const { data: gameweeks, isLoading, isError } = useGetAllGameweeks();
-  const [createGameToggle, setCreateGameToggle] = useState(false);
 
   if (isLoading) return <Paragraph>Loading...</Paragraph>;
   if (isError) return <Paragraph>Error loading games.</Paragraph>;
 
-  if (gameweeks?.length === 0)
-    return <Paragraph>No gameweeks found.</Paragraph>;
+  if (gameweeks?.length === 0) return <Paragraph>No gameweeks.</Paragraph>;
   console.log(gameweeks);
 
   return (
@@ -65,46 +64,71 @@ export const PopulateGameweeks = () => {
       {gameweeks?.map((gameweek) => (
         <div key={gameweek.id} className="flex flex-col gap-4">
           <Heading3>Gameweek {gameweek.number}</Heading3>
-          <CreateButton
-            toggle={createGameToggle}
-            setToggle={setCreateGameToggle}
-            className="absolute right-0"
-          />
 
-          {gameweek.games.map((game) => (
-            <div
-              key={game.id}
-              className="flex w-full flex-row items-center justify-center gap-4 rounded-xl bg-[#E8BF77] p-2 font-bold text-black shadow-md"
-            >
-              <div className="flex flex-row items-center justify-center gap-4 text-right">
-                <p className="text-[14px]">
-                  {extractUppercase("School of Mining and Geosciences")}
-                </p>
-                <Image
-                  src={game.home_team.image ?? ""}
-                  width={40}
-                  height={40}
-                  className="h-10 w-10 rounded-full object-cover"
-                  alt={`Image of ${game.home_team.name}`}
-                />
-              </div>
-              <Heading3>VS</Heading3>
-              <div className="flex flex-row items-center justify-center gap-4 text-left">
-                <Image
-                  src={game.away_team.image ?? ""}
-                  width={40}
-                  height={40}
-                  className="h-10 w-10 rounded-full object-cover"
-                  alt={`Image of ${game.away_team.name}`}
-                />
-                <p className="text-[14px]">
-                  {extractUppercase("Social Sciences and Humanities")}
-                </p>
-              </div>
-            </div>
-          ))}
+          <PopulateGames
+            games={gameweek.games}
+            gameweek_number={gameweek.number}
+          />
         </div>
       ))}
     </div>
+  );
+};
+
+const PopulateGames = ({
+  games,
+  gameweek_number,
+}: {
+  games: IGameInGameweeks[];
+  gameweek_number: number;
+}) => {
+  const [createGameToggle, setCreateGameToggle] = useState(false);
+
+  return (
+    <>
+      <CreateButton toggle={createGameToggle} setToggle={setCreateGameToggle} className="absolute right-0" />
+
+      {
+      createGameToggle ? (      <GameCreateForm
+        gameweek_number={gameweek_number}
+        toggle={createGameToggle}
+        setToggle={setCreateGameToggle}
+      />) : (
+      games.map((game) => (
+        <div
+          key={game.id}
+          className="flex w-full flex-row items-center justify-center gap-4 rounded-xl bg-[#E8BF77] p-2 font-bold text-black shadow-md"
+        >
+          <div className="flex flex-row items-center justify-center gap-4 text-right">
+            <p className="text-[14px]">
+              {extractUppercase("School of Mining and Geosciences")}
+            </p>
+            <Image
+              src={game.home_team.image ?? ""}
+              width={40}
+              height={40}
+              className="h-10 w-10 rounded-full object-cover"
+              alt={`Image of ${game.home_team.name}`}
+            />
+          </div>
+          <Heading3>VS</Heading3>
+          <div className="flex flex-row items-center justify-center gap-4 text-left">
+            <Image
+              src={game.away_team.image ?? ""}
+              width={40}
+              height={40}
+              className="h-10 w-10 rounded-full object-cover"
+              alt={`Image of ${game.away_team.name}`}
+            />
+            <p className="text-[14px]">
+              {extractUppercase("Social Sciences and Humanities")}
+            </p>
+          </div>
+        </div>
+      )))
+      
+      
+      }
+    </>
   );
 };

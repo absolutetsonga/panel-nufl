@@ -26,24 +26,23 @@ import { SelectForm } from "~/components/entities/select-form";
 import { cn } from "~/components/shared/lib/utils/clsx";
 import { format } from "date-fns";
 import { Calendar } from "~/components/shared/ui/calendar";
-import { useGetAllGameweeks } from "~/components/shared/lib/hooks/gameweeks";
 
 type Props = {
   toggle: boolean;
   setToggle: React.Dispatch<React.SetStateAction<boolean>>;
+  gameweek_number: number;
 };
 
-export const GameCreateForm = ({ toggle, setToggle }: Props) => {
+export const GameCreateForm = ({
+  toggle,
+  setToggle,
+  gameweek_number,
+}: Props) => {
   const {
     data: teams,
     isLoading: isTeamsLoading,
     isError: isErrorTeams,
   } = useGetTeams();
-  const {
-    data: gameweeks,
-    isLoading: isGameweeksLoading,
-    isError: isErrorGameweeks,
-  } = useGetAllGameweeks();
 
   const { mutate: server_createGame } = useCreateGame();
 
@@ -52,7 +51,7 @@ export const GameCreateForm = ({ toggle, setToggle }: Props) => {
   });
 
   function onSubmit(values: z.infer<typeof gameSchema>) {
-    server_createGame(values);
+    server_createGame({ ...values, gameweek_number });
     setToggle(false);
   }
 
@@ -61,17 +60,10 @@ export const GameCreateForm = ({ toggle, setToggle }: Props) => {
   }
 
   if (!toggle) return <></>;
-  if (teams === undefined || gameweeks === undefined)
-    return <div>Loading...</div>;
+  if (teams === undefined) return <div>Loading...</div>;
   if (teams?.length === 0) return <div>Please create teams first.</div>;
-  if (gameweeks?.length === 0) return <div>Please create gameweeks first.</div>;
-  if (isTeamsLoading || isGameweeksLoading) return <div>Loading...</div>;
-  if (isErrorTeams || isErrorGameweeks) return <div>Error loading teams.</div>;
-
-  const select_gameweeks = gameweeks?.map((gameweek) => ({
-    name: gameweek.number.toString(),
-    value: gameweek.number.toString(),
-  }));
+  if (isTeamsLoading) return <div>Loading...</div>;
+  if (isErrorTeams) return <div>Error loading teams.</div>;
 
   const select_teams = teams?.map((team) => ({
     name: team.name,
@@ -194,26 +186,6 @@ export const GameCreateForm = ({ toggle, setToggle }: Props) => {
                     />
                   </PopoverContent>
                 </Popover>
-                <FormMessage className="mt-2 text-[12px] text-red-600" />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="gameweek_number"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-sm font-medium text-slate-50">
-                  Gameweek Number
-                </FormLabel>
-                <SelectForm
-                  itemValues={select_gameweeks}
-                  onValueChange={(value) => {
-                    field.onChange(Number(value));
-                  }}
-                  defaultValue={String(field.value)}
-                />
                 <FormMessage className="mt-2 text-[12px] text-red-600" />
               </FormItem>
             )}

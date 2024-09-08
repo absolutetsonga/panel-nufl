@@ -44,15 +44,15 @@ export const GameweekCreateForm = ({ toggle, setToggle }: Props) => {
   if (!toggle) return <></>;
 
   return (
-    <div className="z-10 flex flex-col items-center justify-center gap-4 rounded-lg bg-black shadow-lg">
+    <div className="flex max-w-5xl flex-col gap-4 rounded-lg p-6 shadow-lg">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit, onInvalid)}
-          className="relative space-y-8 rounded-xl border-2 border-gray-900 bg-gray-800 p-6 md:p-8"
+          className="relative flex w-full flex-col gap-4"
         >
           <Button
             onClick={() => setToggle(false)}
-            className="absolute right-2 top-2 p-1 text-slate-300 hover:text-slate-50"
+            className="absolute -right-2 -top-2 text-slate-300 hover:text-slate-50"
           >
             <XIcon />
           </Button>

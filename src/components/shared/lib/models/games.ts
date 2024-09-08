@@ -1,3 +1,5 @@
+import type { ITeam } from "./team";
+
 export interface IGame {
   id: number;
   user_id: string;
@@ -13,6 +15,40 @@ export interface IGame {
 
   createdAt: Date;
   updatedAt: Date;
+}
+
+export interface IGameInGameweeks {
+  id: number;
+  user_id: string;
+  home_team_id: number;
+  away_team_id: number;
+
+  venue: string;
+  date: Date;
+  home_team_score: number;
+  away_team_score: number;
+  result: string;
+  match_report: string;
+
+  createdAt: Date;
+  updatedAt: Date;
+
+  home_team: {
+    id: number;
+    name: string;
+    user_id: string | null;
+    image: string | null;
+    createdAt: Date;
+    updatedAt: Date | null;
+  };
+  away_team: {
+    id: number;
+    name: string;
+    user_id: string | null;
+    image: string | null;
+    createdAt: Date;
+    updatedAt: Date | null;
+  };
 }
 
 export interface ICreateAndUpdateGame {

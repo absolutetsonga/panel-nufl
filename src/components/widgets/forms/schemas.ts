@@ -50,7 +50,6 @@ export const gameweekSchema = z.object({
 export const gameSchema = z.object({
   home_team_id: z.number(),
   away_team_id: z.number(),
-  gameweek_number: z.number(),
   date: z.date(),
   venue: z.string().min(2, {
     message: "Please select a venue.",

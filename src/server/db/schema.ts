@@ -81,9 +81,9 @@ export const gameweeks = createTable("gameweek", {
   createdAt: timestamp("created_at", { withTimezone: true })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
-  updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
-    () => new Date(),
-  ),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .$onUpdate(() => new Date())
+    .notNull(),
 });
 
 export const games = createTable("game", {
@@ -96,17 +96,17 @@ export const games = createTable("game", {
 
   venue: varchar("venue", { length: 256 }).notNull(),
   date: timestamp("date", { withTimezone: true }).notNull(),
-  home_team_score: integer("home_team_score").default(-1),
-  away_team_score: integer("away_team_score").default(-1),
+  home_team_score: integer("home_team_score").default(-1).notNull(),
+  away_team_score: integer("away_team_score").default(-1).notNull(),
   result: varchar("result", { length: 256 }).notNull(),
-  match_report: varchar("match_report", { length: 256 }).default(""),
+  match_report: varchar("match_report", { length: 256 }).default("").notNull(),
 
   createdAt: timestamp("created_at", { withTimezone: true })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
-  updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
-    () => new Date(),
-  ),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .$onUpdate(() => new Date())
+    .notNull(),
 });
 
 export const goals = createTable("goal", {
