@@ -82,7 +82,7 @@ export const GameCreateForm = ({
           >
             <XIcon />
           </Button>
-          <div className="mt-10 flex flex-col items-center justify-center gap-4 md:flex-row">
+          <div className="mt-10 flex flex-row items-center justify-center gap-4">
             <FormField
               control={form.control}
               name="home_team_id"
