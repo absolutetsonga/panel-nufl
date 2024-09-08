@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { useGetAllGames } from "~/components/shared/lib/hooks/games";
+import { useGetAllGameweeks } from "~/components/shared/lib/hooks/gameweeks";
 
 import { GameCreateForm } from "~/components/widgets/forms/games/game-create-form";
+import { GameweekCreateForm } from "~/components/widgets/forms/gameweeks/create-gameweek-form";
 import { CreateButton } from "~/components/entities/create-button";
 import { PageContainer } from "~/components/shared/ui";
 import {
@@ -11,10 +12,8 @@ import {
   Heading3,
   Paragraph,
 } from "~/components/shared/ui/typography";
-
 import Image from "next/image";
-import { useGetAllGameweeks } from "~/components/shared/lib/hooks/gameweeks";
-import { GameweekCreateForm } from "~/components/widgets/forms/gameweeks/create-gameweek-form";
+
 import type { IGameInGameweeks } from "~/components/shared/lib/models/games";
 
 function extractUppercase(text: string): string {
@@ -86,49 +85,52 @@ const PopulateGames = ({
 
   return (
     <>
-      <CreateButton toggle={createGameToggle} setToggle={setCreateGameToggle} className="absolute right-0" />
-
-      {
-      createGameToggle ? (      <GameCreateForm
-        gameweek_number={gameweek_number}
+      <CreateButton
         toggle={createGameToggle}
         setToggle={setCreateGameToggle}
-      />) : (
-      games.map((game) => (
-        <div
-          key={game.id}
-          className="flex w-full flex-row items-center justify-center gap-4 rounded-xl bg-[#E8BF77] p-2 font-bold text-black shadow-md"
-        >
-          <div className="flex flex-row items-center justify-center gap-4 text-right">
-            <p className="text-[14px]">
-              {extractUppercase("School of Mining and Geosciences")}
-            </p>
-            <Image
-              src={game.home_team.image ?? ""}
-              width={40}
-              height={40}
-              className="h-10 w-10 rounded-full object-cover"
-              alt={`Image of ${game.home_team.name}`}
-            />
+        className="absolute right-0"
+      />
+
+      {createGameToggle ? (
+        <GameCreateForm
+          gameweek_number={gameweek_number}
+          toggle={createGameToggle}
+          setToggle={setCreateGameToggle}
+        />
+      ) : (
+        games.map((game) => (
+          <div
+            key={game.id}
+            className="flex w-full flex-row items-center justify-center gap-4 rounded-xl bg-[#E8BF77] p-2 font-bold text-black shadow-md"
+          >
+            <div className="flex flex-row items-center justify-center gap-4 text-right">
+              <p className="text-[14px]">
+                {extractUppercase("School of Mining and Geosciences")}
+              </p>
+              <Image
+                src={game.home_team.image ?? ""}
+                width={40}
+                height={40}
+                className="h-10 w-10 rounded-full object-cover"
+                alt={`Image of ${game.home_team.name}`}
+              />
+            </div>
+            <Heading3>VS</Heading3>
+            <div className="flex flex-row items-center justify-center gap-4 text-left">
+              <Image
+                src={game.away_team.image ?? ""}
+                width={40}
+                height={40}
+                className="h-10 w-10 rounded-full object-cover"
+                alt={`Image of ${game.away_team.name}`}
+              />
+              <p className="text-[14px]">
+                {extractUppercase("Social Sciences and Humanities")}
+              </p>
+            </div>
           </div>
-          <Heading3>VS</Heading3>
-          <div className="flex flex-row items-center justify-center gap-4 text-left">
-            <Image
-              src={game.away_team.image ?? ""}
-              width={40}
-              height={40}
-              className="h-10 w-10 rounded-full object-cover"
-              alt={`Image of ${game.away_team.name}`}
-            />
-            <p className="text-[14px]">
-              {extractUppercase("Social Sciences and Humanities")}
-            </p>
-          </div>
-        </div>
-      )))
-      
-      
-      }
+        ))
+      )}
     </>
   );
 };

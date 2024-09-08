@@ -37,7 +37,7 @@ export const useCreateGame = () => {
         if (data && !(data instanceof Error)) {
           toast(`Game created successfully`);
           await queryClient.invalidateQueries({
-            queryKey: ["games"],
+            queryKey: ["gameweeks"],
           });
         } else {
           toast("Game creation failed.");

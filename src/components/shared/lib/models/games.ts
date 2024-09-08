@@ -1,5 +1,3 @@
-import type { ITeam } from "./team";
-
 export interface IGame {
   id: number;
   user_id: string;

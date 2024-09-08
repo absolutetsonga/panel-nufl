@@ -1,7 +1,4 @@
-import { date } from "drizzle-orm/mysql-core";
-import { vector } from "drizzle-orm/pg-core";
 import { z } from "zod";
-import { goals } from "~/server/db/schema";
 
 export const playerSchema = z.object({
   fullname: z.string().min(2, {

@@ -8,6 +8,7 @@ import {
 import { COMMANDS } from "~/components/entities/command/constants";
 
 import Link from "next/link";
+import Image from "next/image";
 
 const Menubar = () => {
   return (
@@ -18,7 +19,7 @@ const Menubar = () => {
       <SignedIn>
         <div className="flex h-full flex-col">
           <div className="flex flex-col items-center gap-2 sm:flex-row">
-            <img
+            <Image
               src={
                 "https://utfs.io/f/10eeb70a-84b1-4991-9621-0d2fdacd5ef4-hru0oc.png"
               }
