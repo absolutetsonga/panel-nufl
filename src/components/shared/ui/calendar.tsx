@@ -13,8 +13,10 @@ function Calendar({ className, classNames, ...props }: CalendarProps) {
   return (
     <DayPicker
       showOutsideDays={false}
-      captionLayout="dropdown"
       className={cn("p-3", className)}
+      captionLayout="dropdown"
+
+      weekStartsOn={1}
       classNames={{
         months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
         month: "space-y-4 opacity-100",

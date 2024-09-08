@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 import { useCreateGame } from "~/components/shared/lib/hooks/games";
+import { useGetTeams } from "~/components/shared/lib/hooks/team";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import {
@@ -10,21 +11,22 @@ import {
   FormLabel,
   FormMessage,
 } from "~/components/entities/command/ui/form";
+
+import { SelectForm } from "~/components/entities/select-form";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "~/components/shared/ui/popover";
-
-import type { z } from "zod";
-import { gameSchema } from "../schemas";
 import { Button, Input } from "~/components/shared/ui";
 import { CalendarIcon, XIcon } from "lucide-react";
-import { useGetTeams } from "~/components/shared/lib/hooks/team";
-import { SelectForm } from "~/components/entities/select-form";
 import { cn } from "~/components/shared/lib/utils/clsx";
 import { format } from "date-fns";
 import { Calendar } from "~/components/shared/ui/calendar";
+import { TimePickerDemo } from "../../time-picker";
+
+import { gameSchema } from "../schemas";
+import type { z } from "zod";
 
 type Props = {
   toggle: boolean;
@@ -150,42 +152,44 @@ export const GameCreateForm = ({
             control={form.control}
             name="date"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-sm font-medium text-slate-50">
-                  Date
-                </FormLabel>
+              <FormItem className="flex flex-col">
+                <FormLabel className="text-left">Date Time</FormLabel>
                 <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl>
+                  <FormControl>
+                    <PopoverTrigger asChild>
                       <Button
-                        variant={"outline"}
+                        variant="outline"
                         className={cn(
-                          "w-full pl-3 text-left font-normal",
+                          "w-[280px] justify-start text-left font-normal",
                           !field.value && "text-muted-foreground",
                         )}
                       >
+                        <CalendarIcon className="mr-2 h-4 w-4" />
                         {field.value ? (
-                          format(field.value, "PPP")
+                          format(field.value, "PPP HH:mm:ss")
                         ) : (
-                          <span>Pick a date</span>
+                          <span>Pick a date time</span>
                         )}
-                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                       </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
+                    </PopoverTrigger>
+                  </FormControl>
+                  <PopoverContent className="w-auto p-0 bg-white text-black">
                     <Calendar
-                      className="z-20 bg-white text-black"
                       mode="single"
-                      fromDate={new Date(2024, 8, 1)}
-                      toDate={new Date(2025, 11, 31)}
                       selected={field.value}
                       onSelect={field.onChange}
+                      fromDate={new Date(1980, 0o1, 0o1)}
+                      toDate={new Date()}
                       initialFocus
                     />
+                    <div className="border-border border-t p-3">
+                      <TimePickerDemo
+                        setDate={field.onChange}
+                        date={field.value}
+                      />
+                    </div>
                   </PopoverContent>
                 </Popover>
-                <FormMessage className="mt-2 text-[12px] text-red-600" />
               </FormItem>
             )}
           />

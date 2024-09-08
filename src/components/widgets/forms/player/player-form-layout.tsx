@@ -215,8 +215,6 @@ export const PlayerFormLayout = ({
                       <Calendar
                         className="z-20 bg-white text-black"
                         mode="single"
-                        fromDate={new Date(1950, 0o1, 0o1)}
-                        toDate={new Date()}
                         selected={field.value}
                         onSelect={field.onChange}
                         initialFocus
