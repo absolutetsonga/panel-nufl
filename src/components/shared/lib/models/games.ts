@@ -53,3 +53,11 @@ export interface ICard {
   player_id: number;
   is_yellow: boolean;
 }
+
+export interface IGameWeek {
+  id: number;
+  user_id: string;
+  number: number;
+  createdAt: Date;
+  updatedAt: Date;
+}

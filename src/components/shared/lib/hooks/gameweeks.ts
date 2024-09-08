@@ -1,49 +1,49 @@
 import { toast } from "sonner";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import type { ICreateAndUpdateGame } from "../models/games";
 import {
-  createGame,
-  deleteGame,
-  getAllGames,
-  getGame,
-} from "~/server/db/queries/games";
+  createGameweek,
+  deleteGameweek,
+  getGameweek,
+  getGameweeks,
+} from "~/server/db/queries/gameweeks";
 
-// read one game
-export const useGetOneClubPlayers = (team_id: number) => {
+// read one gameweek
+export const useGetOneGameweek = (id: number) => {
   return useQuery({
-    queryFn: async () => await getGame(team_id),
-    queryKey: ["games"],
+    queryFn: async () => await getGameweek(id),
+    queryKey: ["gameweeks"],
   });
 };
 
-// read all games
-export const useGetAllGames = () => {
+// read all gameweeks
+export const useGetAllGameweeks = () => {
   return useQuery({
-    queryFn: async () => await getAllGames(),
-    queryKey: ["games"],
+    queryFn: async () => await getGameweeks(),
+    queryKey: ["gameweeks"],
   });
 };
 
-// create game
-export const useCreateGame = () => {
+// create gameweek
+export const useCreateGameweek = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (data: ICreateAndUpdateGame) => {
-      return await createGame(data);
+    mutationFn: async (number: number) => {
+      return await createGameweek(number);
     },
     onSuccess: async (data) => {
       try {
         if (data && !(data instanceof Error)) {
-          toast(`Game created successfully`);
+          toast(`Gameweek created successfully`);
           await queryClient.invalidateQueries({
-            queryKey: ["games"],
+            queryKey: ["gameweeks"],
           });
         } else {
-          toast("Game creation failed.");
+          toast("Gameweek creation failed.");
         }
       } catch (error) {
         console.error("Error invalidating queries:", error);
+        toast.error("Error");
       }
     },
     onError: (error) => {
@@ -52,24 +52,24 @@ export const useCreateGame = () => {
   });
 };
 
-// delete game
-export const useDeleteGame = () => {
+// delete gameweek
+export const useDeleteGameweek = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: number) => deleteGame(id),
+    mutationFn: (id: number) => deleteGameweek(id),
     onSuccess: async (data) => {
       try {
         if (data && !(data instanceof Error)) {
-          toast(`Game deleted successfully`);
+          toast(`Gameweek deleted successfully`);
           await queryClient.invalidateQueries({
-            queryKey: ["games"],
+            queryKey: ["gameweeks"],
           });
           await queryClient.invalidateQueries({
-            queryKey: ["games"],
+            queryKey: ["gameweeks"],
           });
         } else {
-          toast("Game deletion failed.");
+          toast("Gameweek deletion failed.");
         }
       } catch (error) {
         console.error("Error invalidating queries:", error);

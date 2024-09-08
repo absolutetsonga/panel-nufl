@@ -1,14 +1,10 @@
 "use server";
 import { auth } from "@clerk/nextjs/server";
 import { db } from "..";
-import { games, gameweeks, teams } from "../schema";
-import { eq, desc, aliasedTable } from "drizzle-orm";
+import { games } from "../schema";
+import { eq, desc } from "drizzle-orm";
 
-import type {
-  ICreateAndUpdateGame,
-  IGame,
-} from "~/components/shared/lib/models/games";
-import { ITeam } from "~/components/shared/lib/models/team";
+import type { ICreateAndUpdateGame } from "~/components/shared/lib/models/games";
 
 // read
 export const getGame = async (id: number) => {
@@ -38,7 +34,7 @@ export const getAllGames = async () => {
     },
     orderBy: desc(games.date),
   });
-  
+
   return gamesWithTeams;
 };
 
