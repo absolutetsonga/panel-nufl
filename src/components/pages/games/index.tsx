@@ -67,7 +67,7 @@ export const PopulateGameweeks = () => {
 
           <PopulateGames
             games={gameweek.games}
-            gameweek_number={gameweek.number}
+            gameweek_id={gameweek.id}
           />
         </div>
       ))}
@@ -77,10 +77,10 @@ export const PopulateGameweeks = () => {
 
 const PopulateGames = ({
   games,
-  gameweek_number,
+  gameweek_id,
 }: {
   games: IGameInGameweeks[];
-  gameweek_number: number;
+  gameweek_id: number;
 }) => {
   const [createGameToggle, setCreateGameToggle] = useState(false);
   if (!games) return <div>No games found.</div>
@@ -95,7 +95,7 @@ const PopulateGames = ({
 
       {createGameToggle ? (
         <GameCreateForm
-          gameweek_number={gameweek_number}
+          gameweek_id={gameweek_id}
           toggle={createGameToggle}
           setToggle={setCreateGameToggle}
         />

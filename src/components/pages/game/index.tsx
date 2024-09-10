@@ -9,6 +9,5 @@ export const GamePage = ({ id }: { id: string }) => {
   if (isError) return <div>Error</div>
   if (!game) return <div>Game not found</div>
   
-  console.log(game);
   return <PageContainer>{id}</PageContainer>;
 };

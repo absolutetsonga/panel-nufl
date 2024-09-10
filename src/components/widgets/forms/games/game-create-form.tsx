@@ -18,7 +18,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "~/components/shared/ui/popover";
-import { Button, Input } from "~/components/shared/ui";
+import { Button } from "~/components/shared/ui";
 import { CalendarIcon, XIcon } from "lucide-react";
 import { cn } from "~/components/shared/lib/utils/clsx";
 import { format } from "date-fns";
@@ -27,17 +27,18 @@ import { TimePickerDemo } from "../../time-picker";
 
 import { gameSchema } from "../schemas";
 import type { z } from "zod";
+import { InputForm } from "~/components/entities/input-form";
 
 type Props = {
   toggle: boolean;
   setToggle: React.Dispatch<React.SetStateAction<boolean>>;
-  gameweek_number: number;
+  gameweek_id: number;
 };
 
 export const GameCreateForm = ({
   toggle,
   setToggle,
-  gameweek_number,
+  gameweek_id,
 }: Props) => {
   const {
     data: teams,
@@ -52,7 +53,7 @@ export const GameCreateForm = ({
   });
 
   function onSubmit(values: z.infer<typeof gameSchema>) {
-    server_createGame({ ...values, gameweek_number });
+    server_createGame({ ...values, gameweek_id });
     setToggle(false);
   }
 
@@ -197,7 +198,7 @@ export const GameCreateForm = ({
             )}
           />
 
-          <FormField
+          {/* <FormField
             control={form.control}
             name="match_report"
             render={({ field }) => (
@@ -215,7 +216,9 @@ export const GameCreateForm = ({
                 <FormMessage className="mt-2 text-[12px] text-red-600" />
               </FormItem>
             )}
-          />
+          /> */}
+
+          <InputForm form={form} label={"Math Report (Optional)"} placeholder={"John Doe is MVP of the game"}/>
 
           <div className="w-[200px]">
             <Button

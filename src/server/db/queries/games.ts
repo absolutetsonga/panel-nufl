@@ -47,7 +47,7 @@ export const createGame = async (game: ICreateAndUpdateGame) => {
     .insert(games)
     .values({
       ...game,
-      gameweek_id: game.gameweek_number,
+      gameweek_id: game.gameweek_id,
       user_id: user.userId,
       result: "Not Started",
       createdAt: new Date(),
