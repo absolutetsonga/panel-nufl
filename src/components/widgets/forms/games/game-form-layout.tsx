@@ -2,30 +2,14 @@ import { InputForm } from "~/components/entities/input-form";
 import { SubmitButton } from "~/components/entities/submit-button";
 import { CloseButton } from "~/components/entities/close-button";
 
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-} from "~/components/entities/command/ui/form";
+import { Form } from "~/components/entities/command/ui/form";
 
 import { SelectForm } from "~/components/entities/select-form";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "~/components/shared/ui/popover";
-import { Button } from "~/components/shared/ui";
-import { CalendarIcon } from "lucide-react";
-import { cn } from "~/components/shared/lib/utils/clsx";
-import { format } from "date-fns";
-import { Calendar } from "~/components/shared/ui/calendar";
-import { TimePickerDemo } from "../../time-picker";
-import { UseFormReturn } from "react-hook-form";
-import { gameSchema } from "../schemas";
+import type { UseFormReturn } from "react-hook-form";
+import type { gameSchema } from "../schemas";
 
 import type { z } from "zod";
+import { DateTimeForm } from "~/components/entities/date-time-form";
 
 type Props = {
   toggle: boolean;
@@ -38,7 +22,7 @@ type Props = {
       match_report: string;
       away_team_id: number;
     },
-    any,
+    unknown,
     undefined
   >;
 
@@ -103,50 +87,15 @@ export const GameFormLayout = ({
             description="Please select the venue of the game"
           />
 
-          <FormField
-            control={form.control}
-            name="date"
-            render={({ field }) => (
-              <FormItem className="flex flex-col">
-                <FormLabel className="text-left">Date Time</FormLabel>
-                <Popover>
-                  <FormControl>
-                    <PopoverTrigger asChild>
-                      <Button
-                        variant="outline"
-                        className={cn(
-                          "w-[280px] justify-start text-left font-normal",
-                          !field.value && "text-muted-foreground",
-                        )}
-                      >
-                        <CalendarIcon className="mr-2 h-4 w-4" />
-                        {field.value ? (
-                          format(field.value, "PPP HH:mm:ss")
-                        ) : (
-                          <span>Pick a date time</span>
-                        )}
-                      </Button>
-                    </PopoverTrigger>
-                  </FormControl>
-                  <PopoverContent className="w-auto bg-white p-0 text-black">
-                    <Calendar
-                      mode="single"
-                      selected={field.value}
-                      onSelect={field.onChange}
-                      fromDate={new Date(1980, 0o1, 0o1)}
-                      toDate={new Date()}
-                      initialFocus
-                    />
-                    <div className="border-border border-t p-3">
-                      <TimePickerDemo
-                        setDate={field.onChange}
-                        date={field.value}
-                      />
-                    </div>
-                  </PopoverContent>
-                </Popover>
-              </FormItem>
-            )}
+          <DateTimeForm
+            form={form}
+            name={"date"}
+            label={"Date Time"}
+            description={"Please pick a date time of the game"}
+            placeholder={"Pick a date time"}
+            fromDate={new Date(2024, 9, 0o1)}
+            toDate={new Date(2025, 11, 31)}
+            withTimePicker={true}
           />
 
           <InputForm
@@ -164,3 +113,4 @@ export const GameFormLayout = ({
     </div>
   );
 };
+// 167 lines

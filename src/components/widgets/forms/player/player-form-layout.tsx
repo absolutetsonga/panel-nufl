@@ -7,23 +7,12 @@ import {
   FormLabel,
   FormMessage,
 } from "~/components/entities/command/ui/form";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "~/components/shared/ui/popover";
 
 import { SelectForm } from "~/components/entities/select-form";
-import { Calendar } from "~/components/shared/ui/calendar";
-import { Button } from "~/components/shared/ui";
 import { UploadButton } from "~/components/shared/lib/utils/uploadthing";
-import { CalendarIcon } from "lucide-react";
 import { toast } from "sonner";
 
 import Image from "next/image";
-
-import { format } from "date-fns";
-import { cn } from "~/components/shared/lib/utils/clsx";
 
 import {
   levelOfStudyItemValues,
@@ -39,6 +28,7 @@ import type { playerSchema } from "../schemas";
 import { InputForm } from "~/components/entities/input-form";
 import { SubmitButton } from "~/components/entities/submit-button";
 import { CloseButton } from "~/components/entities/close-button";
+import { DateTimeForm } from "~/components/entities/date-time-form";
 
 type Props = {
   isFoundation?: boolean;
@@ -135,49 +125,14 @@ export const PlayerFormLayout = ({
               }}
             />
 
-            <FormField
-              control={form.control}
+            <DateTimeForm
+              form={form}
               name={"age"}
-              render={({ field }) => (
-                <FormItem className={"w-full md:w-1/2"}>
-                  <FormLabel>Date of birth</FormLabel>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <FormControl>
-                        <Button
-                          variant={"outline"}
-                          className={cn(
-                            "w-full pl-3 text-left font-normal",
-                            !field.value && "text-muted-foreground",
-                          )}
-                        >
-                          {field.value ? (
-                            format(field.value, "PPP")
-                          ) : (
-                            <span>Pick a date</span>
-                          )}
-                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent className={"w-auto p-0"} align={"start"}>
-                      <Calendar
-                        className={"z-20 bg-white text-black"}
-                        mode={"single"}
-                        selected={field.value}
-                        fromDate={new Date(1980, 0o1, 0o1)}
-                        toDate={new Date()}
-                        onSelect={field.onChange}
-                        initialFocus
-                      />
-                    </PopoverContent>
-                  </Popover>
-                  <FormDescription className={"text-[14px] text-slate-300"}>
-                    Used to calculate age of player.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
+              label="Date of Birth"
+              placeholder="Pick a date"
+              description="Used to calculate age of player."
+              fromDate={new Date(1980, 0o1, 0o1)}
+              toDate={new Date()}
             />
           </div>
 
@@ -258,3 +213,4 @@ export const PlayerFormLayout = ({
     </div>
   );
 };
+// 261 lines
