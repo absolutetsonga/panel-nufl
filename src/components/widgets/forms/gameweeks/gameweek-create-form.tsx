@@ -48,6 +48,7 @@ export const GameweekCreateForm = ({ toggle, setToggle }: Props) => {
             label="Gameweek"
             placeholder="Ex: 8"
             description="Write down gameweek number."
+            className="mt-4"
             onChange={(e) => {
               form.setValue("number", Number(e.target.value));
             }}
