@@ -42,6 +42,7 @@ import type { z } from "zod";
 import type { Dispatch, SetStateAction } from "react";
 import type { UseFormReturn } from "react-hook-form";
 import type { playerSchema } from "../schemas";
+import { InputForm } from "~/components/entities/input-form";
 
 type Props = {
   isFoundation?: boolean;
@@ -90,27 +91,13 @@ export const PlayerFormLayout = ({
           </Button>
 
           <div className="mt-10 flex flex-col items-center justify-center gap-4 md:flex-row">
-            <FormField
-              control={form.control}
-              name="fullname"
-              render={({ field }) => (
-                <FormItem className="w-full md:w-1/2">
-                  <FormLabel className="text-sm font-medium text-slate-50">
-                    Player Name
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="ex: John Doe"
-                      {...field}
-                      className="rounded-md bg-black focus:border-indigo-500 focus:ring-indigo-500"
-                    />
-                  </FormControl>
-                  <FormDescription className="text-[14px] text-slate-300">
-                    Write down player full name.
-                  </FormDescription>
-                  <FormMessage className="mt-2 text-[12px] text-red-600" />
-                </FormItem>
-              )}
+            <InputForm
+              form={form}
+              name={"fullname"}
+              label={"Player Name"}
+              placeholder={"ex: John Doe"}
+              description={"Write down player full name"}
+              className="w-full md:w-1/2"
             />
 
             <FormField
@@ -241,7 +228,7 @@ export const PlayerFormLayout = ({
                       School Name
                     </FormLabel>
                     <SelectForm
-                    placeholder="Select school name"
+                      placeholder="Select school name"
                       itemValues={schoolNameItemValues}
                       onValueChange={field.onChange}
                       defaultValue={field.value}
@@ -264,7 +251,7 @@ export const PlayerFormLayout = ({
                       Course Year
                     </FormLabel>
                     <SelectForm
-                    placeholder="Select course year"
+                      placeholder="Select course year"
                       itemValues={numberOfYearsItemValues}
                       onValueChange={(value) => {
                         field.onChange(Number(value));

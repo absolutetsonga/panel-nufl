@@ -16,6 +16,7 @@ type InputFormProps<T extends FieldValues> = {
   label: string;
   placeholder: string;
   description: string;
+  className: string;
   onChange?: React.ChangeEventHandler<HTMLInputElement> | undefined;
 };
 
@@ -25,6 +26,7 @@ export const InputForm = <T extends FieldValues>({
   label,
   placeholder,
   description,
+  className,
   onChange,
 }: InputFormProps<T>) => {
   return (
@@ -32,7 +34,7 @@ export const InputForm = <T extends FieldValues>({
       control={form.control}
       name={name}
       render={({ field }) => (
-        <FormItem>
+        <FormItem className={className}>
           <FormLabel className="text-sm font-medium text-slate-50">
             {label}
           </FormLabel>

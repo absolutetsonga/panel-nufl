@@ -3,17 +3,9 @@ import type { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import React from "react";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "~/components/entities/command/ui/form";
+import { Form } from "~/components/entities/command/ui/form";
 
-import { Button, Input } from "~/components/shared/ui";
+import { Button } from "~/components/shared/ui";
 
 import { XIcon } from "lucide-react";
 
