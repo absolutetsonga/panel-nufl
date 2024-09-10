@@ -1,3 +1,13 @@
+import type { FieldValues, Path, UseFormReturn } from "react-hook-form";
+
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormDescription,
+  FormMessage,
+} from "~/components/entities/command/ui/form";
 import {
   Select,
   SelectContent,
@@ -5,7 +15,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/shared/ui/select";
-import { FormControl } from "~/components/entities/command/ui/form";
 
 type itemValue = {
   value: string;
@@ -13,37 +22,64 @@ type itemValue = {
   isHidden?: boolean;
 };
 
-type Props = {
+type SelectFormProps<T extends FieldValues> = {
+  form: UseFormReturn<T>;
+  name: Path<T>;
+  label: string;
   itemValues: itemValue[];
   placeholder: string;
-  onValueChange: (...event: unknown[]) => void;
-  defaultValue: string | undefined;
+  description: string;
+  className?: string;
+  onValueChange?: (...event: unknown[]) => void;
 };
 
-export const SelectForm = ({
+export const SelectForm = <T extends FieldValues>({
+  form,
+  name,
+  label,
   itemValues,
   placeholder,
+  description,
+  className,
   onValueChange,
-  defaultValue,
-}: Props) => {
+}: SelectFormProps<T>) => {
   return (
-    <Select onValueChange={onValueChange} defaultValue={defaultValue}>
-      <FormControl>
-        <SelectTrigger>
-          <SelectValue placeholder={placeholder} />
-        </SelectTrigger>
-      </FormControl>
-      <SelectContent className="bg-black ">
-        {itemValues.map((iv) => (
-          <SelectItem
-            key={iv.name}
-            value={iv.value}
-            className={`${iv.isHidden ? "hidden" : "block"}`}
+    <FormField
+      control={form.control}
+      name={name}
+      render={({ field }) => (
+        <FormItem className={className}>
+          <FormLabel>{label}</FormLabel>
+          <Select
+            onValueChange={(value) => {
+              field.onChange(value);
+              onValueChange?.(value);
+            }}
+            defaultValue={field.value}
           >
-            {iv.name}
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
+            <FormControl>
+              <SelectTrigger>
+                <SelectValue placeholder={placeholder} />
+              </SelectTrigger>
+            </FormControl>
+            <SelectContent className="bg-black ">
+              {itemValues.map((iv) => (
+                <SelectItem
+                  key={iv.name}
+                  value={iv.value}
+                  className={`${iv.isHidden ? "hidden" : "block"}`}
+                >
+                  {iv.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+            <FormDescription className="text-[14px] text-slate-300">
+              {description}
+            </FormDescription>
+            <FormMessage className="mt-2 text-[12px] text-red-600" />
+          </Select>
+        </FormItem>
+      )}
+    ></FormField>
   );
 };

@@ -22,7 +22,7 @@ import {
 
 import { SelectForm } from "~/components/entities/select-form";
 import { Calendar } from "~/components/shared/ui/calendar";
-import { Button, Input } from "~/components/shared/ui";
+import { Button } from "~/components/shared/ui";
 import { UploadButton } from "~/components/shared/lib/utils/uploadthing";
 import { CalendarIcon, XIcon } from "lucide-react";
 import { toast } from "sonner";
@@ -35,6 +35,7 @@ import { cn } from "~/components/shared/lib/utils/clsx";
 import {
   levelOfStudyItemValues,
   numberOfYearsItemValues,
+  positionsItemValues,
   schoolNameItemValues,
 } from "./constants";
 
@@ -100,75 +101,40 @@ export const PlayerFormLayout = ({
               className="w-full md:w-1/2"
             />
 
-            <FormField
-              control={form.control}
-              name="position"
-              render={({ field }) => (
-                <FormItem className="w-full md:w-1/2">
-                  <FormLabel className="text-sm font-medium text-slate-50">
-                    Player Position
-                  </FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select player position" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent className="bg-black">
-                      <SelectItem value="Goalkeeper">Goalkeeper</SelectItem>
-                      <SelectItem value="Defender">Defender</SelectItem>
-                      <SelectItem value="Left Winger">Left Winger</SelectItem>
-                      <SelectItem value="Right Winger">Right Winger</SelectItem>
-                      <SelectItem value="Striker">Striker</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormDescription className="text-[14px] text-slate-300">
-                    Select player position.
-                  </FormDescription>
-                  <FormMessage className="mt-2 text-[12px] text-red-600" />
-                </FormItem>
-              )}
+            <SelectForm
+              form={form}
+              name={"position"}
+              label={"Player Position"}
+              itemValues={positionsItemValues}
+              placeholder={"Select player position"}
+              description={"Please select the position of the player"}
+              className={"w-full md:w-1/2"}
             />
           </div>
 
           <div className="flex flex-col items-center justify-center gap-4 md:flex-row">
-            <FormField
-              control={form.control}
+            <SelectForm
+              form={form}
               name="level_of_study"
-              render={({ field }) => (
-                <FormItem className="w-full md:w-1/2">
-                  <FormLabel className="text-sm font-medium text-slate-50">
-                    Level of Study
-                  </FormLabel>
-                  <SelectForm
-                    itemValues={levelOfStudyItemValues}
-                    placeholder="Select level of study"
-                    onValueChange={(value) => {
-                      field.onChange(value);
-                      if (setIsFoundation) {
-                        setIsFoundation(value === "FOUND");
-                        if (value === "FOUND") {
-                          setIsFoundation(true);
-                          form.setValue("school", "CPS");
-                          form.setValue("year", 0);
-                        } else {
-                          setIsFoundation(false);
-                          form.setValue("school", "");
-                          form.setValue("year", 1);
-                        }
-                      }
-                    }}
-                    defaultValue={field.value}
-                  />
-                  <FormDescription className="text-[14px] text-slate-300">
-                    Select Level of Study
-                  </FormDescription>
-                  <FormMessage className="mt-2 text-[12px] text-red-600" />
-                </FormItem>
-              )}
+              label="Level of Study"
+              itemValues={levelOfStudyItemValues}
+              placeholder="Select level of study"
+              description="Please select the study level of this player"
+              className={"w-full md:w-1/2"}
+              onValueChange={(value) => {
+                if (setIsFoundation) {
+                  setIsFoundation(value === "FOUND");
+                  if (value === "FOUND") {
+                    setIsFoundation(true);
+                    form.setValue("school", "CPS");
+                    form.setValue("year", 0);
+                  } else {
+                    setIsFoundation(false);
+                    form.setValue("school", "");
+                    form.setValue("year", 1);
+                  }
+                }
+              }}
             />
 
             <FormField
@@ -219,51 +185,28 @@ export const PlayerFormLayout = ({
 
           <div className="flex flex-col gap-4 md:flex-row">
             {!isFoundation && (
-              <FormField
-                control={form.control}
-                name="school"
-                render={({ field }) => (
-                  <FormItem className="w-full md:w-1/2">
-                    <FormLabel className="text-sm font-medium text-slate-50">
-                      School Name
-                    </FormLabel>
-                    <SelectForm
-                      placeholder="Select school name"
-                      itemValues={schoolNameItemValues}
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    />
-                    <FormDescription className="text-[14px] text-slate-300">
-                      Select School
-                    </FormDescription>
-                    <FormMessage className="mt-2 text-[12px] text-red-600" />
-                  </FormItem>
-                )}
+              <SelectForm
+                form={form}
+                name={"school"}
+                label={"School Name"}
+                itemValues={schoolNameItemValues}
+                placeholder={"Select school name"}
+                description={"Please select the school name of the player"}
+                className={"w-full md:w-1/2"}
               />
             )}
             {!isFoundation && (
-              <FormField
-                control={form.control}
-                name="year"
-                render={({ field }) => (
-                  <FormItem className="w-full md:w-1/2">
-                    <FormLabel className="text-sm font-medium text-slate-50">
-                      Course Year
-                    </FormLabel>
-                    <SelectForm
-                      placeholder="Select course year"
-                      itemValues={numberOfYearsItemValues}
-                      onValueChange={(value) => {
-                        field.onChange(Number(value));
-                      }}
-                      defaultValue={String(field.value)}
-                    />
-                    <FormDescription className="text-[14px] text-slate-300">
-                      Select Course Year
-                    </FormDescription>
-                    <FormMessage className="mt-2 text-[12px] text-red-600" />
-                  </FormItem>
-                )}
+              <SelectForm
+                form={form}
+                name={"year"}
+                label={"Course Year"}
+                itemValues={numberOfYearsItemValues}
+                placeholder="Select course year"
+                description="Please select the course year of the player"
+                className={"w-full md:w-1/2"}
+                onValueChange={(value) => {
+                  form.setValue("year", Number(value));
+                }}
               />
             )}
           </div>

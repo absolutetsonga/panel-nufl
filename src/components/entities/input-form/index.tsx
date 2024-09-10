@@ -16,7 +16,7 @@ type InputFormProps<T extends FieldValues> = {
   label: string;
   placeholder: string;
   description: string;
-  className: string;
+  className?: string;
   onChange?: React.ChangeEventHandler<HTMLInputElement> | undefined;
 };
 
