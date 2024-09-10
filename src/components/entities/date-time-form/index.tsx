@@ -31,6 +31,7 @@ type DateTimeProps<T extends FieldValues> = {
   fromDate: Date;
   toDate: Date;
   withTimePicker?: boolean;
+  className?: string;
 };
 
 export const DateTimeForm = <T extends FieldValues>({
@@ -41,6 +42,7 @@ export const DateTimeForm = <T extends FieldValues>({
   placeholder,
   fromDate,
   toDate,
+  className,
   withTimePicker = false,
 }: DateTimeProps<T>) => {
   return (
@@ -48,7 +50,7 @@ export const DateTimeForm = <T extends FieldValues>({
       control={form.control}
       name={name}
       render={({ field }) => (
-        <FormItem className="flex flex-col">
+        <FormItem className={className}>
           <FormLabel className="text-left">{label}</FormLabel>
           <Popover>
             <FormControl>
@@ -56,7 +58,7 @@ export const DateTimeForm = <T extends FieldValues>({
                 <Button
                   variant="outline"
                   className={cn(
-                    "w-[280px] justify-start text-left font-normal",
+                    "w-full justify-start text-left font-normal",
                     !field.value && "text-muted-foreground",
                   )}
                 >
