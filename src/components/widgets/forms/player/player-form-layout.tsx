@@ -37,6 +37,7 @@ import type { Dispatch, SetStateAction } from "react";
 import type { UseFormReturn } from "react-hook-form";
 import type { playerSchema } from "../schemas";
 import { InputForm } from "~/components/entities/input-form";
+import { SubmitButton } from "~/components/entities/submit-button";
 
 type Props = {
   isFoundation?: boolean;
@@ -71,20 +72,26 @@ export const PlayerFormLayout = ({
   onInvalid,
 }: Props) => {
   return (
-    <div className="flex max-w-5xl flex-col gap-4 rounded-lg p-6 shadow-lg">
+    <div className={"flex max-w-5xl flex-col gap-4 rounded-lg p-6 shadow-lg"}>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit, onInvalid)}
-          className="relative flex w-full flex-col gap-4"
+          className={"relative flex w-full flex-col gap-4"}
         >
           <Button
             onClick={() => setToggle(false)}
-            className="absolute -right-2 top-0 text-slate-300 hover:text-slate-50"
+            className={
+              "absolute -right-2 top-0 text-slate-300 hover:text-slate-50"
+            }
           >
             <XIcon />
           </Button>
 
-          <div className="mt-10 flex flex-col items-center justify-center gap-4 md:flex-row">
+          <div
+            className={
+              "mt-10 flex flex-col items-center justify-center gap-4 md:flex-row"
+            }
+          >
             <InputForm
               form={form}
               name={"fullname"}
@@ -105,14 +112,18 @@ export const PlayerFormLayout = ({
             />
           </div>
 
-          <div className="flex flex-col items-center justify-center gap-4 md:flex-row">
+          <div
+            className={
+              "flex flex-col items-center justify-center gap-4 md:flex-row"
+            }
+          >
             <SelectForm
               form={form}
-              name="level_of_study"
-              label="Level of Study"
+              name={"level_of_study"}
+              label={"Level of Study"}
               itemValues={levelOfStudyItemValues}
-              placeholder="Select level of study"
-              description="Please select the study level of this player"
+              placeholder={"Select level of study"}
+              description={"Please select the study level of this player"}
               className={"w-full md:w-1/2"}
               onValueChange={(value) => {
                 if (setIsFoundation) {
@@ -132,9 +143,9 @@ export const PlayerFormLayout = ({
 
             <FormField
               control={form.control}
-              name="age"
+              name={"age"}
               render={({ field }) => (
-                <FormItem className="w-full md:w-1/2">
+                <FormItem className={"w-full md:w-1/2"}>
                   <FormLabel>Date of birth</FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>
@@ -155,10 +166,10 @@ export const PlayerFormLayout = ({
                         </Button>
                       </FormControl>
                     </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
+                    <PopoverContent className={"w-auto p-0"} align={"start"}>
                       <Calendar
-                        className="z-20 bg-white text-black"
-                        mode="single"
+                        className={"z-20 bg-white text-black"}
+                        mode={"single"}
                         selected={field.value}
                         fromDate={new Date(1980, 0o1, 0o1)}
                         toDate={new Date()}
@@ -167,7 +178,7 @@ export const PlayerFormLayout = ({
                       />
                     </PopoverContent>
                   </Popover>
-                  <FormDescription className="text-[14px] text-slate-300">
+                  <FormDescription className={"text-[14px] text-slate-300"}>
                     Used to calculate age of player.
                   </FormDescription>
                   <FormMessage />
@@ -176,7 +187,7 @@ export const PlayerFormLayout = ({
             />
           </div>
 
-          <div className="flex flex-col gap-4 md:flex-row">
+          <div className={"flex flex-col gap-4 md:flex-row"}>
             {!isFoundation && (
               <SelectForm
                 form={form}
@@ -194,8 +205,8 @@ export const PlayerFormLayout = ({
                 name={"year"}
                 label={"Course Year"}
                 itemValues={numberOfYearsItemValues}
-                placeholder="Select course year"
-                description="Please select the course year of the player"
+                placeholder={"Select course year"}
+                description={"Please select the course year of the player"}
                 className={"w-full md:w-1/2"}
                 onValueChange={(value) => {
                   form.setValue("year", Number(value));
@@ -206,15 +217,15 @@ export const PlayerFormLayout = ({
 
           <FormField
             control={form.control}
-            name="image"
+            name={"image"}
             render={({ field }) => (
-              <FormItem className="max-w-min">
-                <FormLabel className="text-sm font-medium text-slate-50">
+              <FormItem className={"max-w-min"}>
+                <FormLabel className={"text-sm font-medium text-slate-50"}>
                   Player Image
                 </FormLabel>
-                <FormControl className="">
+                <FormControl>
                   <UploadButton
-                    endpoint="playerImage"
+                    endpoint={"playerImage"}
                     onClientUploadComplete={(res) => {
                       const newImage = res[0]?.url ?? "";
                       form.setValue("image", newImage);
@@ -226,18 +237,20 @@ export const PlayerFormLayout = ({
                     }}
                   />
                 </FormControl>
-                <FormDescription className="text-[14px] text-slate-300">
+                <FormDescription className={"text-[14px] text-slate-300"}>
                   Upload here player image.
                 </FormDescription>
-                <FormMessage className="mt-2 text-[12px] text-red-600" />
+                <FormMessage className={"mt-2 text-[12px] text-red-600"} />
                 {field.value && (
-                  <div className="mt-4 w-full items-center justify-center">
+                  <div className={"mt-4 w-full items-center justify-center"}>
                     <Image
                       src={field.value}
                       alt="Uploaded Player Image"
                       width={96}
                       height={96}
-                      className="h-24 w-24 rounded-full border-2 border-gray-300 object-cover"
+                      className={
+                        "h-24 w-24 rounded-full border-2 border-gray-300 object-cover"
+                      }
                     />
                   </div>
                 )}
@@ -245,14 +258,7 @@ export const PlayerFormLayout = ({
             )}
           />
 
-          <div className="w-[200px]">
-            <Button
-              type="submit"
-              className="w-full rounded-md bg-indigo-600 px-4 py-2 text-white transition duration-150 ease-in-out hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-            >
-              Submit
-            </Button>
-          </div>
+          <SubmitButton />
         </form>
       </Form>
     </div>

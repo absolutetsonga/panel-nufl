@@ -26,7 +26,9 @@ type Props = {
 
 export const PlayerUpdateForm = ({ player, toggle, setToggle }: Props) => {
   const { mutate: server_updateTeam } = useUpdatePlayer();
-  const [isFoundation, setIsFoundation] = useState(player.level_of_study === "FOUND");
+  const [isFoundation, setIsFoundation] = useState(
+    player.level_of_study === "FOUND",
+  );
   const [newImage, setNewImage] = useState<string>();
 
   const form = useForm<z.infer<typeof playerSchema>>({
@@ -73,8 +75,6 @@ export const PlayerUpdateForm = ({ player, toggle, setToggle }: Props) => {
         form={form}
         onSubmit={onSubmit}
         onInvalid={onInvalid}
-        newImage={newImage}
-        setNewImage={setNewImage}
       />
     </div>
   );
