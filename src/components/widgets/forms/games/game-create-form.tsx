@@ -94,6 +94,7 @@ export const GameCreateForm = ({
                     Home Team
                   </FormLabel>
                   <SelectForm
+                  placeholder="Select home team"
                     itemValues={select_teams}
                     onValueChange={(value) => {
                       field.onChange(Number(value));
@@ -113,6 +114,7 @@ export const GameCreateForm = ({
                     Away Team
                   </FormLabel>
                   <SelectForm
+                  placeholder="Select away team"
                     itemValues={select_teams}
                     onValueChange={(value) => {
                       field.onChange(Number(value));
@@ -134,6 +136,7 @@ export const GameCreateForm = ({
                   Venue
                 </FormLabel>
                 <SelectForm
+                placeholder={"Select venue"}
                   itemValues={[
                     { value: "Sports Center", name: "Sports Center" },
                     { value: "Athetic Center", name: "Athetic Center" },

@@ -48,8 +48,6 @@ type Props = {
   setIsFoundation?: Dispatch<SetStateAction<boolean>>;
   toggle: boolean;
   setToggle: React.Dispatch<React.SetStateAction<boolean>>;
-  newImage: string | undefined;
-  setNewImage: Dispatch<SetStateAction<string | undefined>>;
   form: UseFormReturn<
     {
       image: string;
@@ -72,7 +70,6 @@ type Props = {
 export const PlayerFormLayout = ({
   isFoundation,
   setIsFoundation,
-  setNewImage,
   setToggle,
   form,
   onSubmit,
@@ -161,6 +158,7 @@ export const PlayerFormLayout = ({
                   </FormLabel>
                   <SelectForm
                     itemValues={levelOfStudyItemValues}
+                    placeholder="Select level of study"
                     onValueChange={(value) => {
                       field.onChange(value);
                       if (setIsFoundation) {
@@ -216,6 +214,8 @@ export const PlayerFormLayout = ({
                         className="z-20 bg-white text-black"
                         mode="single"
                         selected={field.value}
+                        fromDate={new Date(1980, 0o1, 0o1)}
+                        toDate={new Date()}
                         onSelect={field.onChange}
                         initialFocus
                       />
@@ -241,6 +241,7 @@ export const PlayerFormLayout = ({
                       School Name
                     </FormLabel>
                     <SelectForm
+                    placeholder="Select school name"
                       itemValues={schoolNameItemValues}
                       onValueChange={field.onChange}
                       defaultValue={field.value}
@@ -263,6 +264,7 @@ export const PlayerFormLayout = ({
                       Course Year
                     </FormLabel>
                     <SelectForm
+                    placeholder="Select course year"
                       itemValues={numberOfYearsItemValues}
                       onValueChange={(value) => {
                         field.onChange(Number(value));
@@ -292,7 +294,6 @@ export const PlayerFormLayout = ({
                     endpoint="playerImage"
                     onClientUploadComplete={(res) => {
                       const newImage = res[0]?.url ?? "";
-                      setNewImage(newImage);
                       form.setValue("image", newImage);
                       toast("You successfully uploaded image");
                     }}

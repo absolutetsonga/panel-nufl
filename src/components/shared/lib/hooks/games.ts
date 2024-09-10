@@ -9,7 +9,7 @@ import {
 } from "~/server/db/queries/games";
 
 // read one game
-export const useGetOneClubPlayers = (team_id: number) => {
+export const useGetGame = (team_id: number) => {
   return useQuery({
     queryFn: async () => await getGame(team_id),
     queryKey: ["games"],

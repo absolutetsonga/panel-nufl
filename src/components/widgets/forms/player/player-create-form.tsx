@@ -17,7 +17,6 @@ type Props = {
 export const PlayerCreateForm = ({ team_id, toggle, setToggle }: Props) => {
   const { mutate: server_createTeam } = useCreatePlayer();
   const [isFoundation, setIsFoundation] = useState(true);
-  const [newImage, setNewImage] = useState<string>();
 
   const form = useForm<z.infer<typeof playerSchema>>({
     resolver: zodResolver(playerSchema),
@@ -47,8 +46,6 @@ export const PlayerCreateForm = ({ team_id, toggle, setToggle }: Props) => {
         setIsFoundation={setIsFoundation}
         toggle={toggle}
         setToggle={setToggle}
-        newImage={newImage}
-        setNewImage={setNewImage}
         form={form}
         onSubmit={onSubmit}
         onInvalid={onInvalid}

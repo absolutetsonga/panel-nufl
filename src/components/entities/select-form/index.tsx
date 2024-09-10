@@ -15,12 +15,14 @@ type itemValue = {
 
 type Props = {
   itemValues: itemValue[];
+  placeholder: string;
   onValueChange: (...event: unknown[]) => void;
   defaultValue: string | undefined;
 };
 
 export const SelectForm = ({
   itemValues,
+  placeholder,
   onValueChange,
   defaultValue,
 }: Props) => {
@@ -28,7 +30,7 @@ export const SelectForm = ({
     <Select onValueChange={onValueChange} defaultValue={defaultValue}>
       <FormControl>
         <SelectTrigger>
-          <SelectValue placeholder="Select player position" />
+          <SelectValue placeholder={placeholder} />
         </SelectTrigger>
       </FormControl>
       <SelectContent className="bg-black ">
