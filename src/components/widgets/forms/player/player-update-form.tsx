@@ -29,7 +29,6 @@ export const PlayerUpdateForm = ({ player, toggle, setToggle }: Props) => {
   const [isFoundation, setIsFoundation] = useState(
     player.level_of_study === "FOUND",
   );
-  const [newImage, setNewImage] = useState<string>();
 
   const form = useForm<z.infer<typeof playerSchema>>({
     resolver: zodResolver(playerSchema),

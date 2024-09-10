@@ -1,17 +1,14 @@
-import { useForm } from "react-hook-form";
-import type { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { useCreateGameweek } from "~/components/shared/lib/hooks/gameweeks";
 
-import React from "react";
 import { Form } from "~/components/entities/command/ui/form";
-
-import { Button } from "~/components/shared/ui";
-
-import { XIcon } from "lucide-react";
+import { InputForm } from "~/components/entities/input-form";
+import { CloseButton } from "~/components/entities/close-button";
+import { SubmitButton } from "~/components/entities/submit-button";
 
 import { gameweekSchema } from "../schemas";
-import { useCreateGameweek } from "~/components/shared/lib/hooks/gameweeks";
-import { InputForm } from "~/components/entities/input-form";
+import type { z } from "zod";
 
 type Props = {
   toggle: boolean;
@@ -43,12 +40,7 @@ export const GameweekCreateForm = ({ toggle, setToggle }: Props) => {
           onSubmit={form.handleSubmit(onSubmit, onInvalid)}
           className="relative flex w-full flex-col gap-4"
         >
-          <Button
-            onClick={() => setToggle(false)}
-            className="absolute -right-2 -top-2 text-slate-300 hover:text-slate-50"
-          >
-            <XIcon />
-          </Button>
+          <CloseButton closeClick={() => setToggle(false)} />
 
           <InputForm
             form={form}
@@ -61,12 +53,7 @@ export const GameweekCreateForm = ({ toggle, setToggle }: Props) => {
             }}
           />
 
-          <Button
-            type="submit"
-            className="w-full rounded-md bg-indigo-600 px-4 py-2 text-white transition duration-150 ease-in-out hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-          >
-            Submit
-          </Button>
+          <SubmitButton />
         </form>
       </Form>
     </div>

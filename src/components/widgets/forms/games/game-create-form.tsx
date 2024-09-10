@@ -18,7 +18,7 @@ import {
   PopoverTrigger,
 } from "~/components/shared/ui/popover";
 import { Button } from "~/components/shared/ui";
-import { CalendarIcon, XIcon } from "lucide-react";
+import { CalendarIcon } from "lucide-react";
 import { cn } from "~/components/shared/lib/utils/clsx";
 import { format } from "date-fns";
 import { Calendar } from "~/components/shared/ui/calendar";
@@ -27,6 +27,8 @@ import { TimePickerDemo } from "../../time-picker";
 import { gameSchema } from "../schemas";
 import type { z } from "zod";
 import { InputForm } from "~/components/entities/input-form";
+import { SubmitButton } from "~/components/entities/submit-button";
+import { CloseButton } from "~/components/entities/close-button";
 
 type Props = {
   toggle: boolean;
@@ -74,12 +76,7 @@ export const GameCreateForm = ({ toggle, setToggle, gameweek_id }: Props) => {
           onSubmit={form.handleSubmit(onSubmit, onInvalid)}
           className="relative flex w-full flex-col gap-4"
         >
-          <Button
-            onClick={() => setToggle(false)}
-            className="absolute right-2 top-2 p-1 text-slate-300 hover:text-slate-50"
-          >
-            <XIcon />
-          </Button>
+          <CloseButton closeClick={() => setToggle(false)} />
 
           <div className="mt-10 flex flex-row items-center justify-center gap-4">
             <SelectForm
@@ -173,17 +170,9 @@ export const GameCreateForm = ({ toggle, setToggle, gameweek_id }: Props) => {
             description={"Write an interesting event occured on the game"}
           />
 
-          <div className="w-[200px]">
-            <Button
-              type="submit"
-              className="w-full rounded-md bg-indigo-600 px-4 py-2 text-white transition duration-150 ease-in-out hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-            >
-              Submit
-            </Button>
-          </div>
+          <SubmitButton />
         </form>
       </Form>
     </div>
   );
 };
-// 219 lines of code

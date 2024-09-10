@@ -17,7 +17,7 @@ import { SelectForm } from "~/components/entities/select-form";
 import { Calendar } from "~/components/shared/ui/calendar";
 import { Button } from "~/components/shared/ui";
 import { UploadButton } from "~/components/shared/lib/utils/uploadthing";
-import { CalendarIcon, XIcon } from "lucide-react";
+import { CalendarIcon } from "lucide-react";
 import { toast } from "sonner";
 
 import Image from "next/image";
@@ -38,6 +38,7 @@ import type { UseFormReturn } from "react-hook-form";
 import type { playerSchema } from "../schemas";
 import { InputForm } from "~/components/entities/input-form";
 import { SubmitButton } from "~/components/entities/submit-button";
+import { CloseButton } from "~/components/entities/close-button";
 
 type Props = {
   isFoundation?: boolean;
@@ -78,14 +79,7 @@ export const PlayerFormLayout = ({
           onSubmit={form.handleSubmit(onSubmit, onInvalid)}
           className={"relative flex w-full flex-col gap-4"}
         >
-          <Button
-            onClick={() => setToggle(false)}
-            className={
-              "absolute -right-2 top-0 text-slate-300 hover:text-slate-50"
-            }
-          >
-            <XIcon />
-          </Button>
+          <CloseButton closeClick={() => setToggle(false)} />
 
           <div
             className={
