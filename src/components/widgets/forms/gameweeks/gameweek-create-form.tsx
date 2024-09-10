@@ -19,6 +19,7 @@ import { XIcon } from "lucide-react";
 
 import { gameweekSchema } from "../schemas";
 import { useCreateGameweek } from "~/components/shared/lib/hooks/gameweeks";
+import { InputForm } from "~/components/entities/input-form";
 
 type Props = {
   toggle: boolean;
@@ -57,31 +58,15 @@ export const GameweekCreateForm = ({ toggle, setToggle }: Props) => {
             <XIcon />
           </Button>
 
-          <FormField
-            control={form.control}
+          <InputForm
+            form={form}
             name="number"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-sm font-medium text-slate-50">
-                  Gameweek
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    type="number"
-                    placeholder="Team Name"
-                    {...field}
-                    onChange={(e) => {
-                      field.onChange(Number(e.target.value));
-                    }}
-                    className="rounded-md text-black focus:border-indigo-500 focus:ring-indigo-500"
-                  />
-                </FormControl>
-                <FormDescription className="text-[14px] text-slate-300">
-                  Write down gameweek number.
-                </FormDescription>
-                <FormMessage className="mt-2 text-[12px] text-red-600" />
-              </FormItem>
-            )}
+            label="Gameweek"
+            placeholder="Ex: 8"
+            description="Write down gameweek number."
+            onChange={(e) => {
+              form.setValue("number", Number(e.target.value));
+            }}
           />
 
           <Button

@@ -35,11 +35,7 @@ type Props = {
   gameweek_id: number;
 };
 
-export const GameCreateForm = ({
-  toggle,
-  setToggle,
-  gameweek_id,
-}: Props) => {
+export const GameCreateForm = ({ toggle, setToggle, gameweek_id }: Props) => {
   const {
     data: teams,
     isLoading: isTeamsLoading,
@@ -95,7 +91,7 @@ export const GameCreateForm = ({
                     Home Team
                   </FormLabel>
                   <SelectForm
-                  placeholder="Select home team"
+                    placeholder="Select home team"
                     itemValues={select_teams}
                     onValueChange={(value) => {
                       field.onChange(Number(value));
@@ -115,7 +111,7 @@ export const GameCreateForm = ({
                     Away Team
                   </FormLabel>
                   <SelectForm
-                  placeholder="Select away team"
+                    placeholder="Select away team"
                     itemValues={select_teams}
                     onValueChange={(value) => {
                       field.onChange(Number(value));
@@ -137,7 +133,7 @@ export const GameCreateForm = ({
                   Venue
                 </FormLabel>
                 <SelectForm
-                placeholder={"Select venue"}
+                  placeholder={"Select venue"}
                   itemValues={[
                     { value: "Sports Center", name: "Sports Center" },
                     { value: "Athetic Center", name: "Athetic Center" },
@@ -177,7 +173,7 @@ export const GameCreateForm = ({
                       </Button>
                     </PopoverTrigger>
                   </FormControl>
-                  <PopoverContent className="w-auto p-0 bg-white text-black">
+                  <PopoverContent className="w-auto bg-white p-0 text-black">
                     <Calendar
                       mode="single"
                       selected={field.value}
@@ -218,7 +214,14 @@ export const GameCreateForm = ({
             )}
           /> */}
 
-          <InputForm form={form} label={"Math Report (Optional)"} placeholder={"John Doe is MVP of the game"}/>
+          <InputForm
+            name={"match_report"}
+            onChange={undefined}
+            form={form}
+            label={"Math Report (Optional)"}
+            placeholder={"John Doe is MVP of the game"}
+            description={"Write an interesting event occured on the game"}
+          />
 
           <div className="w-[200px]">
             <Button

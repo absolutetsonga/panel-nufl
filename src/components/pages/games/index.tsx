@@ -17,13 +17,13 @@ import Image from "next/image";
 import type { IGameInGameweeks } from "~/components/shared/lib/models/games";
 import Link from "next/link";
 
-function extractUppercase(text: string): string {
-  return text
-    .split(" ")
-    .filter((word) => /^[A-Z]/.test(word))
-    .map((word) => word[0])
-    .join("");
-}
+// function extractUppercase(text: string): string {
+//   return text
+//     .split(" ")
+//     .filter((word) => /^[A-Z]/.test(word))
+//     .map((word) => word[0])
+//     .join("");
+// }
 
 export const GamesPage = () => {
   const [createGameweekToggle, setCreateGameweekToggle] = useState(false);
@@ -106,7 +106,7 @@ const PopulateGames = ({
               <div className="flex w-full flex-row items-center justify-center gap-4 rounded-xl bg-[#E8BF77] p-2 font-bold text-black shadow-md">
                 <div className="flex flex-row items-center justify-center gap-4 text-right">
                   <p className="text-[14px]">
-                    {extractUppercase("School of Mining and Geosciences")}
+                    {game.home_team.name}
                   </p>
                   <Image
                     src={game.home_team.image ?? ""}
@@ -126,7 +126,7 @@ const PopulateGames = ({
                     alt={`Image of ${game.away_team.name}`}
                   />
                   <p className="text-[14px]">
-                    {extractUppercase("Social Sciences and Humanities")}
+                    {game.away_team.name}
                   </p>
                 </div>
               </div>

@@ -1,45 +1,58 @@
-import type { UseFormReturn } from "react-hook-form";
+import type { FieldValues, Path, UseFormReturn } from "react-hook-form";
+
 import {
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-  } from "~/components/entities/command/ui/form";
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormDescription,
+  FormMessage,
+} from "~/components/entities/command/ui/form";
 import { Input } from "~/components/shared/ui";
 
-type Props = {
-    form: UseFormReturn<{
-        date: Date;
-        home_team_id: number;
-        away_team_id: number;
-        venue: string;
-        match_report: string;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    }, any, undefined>
-    label: string;
-    placeholder: string
-}
-export const InputForm = ({form, label, placeholder}: Props) => {
-    return (
-        <FormField
-          control={form.control}
-          name="match_report"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-sm font-medium text-slate-50">
-                {label}
-              </FormLabel>
-              <FormControl>
-                <Input
-                  placeholder={placeholder}
-                  {...field}
-                  className="rounded-md bg-black focus:border-indigo-500 focus:ring-indigo-500"
-                />
-              </FormControl>
-              <FormMessage className="mt-2 text-[12px] text-red-600" />
-            </FormItem>
-          )}
-        />
-    )
-}
+type InputFormProps<T extends FieldValues> = {
+  form: UseFormReturn<T>;
+  name: Path<T>;
+  label: string;
+  placeholder: string;
+  description: string;
+  onChange?: React.ChangeEventHandler<HTMLInputElement> | undefined;
+};
+
+export const InputForm = <T extends FieldValues>({
+  form,
+  name,
+  label,
+  placeholder,
+  description,
+  onChange,
+}: InputFormProps<T>) => {
+  return (
+    <FormField
+      control={form.control}
+      name={name}
+      render={({ field }) => (
+        <FormItem>
+          <FormLabel className="text-sm font-medium text-slate-50">
+            {label}
+          </FormLabel>
+          <FormControl>
+            <Input
+              {...field}
+              placeholder={placeholder}
+              onChange={(e) => {
+                field.onChange(e);
+                onChange?.(e);
+              }}
+              className="rounded-md bg-black focus:border-indigo-500 focus:ring-indigo-500"
+            />
+          </FormControl>
+          <FormDescription className="text-[14px] text-slate-300">
+            {description}
+          </FormDescription>
+          <FormMessage className="mt-2 text-[12px] text-red-600" />
+        </FormItem>
+      )}
+    />
+  );
+};
