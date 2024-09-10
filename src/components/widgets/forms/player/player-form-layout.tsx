@@ -8,13 +8,6 @@ import {
   FormMessage,
 } from "~/components/entities/command/ui/form";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "~/components/shared/ui/select";
-import {
   Popover,
   PopoverContent,
   PopoverTrigger,

@@ -9,7 +9,6 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
 } from "~/components/entities/command/ui/form";
 
 import { SelectForm } from "~/components/entities/select-form";
@@ -81,71 +80,42 @@ export const GameCreateForm = ({ toggle, setToggle, gameweek_id }: Props) => {
           >
             <XIcon />
           </Button>
+
           <div className="mt-10 flex flex-row items-center justify-center gap-4">
-            <FormField
-              control={form.control}
-              name="home_team_id"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-sm font-medium text-slate-50">
-                    Home Team
-                  </FormLabel>
-                  <SelectForm
-                    placeholder="Select home team"
-                    itemValues={select_teams}
-                    onValueChange={(value) => {
-                      field.onChange(Number(value));
-                    }}
-                    defaultValue={String(field.value)}
-                  />
-                  <FormMessage className="mt-2 text-[12px] text-red-600" />
-                </FormItem>
-              )}
+            <SelectForm
+              form={form}
+              name={"home_team_id"}
+              label={"Home Team"}
+              itemValues={select_teams}
+              placeholder="Select home team"
+              description="Please select the home team of the game"
+              onValueChange={(value) => {
+                form.setValue("home_team_id", Number(value));
+              }}
             />
-            <FormField
-              control={form.control}
-              name="away_team_id"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-sm font-medium text-slate-50">
-                    Away Team
-                  </FormLabel>
-                  <SelectForm
-                    placeholder="Select away team"
-                    itemValues={select_teams}
-                    onValueChange={(value) => {
-                      field.onChange(Number(value));
-                    }}
-                    defaultValue={String(field.value)}
-                  />
-                  <FormMessage className="mt-2 text-[12px] text-red-600" />
-                </FormItem>
-              )}
+            <SelectForm
+              form={form}
+              name={"away_team_id"}
+              label={"Away Team"}
+              itemValues={select_teams}
+              placeholder="Select away team"
+              description="Please select the away team of the game"
+              onValueChange={(value) => {
+                form.setValue("away_team_id", Number(value));
+              }}
             />
           </div>
 
-          <FormField
-            control={form.control}
-            name="venue"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-sm font-medium text-slate-50">
-                  Venue
-                </FormLabel>
-                <SelectForm
-                  placeholder={"Select venue"}
-                  itemValues={[
-                    { value: "Sports Center", name: "Sports Center" },
-                    { value: "Athetic Center", name: "Athetic Center" },
-                  ]}
-                  onValueChange={(value) => {
-                    field.onChange(value);
-                  }}
-                  defaultValue={field.value}
-                />
-                <FormMessage className="mt-2 text-[12px] text-red-600" />
-              </FormItem>
-            )}
+          <SelectForm
+            form={form}
+            name={"venue"}
+            label={"Venue"}
+            itemValues={[
+              { value: "Sports Center", name: "Sports Center" },
+              { value: "Athetic Center", name: "Athetic Center" },
+            ]}
+            placeholder="Select venue"
+            description="Please select the venue of the game"
           />
 
           <FormField
@@ -194,26 +164,6 @@ export const GameCreateForm = ({ toggle, setToggle, gameweek_id }: Props) => {
             )}
           />
 
-          {/* <FormField
-            control={form.control}
-            name="match_report"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-sm font-medium text-slate-50">
-                  Match Report (Optional)
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="ex: John Doe scored 5 goals"
-                    {...field}
-                    className="rounded-md bg-black focus:border-indigo-500 focus:ring-indigo-500"
-                  />
-                </FormControl>
-                <FormMessage className="mt-2 text-[12px] text-red-600" />
-              </FormItem>
-            )}
-          /> */}
-
           <InputForm
             name={"match_report"}
             onChange={undefined}
@@ -236,3 +186,4 @@ export const GameCreateForm = ({ toggle, setToggle, gameweek_id }: Props) => {
     </div>
   );
 };
+// 219 lines of code
