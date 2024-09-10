@@ -32,7 +32,7 @@ export const GamesPage = () => {
     <PageContainer justify="normal">
       <div className="relative flex w-full flex-col gap-4 p-0 md:p-4">
         <Heading1>Games</Heading1>
-        {!createGameweekToggle && <PopulateGameweeks />}
+        <PopulateGameweeks toggle={createGameweekToggle} />
         <CreateButton
           toggle={createGameweekToggle}
           setToggle={setCreateGameweekToggle}
@@ -40,24 +40,21 @@ export const GamesPage = () => {
         />
       </div>
 
-      {createGameweekToggle && (
-        <GameweekCreateForm
-          toggle={createGameweekToggle}
-          setToggle={setCreateGameweekToggle}
-        />
-      )}
+      <GameweekCreateForm
+        toggle={createGameweekToggle}
+        setToggle={setCreateGameweekToggle}
+      />
     </PageContainer>
   );
 };
 
-export const PopulateGameweeks = () => {
+export const PopulateGameweeks = ({ toggle }: { toggle: boolean }) => {
   const { data: gameweeks, isLoading, isError } = useGetAllGameweeks();
 
+  if (!toggle) return <></>;
   if (isLoading) return <Paragraph>Loading...</Paragraph>;
   if (isError) return <Paragraph>Error loading games.</Paragraph>;
-
   if (gameweeks?.length === 0) return <Paragraph>No gameweeks.</Paragraph>;
-  console.log(gameweeks);
 
   return (
     <div className="flex flex-col gap-6 md:gap-8">
@@ -65,10 +62,7 @@ export const PopulateGameweeks = () => {
         <div key={gameweek.id} className="flex flex-col gap-4">
           <Heading3>Gameweek {gameweek.number}</Heading3>
 
-          <PopulateGames
-            games={gameweek.games}
-            gameweek_id={gameweek.id}
-          />
+          <PopulateGames games={gameweek.games} gameweek_id={gameweek.id} />
         </div>
       ))}
     </div>
@@ -83,7 +77,7 @@ const PopulateGames = ({
   gameweek_id: number;
 }) => {
   const [createGameToggle, setCreateGameToggle] = useState(false);
-  if (!games) return <div>No games found.</div>
+  if (!games) return <div>No games found.</div>;
 
   return (
     <>
@@ -105,9 +99,7 @@ const PopulateGames = ({
             <Link href={`games/${game.id}`} key={game.id}>
               <div className="flex w-full flex-row items-center justify-center gap-4 rounded-xl bg-[#E8BF77] p-2 font-bold text-black shadow-md">
                 <div className="flex flex-row items-center justify-center gap-4 text-right">
-                  <p className="text-[14px]">
-                    {game.home_team.name}
-                  </p>
+                  <p className="text-[14px]">{game.home_team.name}</p>
                   <Image
                     src={game.home_team.image ?? ""}
                     width={40}
@@ -125,9 +117,7 @@ const PopulateGames = ({
                     className="h-10 w-10 rounded-full object-cover"
                     alt={`Image of ${game.away_team.name}`}
                   />
-                  <p className="text-[14px]">
-                    {game.away_team.name}
-                  </p>
+                  <p className="text-[14px]">{game.away_team.name}</p>
                 </div>
               </div>
             </Link>

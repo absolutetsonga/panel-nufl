@@ -15,7 +15,7 @@ export const TeamsPage = () => {
 
   return (
     <PageContainer justify="normal">
-      <div className="relative flex w-full flex-col gap-4 p-4">
+      <div className="flex w-full flex-col gap-4 p-4">
         <Heading1>Teams</Heading1>
         {!createTeamToggle && <PopulateTeams />}
         <CreateButton

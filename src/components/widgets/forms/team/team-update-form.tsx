@@ -38,12 +38,14 @@ export const TeamUpdateForm = ({ toggle, setToggle, team }: Props) => {
   if (!toggle) return <></>;
 
   return (
-    <TeamFormLayout
-      toggle={toggle}
-      setToggle={setToggle}
-      form={form}
-      onSubmit={onSubmit}
-      onInvalid={onInvalid}
-    />
+    <div className="absolute left-0 top-0 right-0 bottom-0 z-20 w-full bg-black mt-10 flex flex-col items-center justify-center gap-4 rounded-lg bg-black shadow-lg">
+      <TeamFormLayout
+        toggle={toggle}
+        setToggle={setToggle}
+        form={form}
+        onSubmit={onSubmit}
+        onInvalid={onInvalid}
+      />
+    </div>
   );
 };

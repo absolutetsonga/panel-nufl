@@ -69,7 +69,7 @@ export const PlayerUpdateForm = ({ player, toggle, setToggle }: Props) => {
   if (!toggle) return <></>;
 
   return (
-    <div className="flex flex-col items-center justify-center gap-4 rounded-lg p-6 shadow-lg">
+    <div className="absolute left-0 top-0 right-0 bottom-0 z-20 w-full bg-black mt-10 flex flex-col items-center justify-center gap-4 rounded-lg bg-black shadow-lg">
       <PlayerFormLayout
         isFoundation={isFoundation}
         setIsFoundation={setIsFoundation}

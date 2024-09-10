@@ -1,14 +1,12 @@
-import { Dispatch, SetStateAction } from "react";
-import { UseFormReturn } from "react-hook-form";
-
 import { SubmitButton } from "~/components/entities/submit-button";
 import { CloseButton } from "~/components/entities/close-button";
 import { InputForm } from "~/components/entities/input-form";
-
-import { z } from "zod";
-
-import { tournamentSchema } from "../schemas";
 import { Form } from "~/components/entities/command/ui/form";
+
+import type { Dispatch, SetStateAction } from "react";
+import type { UseFormReturn } from "react-hook-form";
+import type { tournamentSchema } from "../schemas";
+import type { z } from "zod";
 
 type Props = {
   isFoundation?: boolean;

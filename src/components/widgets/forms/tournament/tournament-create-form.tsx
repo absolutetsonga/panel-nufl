@@ -36,12 +36,14 @@ export const TournamentCreateForm = ({ toggle, setToggle }: Props) => {
   if (!toggle) return <></>;
 
   return (
-    <TournamentFormLayout
-      form={form}
-      toggle={toggle}
-      setToggle={setToggle}
-      onSubmit={onSubmit}
-      onInvalid={onInvalid}
-    />
+    <div className="absolute left-0 top-0 right-0 bottom-0 z-20 w-full bg-black mt-10 flex flex-col items-center justify-center gap-4 rounded-lg bg-black shadow-lg">
+      <TournamentFormLayout
+        form={form}
+        toggle={toggle}
+        setToggle={setToggle}
+        onSubmit={onSubmit}
+        onInvalid={onInvalid}
+      />
+    </div>
   );
 };
