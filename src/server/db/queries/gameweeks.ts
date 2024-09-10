@@ -1,87 +1,74 @@
 "use server";
-import { auth } from "@clerk/nextjs/server";
+
 import { db } from "..";
 import { gameweeks, tournaments } from "../schema";
 import { eq, asc } from "drizzle-orm";
+import { AuthenticationService } from "~/server/utils";
 
-// read
-export const getGameweek = async (id: number) => {
-  const user = auth();
-  if (!user.userId) throw new Error("Unauthorized");
-
-  const gameweek = await db.query.gameweeks.findFirst({
-    where: (model, { eq }) => eq(model.id, id),
-  });
-
-  if (!gameweek) throw new Error("Gameweek not found");
-  if (gameweek.user_id !== user.userId) throw new Error("Unauthorized");
-
-  return gameweek;
-};
-
-// read all gameweeks
-export const getGameweeks = async () => {
-  const user = auth();
-  if (!user.userId) throw new Error("Unauthorized");
-
-  return await db.query.gameweeks.findMany({
-    where: eq(gameweeks.user_id, user.userId),
-    with: {
-      games: {
-        with: {
-          home_team: true,
-          away_team: true,
-        },
-      },
-    },
-    orderBy: asc(gameweeks.number),
-  });
-};
-
-// create gameweek
-export const createGameweek = async (number: number) => {
-  const user = auth();
-  if (!user.userId) throw new Error("Unauthorized");
-
-  const tournament = await db.query.tournaments.findFirst({
-    where: eq(tournaments.user_id, user.userId),
-  });
-
-  if (!tournament) {
-    throw new Error(
-      "No tournament found for this user. Please make sure you created tournament.",
-    );
+class GameweekService extends AuthenticationService {
+  constructor() {
+    super();
   }
 
-  const [newGameweek] = await db
-    .insert(gameweeks)
-    .values({
-      number,
-      user_id: user.userId,
-      tournament_id: tournament.id,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    })
-    .returning();
+  async getGameweek(id: number) {
+    return await db.query.gameweeks.findFirst({
+      where: (model, { eq }) =>
+        eq(model.id, id) && eq(model.user_id, this.user.userId),
+    });
+  }
 
-  return newGameweek;
-};
+  async getGameweeks() {
+    return await db.query.gameweeks.findMany({
+      where: eq(gameweeks.user_id, this.user.userId),
+      with: {
+        games: {
+          with: {
+            home_team: true,
+            away_team: true,
+          },
+        },
+      },
+      orderBy: asc(gameweeks.number),
+    });
+  }
 
-// delete gameweek
-export const deleteGameweek = async (id: number) => {
-  const user = auth();
-  if (!user.userId) throw new Error("Unauthorized");
+  async createGameweek(number: number) {
+    const tournament = await db.query.tournaments.findFirst({
+      where: eq(tournaments.user_id, this.user.userId),
+    });
 
-  const gameweek = await db.query.gameweeks.findFirst({
-    where: (model, { eq }) => eq(model.id, id),
-  });
+    if (!tournament) throw new Error("No tournament found for this user.");
 
-  if (gameweek?.user_id !== user.userId) throw new Error("Unauthorized");
+    const [newGameweek] = await db
+      .insert(gameweeks)
+      .values({
+        number,
+        user_id: this.user.userId,
+        tournament_id: tournament.id,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      })
+      .returning();
 
-  const [deletedGameweek] = await db
-    .delete(gameweeks)
-    .where(eq(gameweeks.id, id))
-    .returning();
+    return newGameweek;
+  }
 
-  return deletedGameweek;
-};
+  async deleteGameweek(id: number) {
+    const [deletedGameweek] = await db
+      .delete(gameweeks)
+      .where(eq(gameweeks.id, id) && eq(gameweeks.user_id, this.user.userId))
+      .returning();
+
+    return deletedGameweek;
+  }
+}
+
+const gameweekService = new GameweekService();
+
+export const getGameweek = async (id: number) =>
+  gameweekService.getGameweek(id);
+export const getGameweeks = async () => gameweekService.getGameweeks();
+export const createGameweek = async (number: number) =>
+  gameweekService.createGameweek(number);
+export const deleteGameweek = async (id: number) =>
+  gameweekService.deleteGameweek(id);

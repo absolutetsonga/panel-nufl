@@ -13,7 +13,7 @@ export const createTable = pgTableCreator((name) => `panel-nufl_${name}`);
 
 export const tournaments = createTable("tournament", {
   id: serial("id").primaryKey(),
-  user_id: varchar("user_id", { length: 256 }).notNull(),
+  user_id: varchar("user_id", { length: 256 }).notNull().unique(),
   name: varchar("name", { length: 256 }),
   createdAt: timestamp("created_at", { withTimezone: true })
     .default(sql`CURRENT_TIMESTAMP`)

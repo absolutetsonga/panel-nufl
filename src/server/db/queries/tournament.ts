@@ -1,95 +1,75 @@
 "use server";
-import { auth } from "@clerk/nextjs/server";
+
 import { db } from "..";
 import { tournaments } from "../schema";
 import { eq } from "drizzle-orm";
+import { AuthenticationService } from "~/server/utils";
+import type {
+  ICreateTournament,
+  IUpdateTournament,
+} from "~/components/shared/lib/models/team";
 
-interface ICreateTournament {
-  name: string;
-}
-
-interface IUpdateTournament {
-  id: number;
-  name: string;
-}
-
-// get by user
-export const getTournaments = async () => {
-  const user = auth();
-  if (!user.userId) throw new Error("Unauthorized");
-
-  const user_tournaments = await db.query.tournaments.findMany({
-    where: eq(tournaments.user_id, user.userId),
-  });
-  return user_tournaments;
-};
-
-// create
-export const createTournament = async (tournament: ICreateTournament) => {
-  const user = auth();
-  if (!user.userId) throw new Error("Unauthorized");
-
-  const existingTournament = await db.query.tournaments.findFirst({
-    where: eq(tournaments.user_id, user.userId),
-  });
-
-  if (existingTournament) {
-    throw new Error(
-      "Sorry, you already have a tournament. If you want to create new, delete the oldest.",
-    );
+class TournamentService extends AuthenticationService {
+  constructor() {
+    super();
   }
 
-  const [newTournament] = await db
-    .insert(tournaments)
-    .values({
-      name: tournament.name,
-      user_id: user.userId,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    })
-    .returning();
+  async getTournament() {
+    const tournament = await db.query.tournaments.findFirst({
+      where: eq(tournaments.user_id, this.user.userId),
+    });
 
-  return newTournament;
-};
+    return tournament ?? null;
+  }
 
-// update
-export const updateTournament = async (tournament: IUpdateTournament) => {
-  const user = auth();
-  if (!user.userId) throw new Error("Unauthorized");
+  async createTournament(tournament: ICreateTournament) {
+    const [newTournament] = await db
+      .insert(tournaments)
+      .values({
+        ...tournament,
+        user_id: this.user.userId,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      })
+      .returning();
 
-  const user_tournament = await db.query.tournaments.findFirst({
-    where: (model, { eq }) => eq(model.id, tournament.id),
-  });
+    return newTournament;
+  }
 
-  if (user_tournament?.user_id !== user.userId) throw new Error("Unauthorized");
+  async updateTournament(tournament: IUpdateTournament) {
+    const [updatedTournament] = await db
+      .update(tournaments)
+      .set({
+        ...tournament,
+        updatedAt: new Date(),
+      })
+      .where(
+        eq(tournaments.id, tournament.id) &&
+          eq(tournaments.user_id, this.user.userId),
+      )
+      .returning();
 
-  const [updatedTournament] = await db
-    .update(tournaments)
-    .set({
-      ...tournament,
-      updatedAt: new Date(),
-    })
-    .where(eq(tournaments.id, tournament.id))
-    .returning();
+    return updatedTournament;
+  }
 
-  return updatedTournament;
-};
+  async deleteTournament(id: number) {
+    const [deletedTournament] = await db
+      .delete(tournaments)
+      .where(
+        eq(tournaments.id, id) && eq(tournaments.user_id, this.user.userId),
+      )
+      .returning();
 
-// delete
-export const deleteTournament = async (id: number) => {
-  const user = auth();
-  if (!user.userId) throw new Error("Unauthorized");
+    return deletedTournament;
+  }
+}
 
-  const tournament = await db.query.tournaments.findFirst({
-    where: (model, { eq }) => eq(model.id, id),
-  });
+const tournamentService = new TournamentService();
 
-  if (tournament?.user_id !== user.userId) throw new Error("Unauthorized");
-
-  const [deletedTournament] = await db
-    .delete(tournaments)
-    .where(eq(tournaments.id, id))
-    .returning();
-
-  return deletedTournament;
-};
+export const getTournament = async () => tournamentService.getTournament();
+export const createTournament = async (team: ICreateTournament) =>
+  tournamentService.createTournament(team);
+export const updateTournament = async (team: IUpdateTournament) =>
+  tournamentService.updateTournament(team);
+export const deleteTournament = async (id: number) =>
+  tournamentService.deleteTournament(id);

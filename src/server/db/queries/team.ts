@@ -1,96 +1,91 @@
 "use server";
-import { auth } from "@clerk/nextjs/server";
 import { db } from "..";
 import { players, teams, tournaments } from "../schema";
 import { eq } from "drizzle-orm";
+import { AuthenticationService } from "~/server/utils";
+import type {
+  ICreateTeam,
+  IUpdateTeam,
+} from "~/components/shared/lib/models/team";
 
-// read
-export const getTeam = async (id: number) => {
-  const user = auth();
-  if (!user.userId) throw new Error("Unauthorized");
-
-  const team = await db.query.teams.findFirst({
-    where: (model, { eq }) => eq(model.id, id),
-  });
-
-  if (!team) throw new Error("Team not found");
-
-  const team_players = await db.query.players.findMany({
-    where: eq(players.team_id, team.id),
-  });
-
-  if (team.user_id !== user.userId) throw new Error("Unauthorized");
-
-  return { ...team, team_players };
-};
-
-// read teams
-export const getTeams = async () => {
-  const user = auth();
-  if (!user.userId) throw new Error("Unauthorized");
-
-  return await db.query.teams.findMany({
-    where: eq(teams.user_id, user.userId)
-  });
-};
-
-// create
-export const createTeam = async (name: string, image: string) => {
-  const user = auth();
-  if (!user.userId) throw new Error("Unauthorized");
-
-  const tournament = await db.query.tournaments.findFirst({
-    where: eq(tournaments.user_id, user.userId),
-  });
-
-  if (!tournament) {
-    throw new Error(
-      "No tournament found for this user. Please make sure you created tournament.",
-    );
+class TeamService extends AuthenticationService {
+  constructor() {
+    super();
   }
 
-  const [newTeam] = await db
-    .insert(teams)
-    .values({
-      name,
-      image,
-      user_id: user.userId,
-      tournament_id: tournament.id,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    })
-    .returning();
+  async getTeam(id: number) {
+    const team = await db.query.teams.findFirst({
+      where: (model, { eq }) =>
+        eq(model.id, id) && eq(model.user_id, this.user.userId),
+    });
 
-  return newTeam;
-};
+    if (!team) throw new Error("Team not found");
 
-// updateTeam
-export const updateTeam = async (id: number, name: string, image: string) => {
-  const user = auth();
-  if (!user.userId) return Error("Unauthorized");
+    const teamPlayers = await db.query.players.findMany({
+      where: eq(players.team_id, team.id),
+    });
 
-  const [updatedTeam] = await db
-    .update(teams)
-    .set({
-      name,
-      image,
-      updatedAt: new Date(),
-    })
-    .where(eq(teams.id, id))
-    .returning();
+    return { ...team, teamPlayers };
+  }
 
-  return updatedTeam;
-};
+  async getTeams() {
+    return await db.query.teams.findMany({
+      where: eq(teams.user_id, this.user.userId),
+    });
+  }
 
-// deleteTeam
-export const deleteTeam = async (id: number) => {
-  const user = auth();
-  if (!user.userId) return Error("Unauthorized");
+  async createTeam(team: ICreateTeam) {
+    const tournament = await db.query.tournaments.findFirst({
+      where: eq(tournaments.user_id, this.user.userId),
+    });
 
-  const [deletedTeam] = await db
-    .delete(teams)
-    .where(eq(teams.id, id))
-    .returning();
+    if (!tournament) throw new Error("No tournament found for this user.");
+    
+    const [newTeam] = await db
+      .insert(teams)
+      .values({
+        name: team.name,
+        image: team.image,
+        user_id: this.user.userId,
+        tournament_id: tournament.id,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      })
+      .returning();
 
-  return deletedTeam;
-};
+    return newTeam;
+  }
+
+  async updateTeam(team: IUpdateTeam) {
+    const [updatedTeam] = await db
+      .update(teams)
+      .set({
+        name: team.name,
+        image: team.image,
+        updatedAt: new Date(),
+      })
+      .where(eq(teams.id, team.id) && eq(teams.user_id, this.user.userId))
+      .returning();
+
+    return updatedTeam;
+  }
+
+  async deleteTeam(id: number) {
+    const [deletedTeam] = await db
+      .delete(teams)
+      .where(eq(teams.id, id) && eq(teams.user_id, this.user.userId))
+      .returning();
+
+    return deletedTeam;
+  }
+}
+
+const teamService = new TeamService();
+
+export const getTeam = async (id: number) => teamService.getTeam(id);
+export const getTeams = async () => teamService.getTeams();
+export const createTeam = async (team: ICreateTeam) =>
+  teamService.createTeam(team);
+export const updateTeam = async (team: IUpdateTeam) =>
+  teamService.updateTeam(team);
+export const deleteTeam = async (id: number) => teamService.deleteTeam(id);

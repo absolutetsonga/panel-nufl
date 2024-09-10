@@ -41,21 +41,21 @@ export function useCreateTeam() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ name, image }: ITeamCreate) => createTeam(name, image),
+    mutationFn: (team: ITeamCreate) => createTeam(team),
     onSuccess: async (data) => {
       try {
         if (data) {
-          toast(`Team ${data.name ?? ""} created successfully`);
+          toast.success(`Team ${data.name ?? ""} created successfully`);
         } else {
-          toast("Team creation failed.");
+          toast.error("Team creation failed.");
         }
         await queryClient.invalidateQueries({ queryKey: ["teams"] });
       } catch (error) {
-        console.error("Error invalidating queries:", error);
+        console.error("Error creating team:", error);
       }
     },
     onError: (error) => {
-      toast("Error");
+      toast.error(error.message);
       console.error("Error creating team:", error);
     },
   });
@@ -66,22 +66,21 @@ export function useUpdateTeam() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, name, image }: ITeamUpdate) =>
-      updateTeam(id, name, image),
+    mutationFn: (team: ITeamUpdate) => updateTeam(team),
     onSuccess: async (data) => {
       try {
         if (data && !(data instanceof Error)) {
-          toast(`Team ${data.name ?? ""} updated successfully`);
+          toast.success(`Team ${data.name ?? ""} updated successfully`);
           await queryClient.invalidateQueries({ queryKey: ["team", data.id] });
         } else {
-          toast("Team update failed.");
+          toast.error("Team update failed.");
         }
       } catch (error) {
-        console.error("Error invalidating queries:", error);
+        console.log("Error updating team", error);
       }
     },
     onError: (error) => {
-      toast("Error");
+      toast.error(error.message);
       console.error("Error updating team:", error);
     },
   });
@@ -96,17 +95,17 @@ export function useDeleteTeam() {
     onSuccess: async (data) => {
       try {
         if (data) {
-          toast(`Team ${data?.name ?? ""} deleted successfully`);
+          toast.success(`Team ${data?.name ?? ""} deleted successfully`);
         } else {
-          toast("Team deletion failed.");
+          toast.error("Team deletion failed.");
         }
         await queryClient.invalidateQueries({ queryKey: ["teams"] });
       } catch (error) {
-        console.error("Error invalidating queries:", error);
+        console.error("Error deleting team:", error);
       }
     },
     onError: (error) => {
-      toast("Error");
+      toast.error(error.message);
       console.error("Error deleting team:", error);
     },
   });

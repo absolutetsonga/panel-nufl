@@ -49,11 +49,11 @@ export const ImageUploadForm = <T extends FieldValues>({
               onClientUploadComplete={(res) => {
                 const newImageUrl: string = res[0]?.url ?? "";
                 form.setValue(name, newImageUrl as PathValue<T, Path<T>>);
-                toast("You successfully uploaded image");
+                toast.success("You successfully uploaded image");
               }}
               onUploadError={(error: Error) => {
                 console.log(error);
-                toast("Something went wrong. Check logs.");
+                toast.error("Something went wrong. Check logs.");
               }}
             />
           </FormControl>

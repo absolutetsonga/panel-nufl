@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   createTournament,
   deleteTournament,
-  getTournaments,
+  getTournament,
   updateTournament,
 } from "~/server/db/queries/tournament";
 
@@ -19,7 +19,7 @@ interface IUpdateTournament {
 // read
 export const useGetTournaments = () => {
   return useQuery({
-    queryFn: async () => await getTournaments(),
+    queryFn: async () => await getTournament(),
     queryKey: ["tournaments"],
   });
 };
@@ -35,9 +35,9 @@ export const useCreateTournament = () => {
     onSuccess: async (data) => {
       try {
         if (data) {
-          toast(`Tournament ${data.name} created successfully`);
+          toast.success(`Tournament ${data.name} created successfully`);
         } else {
-          toast("Tournament creation failed.");
+          toast.error("Tournament creation failed.");
         }
 
         await queryClient.invalidateQueries({
@@ -64,12 +64,12 @@ export const useUpdateTournament = () => {
     onSuccess: async (data) => {
       try {
         if (data && !(data instanceof Error)) {
-          toast(`Tournament updated successfully`);
+          toast.success(`Tournament updated successfully`);
           await queryClient.invalidateQueries({
             queryKey: ["tournaments"],
           });
         } else {
-          toast("Tournament update failed");
+          toast.error("Tournament update failed");
         }
       } catch (error) {
         console.error("Error invalidating queries:", error);
@@ -90,12 +90,12 @@ export const useDeleteTournament = () => {
     onSuccess: async (data) => {
       try {
         if (data && !(data instanceof Error)) {
-          toast(`Tournament deleted successfully`);
+          toast.success(`Tournament deleted successfully`);
           await queryClient.invalidateQueries({
             queryKey: ["tournaments"],
           });
         } else {
-          toast("Tournament deletion failed.");
+          toast.error("Tournament deletion failed.");
         }
       } catch (error) {
         console.error("Error invalidating queries:", error);

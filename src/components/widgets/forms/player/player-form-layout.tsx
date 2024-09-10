@@ -121,7 +121,6 @@ export const PlayerFormLayout = ({
               fromDate={new Date(1980, 0o1, 0o1)}
               toDate={new Date()}
               className={"w-full md:w-1/2"}
-              withTimePicker
             />
           </div>
 

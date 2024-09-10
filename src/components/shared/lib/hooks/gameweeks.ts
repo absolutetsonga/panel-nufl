@@ -34,12 +34,12 @@ export const useCreateGameweek = () => {
     onSuccess: async (data) => {
       try {
         if (data && !(data instanceof Error)) {
-          toast(`Gameweek created successfully`);
+          toast.success(`Gameweek created successfully`);
           await queryClient.invalidateQueries({
             queryKey: ["gameweeks"],
           });
         } else {
-          toast("Gameweek creation failed.");
+          toast.error("Gameweek creation failed.");
         }
       } catch (error) {
         console.error("Error invalidating queries:", error);
@@ -61,7 +61,7 @@ export const useDeleteGameweek = () => {
     onSuccess: async (data) => {
       try {
         if (data && !(data instanceof Error)) {
-          toast(`Gameweek deleted successfully`);
+          toast.success(`Gameweek deleted successfully`);
           await queryClient.invalidateQueries({
             queryKey: ["gameweeks"],
           });
@@ -69,7 +69,7 @@ export const useDeleteGameweek = () => {
             queryKey: ["gameweeks"],
           });
         } else {
-          toast("Gameweek deletion failed.");
+          toast.error("Gameweek deletion failed.");
         }
       } catch (error) {
         console.error("Error invalidating queries:", error);

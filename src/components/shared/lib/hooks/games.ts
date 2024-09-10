@@ -4,7 +4,7 @@ import type { ICreateAndUpdateGame } from "../models/games";
 import {
   createGame,
   deleteGame,
-  getAllGames,
+  getGames,
   getGame,
 } from "~/server/db/queries/games";
 
@@ -19,7 +19,7 @@ export const useGetGame = (team_id: number) => {
 // read all games
 export const useGetAllGames = () => {
   return useQuery({
-    queryFn: async () => await getAllGames(),
+    queryFn: async () => await getGames(),
     queryKey: ["games"],
   });
 };
@@ -35,12 +35,12 @@ export const useCreateGame = () => {
     onSuccess: async (data) => {
       try {
         if (data && !(data instanceof Error)) {
-          toast(`Game created successfully`);
+          toast.success(`Game created successfully`);
           await queryClient.invalidateQueries({
             queryKey: ["gameweeks"],
           });
         } else {
-          toast("Game creation failed.");
+          toast.error("Game creation failed.");
         }
       } catch (error) {
         console.error("Error invalidating queries:", error);
@@ -61,7 +61,7 @@ export const useDeleteGame = () => {
     onSuccess: async (data) => {
       try {
         if (data && !(data instanceof Error)) {
-          toast(`Game deleted successfully`);
+          toast.success(`Game deleted successfully`);
           await queryClient.invalidateQueries({
             queryKey: ["games"],
           });
@@ -69,7 +69,7 @@ export const useDeleteGame = () => {
             queryKey: ["games"],
           });
         } else {
-          toast("Game deletion failed.");
+          toast.error("Game deletion failed.");
         }
       } catch (error) {
         console.error("Error invalidating queries:", error);

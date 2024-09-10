@@ -1,78 +1,69 @@
 "use server";
-import { auth } from "@clerk/nextjs/server";
 import { db } from "..";
 import { games } from "../schema";
 import { eq, desc } from "drizzle-orm";
 
+import { AuthenticationService } from "~/server/utils";
 import type { ICreateAndUpdateGame } from "~/components/shared/lib/models/games";
 
-// read
-export const getGame = async (id: number) => {
-  const user = auth();
-  if (!user.userId) throw new Error("Unauthorized");
+class GameService extends AuthenticationService {
+  constructor() {
+    super();
+  }
 
-  const game = await db.query.games.findFirst({
-    where: (model, { eq }) => eq(model.id, id),
-  });
+  async getGame(id: number) {
+    return await db.query.games.findFirst({
+      where: (model, { eq }) => eq(model.id, id),
+    });
+  }
 
-  if (!game) throw new Error("Game not found");
-  if (game.user_id !== user.userId) throw new Error("Unauthorized");
+  async getGames() {
+    return await db.query.games.findMany({
+      where: eq(games.user_id, this.user.userId),
+      with: {
+        home_team: true,
+        away_team: true,
+      },
+      orderBy: desc(games.date),
+    });
+  }
 
-  return game;
-};
+  async createGame(game: ICreateAndUpdateGame) {
+    const [newGame] = await db
+      .insert(games)
+      .values({
+        ...game,
+        gameweek_id: game.gameweek_id,
+        user_id: this.user.userId,
+        result: "Not Started",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      })
+      .returning();
 
-// read all games
-export const getAllGames = async () => {
-  const user = auth();
-  if (!user.userId) throw new Error("Unauthorized");
+    return newGame;
+  }
 
-  const gamesWithTeams = await db.query.games.findMany({
-    where: eq(games.user_id, user.userId),
-    with: {
-      home_team: true,
-      away_team: true,
-    },
-    orderBy: desc(games.date),
-  });
+  async deleteGame(id: number) {
+    const game = await db.query.games.findFirst({
+      where: (model, { eq }) => eq(model.id, id),
+    });
 
-  return gamesWithTeams;
-};
+    if (game?.user_id !== this.user.userId) throw new Error("Unauthorized");
 
-// create game
-export const createGame = async (game: ICreateAndUpdateGame) => {
-  const user = auth();
-  if (!user.userId) throw new Error("Unauthorized");
+    const [deletedGame] = await db
+      .delete(games)
+      .where(eq(games.id, id))
+      .returning();
 
-  const [newGame] = await db
-    .insert(games)
-    .values({
-      ...game,
-      gameweek_id: game.gameweek_id,
-      user_id: user.userId,
-      result: "Not Started",
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    })
-    .returning();
+    return deletedGame;
+  }
+}
 
-  return newGame;
-};
+const gameService = new GameService();
 
-// delete game
-export const deleteGame = async (id: number) => {
-  const user = auth();
-  if (!user.userId) throw new Error("Unauthorized");
-
-  const player = await db.query.players.findFirst({
-    where: (model, { eq }) => eq(model.id, id),
-  });
-
-  if (player?.user_id !== user.userId) throw new Error("Unauthorized");
-
-  const [deletedGame] = await db
-    .delete(games)
-    .where(eq(games.id, id))
-    .returning();
-
-  return deletedGame;
-};
+export const getGame = async (id: number) => gameService.getGame(id);
+export const getGames = async () => gameService.getGames();
+export const createGame = async (game: ICreateAndUpdateGame) =>
+  gameService.createGame(game);
+export const deleteGame = async (id: number) => gameService.deleteGame(id);

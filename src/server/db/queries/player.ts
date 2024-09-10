@@ -1,95 +1,79 @@
 "use server";
-import { auth } from "@clerk/nextjs/server";
 import { db } from "..";
 import { players } from "../schema";
 import { eq } from "drizzle-orm";
 
-import type { ICreateAndUpdatePlayer } from "~/components/shared/lib/models/team";
+import type {
+  ICreatePlayer,
+  IUpdatePlayer,
+} from "~/components/shared/lib/models/team";
+import { AuthenticationService } from "~/server/utils";
 
-// read
-export const getPlayer = async (id: number) => {
-  const user = auth();
-  if (!user.userId) throw new Error("Unauthorized");
+class PlayerService extends AuthenticationService {
+  constructor() {
+    super();
+  }
 
-  const player = await db.query.players.findFirst({
-    where: (model, { eq }) => eq(model.id, id),
-  });
+  async getPlayer(id: number) {
+    return await db.query.players.findFirst({
+      where: (model, { eq }) =>
+        eq(model.id, id) && eq(model.user_id, this.user.userId),
+    });
+  }
 
-  if (!player) throw new Error("Player not found");
-  if (player.user_id !== user.userId) throw new Error("Unauthorized");
+  async getPlayers(team_id: number) {
+    return await db.query.players.findMany({
+      where:
+        eq(players.team_id, team_id) && eq(players.user_id, this.user.userId),
+    });
+  }
 
-  return player;
-};
+  async createPlayer(player: ICreatePlayer) {
+    const player_age = player.age ? player.age : new Date();
 
-// read one club players
-export const getOneClubPlayers = async (team_id: number) => {
-  const user = auth();
-  if (!user.userId) throw new Error("Unauthorized");
+    const [newPlayer] = await db
+      .insert(players)
+      .values({
+        ...player,
+        age: player_age,
+        user_id: this.user.userId,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      })
+      .returning();
 
-  return await db.query.players.findMany({
-    where: eq(players.team_id, team_id),
-  });
-};
+    return newPlayer;
+  }
 
-// create player
-export const createPlayer = async (player: ICreateAndUpdatePlayer) => {
-  const user = auth();
-  if (!user.userId) throw new Error("Unauthorized");
+  async updatePlayer(player: IUpdatePlayer) {
+    const { id, ...playerWithoutId } = player;
+    const [updatedPlayer] = await db
+      .update(players)
+      .set({ ...playerWithoutId, updatedAt: new Date() })
+      .where(eq(players.id, id) && eq(players.user_id, this.user.userId))
+      .returning();
 
-  const player_age = player.age ? player.age : new Date();
+    return updatedPlayer;
+  }
 
-  const [newPlayer] = await db
-    .insert(players)
-    .values({
-      ...player,
-      age: player_age,
-      user_id: user.userId,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    })
-    .returning();
+  async deletePlayer(id: number) {
+    const [deletedPlayer] = await db
+      .delete(players)
+      .where(eq(players.id, id) && eq(players.user_id, this.user.userId))
+      .returning();
 
-  return newPlayer;
-};
+    return deletedPlayer;
+  }
+}
 
-// update player
-export const updatePlayer = async (
-  id: number,
-  player: ICreateAndUpdatePlayer,
-) => {
-  const user = auth();
-  if (!user.userId) return Error("Unauthorized");
+const playerService = new PlayerService();
 
-  const tema_player = await db.query.players.findFirst({
-    where: (model, { eq }) => eq(model.id, id),
-  });
-
-  if (tema_player?.user_id !== user.userId) throw new Error("Unauthorized");
-
-  const [updatedPlayer] = await db
-    .update(players)
-    .set({ ...player, updatedAt: new Date() })
-    .where(eq(players.id, id))
-    .returning();
-
-  return updatedPlayer;
-};
-
-// delete player
-export const deletePlayer = async (id: number) => {
-  const user = auth();
-  if (!user.userId) return Error("Unauthorized");
-
-  const player = await db.query.players.findFirst({
-    where: (model, { eq }) => eq(model.id, id),
-  });
-
-  if (player?.user_id !== user.userId) throw new Error("Unauthorized");
-
-  const [deletedPlayer] = await db
-    .delete(players)
-    .where(eq(players.id, id))
-    .returning();
-
-  return deletedPlayer;
-};
+export const getPlayer = async (id: number) => playerService.getPlayer(id);
+export const getPlayers = async (team_id: number) =>
+  playerService.getPlayers(team_id);
+export const createPlayer = async (player: ICreatePlayer) =>
+  playerService.createPlayer(player);
+export const updatePlayer = async (player: IUpdatePlayer) =>
+  playerService.updatePlayer(player);
+export const deletePlayer = async (id: number) =>
+  playerService.deletePlayer(id);

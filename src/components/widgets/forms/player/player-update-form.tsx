@@ -52,8 +52,12 @@ export const PlayerUpdateForm = ({ player, toggle, setToggle }: Props) => {
     }
 
     server_updateTeam({
-      player_id: player.id,
-      player: { ...values, team_id: player.team_id, year: number_year },
+      player: {
+        ...values,
+        id: player.id,
+        team_id: player.team_id,
+        year: number_year,
+      },
     });
     setToggle(false);
   }
