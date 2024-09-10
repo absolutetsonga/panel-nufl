@@ -1,18 +1,15 @@
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "~/components/entities/command/ui/form";
-
+import { Form } from "~/components/entities/command/ui/form";
 import { SelectForm } from "~/components/entities/select-form";
-import { UploadButton } from "~/components/shared/lib/utils/uploadthing";
-import { toast } from "sonner";
+import { InputForm } from "~/components/entities/input-form";
+import { SubmitButton } from "~/components/entities/submit-button";
+import { CloseButton } from "~/components/entities/close-button";
+import { DateTimeForm } from "~/components/entities/date-time-form";
+import { ImageUploadForm } from "~/components/entities/image-upload-form";
 
-import Image from "next/image";
+import type { z } from "zod";
+import type { Dispatch, SetStateAction } from "react";
+import type { UseFormReturn } from "react-hook-form";
+import type { playerSchema } from "../schemas";
 
 import {
   levelOfStudyItemValues,
@@ -20,15 +17,6 @@ import {
   positionsItemValues,
   schoolNameItemValues,
 } from "./constants";
-
-import type { z } from "zod";
-import type { Dispatch, SetStateAction } from "react";
-import type { UseFormReturn } from "react-hook-form";
-import type { playerSchema } from "../schemas";
-import { InputForm } from "~/components/entities/input-form";
-import { SubmitButton } from "~/components/entities/submit-button";
-import { CloseButton } from "~/components/entities/close-button";
-import { DateTimeForm } from "~/components/entities/date-time-form";
 
 type Props = {
   isFoundation?: boolean;
@@ -45,8 +33,7 @@ type Props = {
       year: number;
       age?: Date | undefined;
     },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    any,
+    unknown,
     undefined
   >;
 
@@ -164,47 +151,12 @@ export const PlayerFormLayout = ({
             )}
           </div>
 
-          <FormField
-            control={form.control}
+          <ImageUploadForm
+            form={form}
             name={"image"}
-            render={({ field }) => (
-              <FormItem className={"max-w-min"}>
-                <FormLabel className={"text-sm font-medium text-slate-50"}>
-                  Player Image
-                </FormLabel>
-                <FormControl>
-                  <UploadButton
-                    endpoint={"playerImage"}
-                    onClientUploadComplete={(res) => {
-                      const newImage = res[0]?.url ?? "";
-                      form.setValue("image", newImage);
-                      toast("You successfully uploaded image");
-                    }}
-                    onUploadError={(error: Error) => {
-                      console.error(error);
-                      toast(`Something went wrong.`);
-                    }}
-                  />
-                </FormControl>
-                <FormDescription className={"text-[14px] text-slate-300"}>
-                  Upload here player image.
-                </FormDescription>
-                <FormMessage className={"mt-2 text-[12px] text-red-600"} />
-                {field.value && (
-                  <div className={"mt-4 w-full items-center justify-center"}>
-                    <Image
-                      src={field.value}
-                      alt="Uploaded Player Image"
-                      width={96}
-                      height={96}
-                      className={
-                        "h-24 w-24 rounded-full border-2 border-gray-300 object-cover"
-                      }
-                    />
-                  </div>
-                )}
-              </FormItem>
-            )}
+            label={"Player Image"}
+            endpoint={"playerImage"}
+            description={"Please upload image of the player"}
           />
 
           <SubmitButton />
