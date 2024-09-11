@@ -41,8 +41,9 @@ export const GameFormLayout = ({
   onInvalid,
   setToggle,
 }: Props) => {
+
   return (
-    <div className="flex max-w-5xl flex-col gap-4 rounded-lg p-6 shadow-lg">
+    <div className="flex max-w-[600px] flex-col items-center justify-center gap-4 rounded-lg p-6 shadow-lg">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit, onInvalid)}

@@ -13,6 +13,7 @@ import { Heading1, Paragraph } from "~/components/shared/ui/typography";
 import { CreateButton } from "~/components/entities/create-button";
 import { DeleteAlert } from "~/components/entities/delete-alert/ui";
 import { TournamentUpdateForm } from "~/components/widgets/forms/tournament/tournament-update-form";
+import TournamentPageSkeleton from "~/components/entities/skeletons/tournament-skeleton";
 
 export const TournamentPage = () => {
   const [createTournamentToggle, setCreateTournamentToggle] = useState(false);
@@ -46,7 +47,7 @@ const PopulateTournaments = () => {
   const [deleteToggle, setDeleteToggle] = useState<boolean>(false);
   const [updateToggle, setUpdateToggle] = useState<boolean>(false);
 
-  if (isLoading) return <Paragraph>Loading...</Paragraph>;
+  if (isLoading) return <TournamentPageSkeleton />;
   if (isError) return <Paragraph>Error loading tournaments.</Paragraph>;
   if (!tournament) return <Paragraph>No tournaments found.</Paragraph>;
   const onDelete = (tournament_id: number) => {

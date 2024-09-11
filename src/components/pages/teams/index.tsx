@@ -9,6 +9,7 @@ import { CreateButton } from "~/components/entities/create-button";
 import { Heading1, Paragraph } from "~/components/shared/ui/typography";
 import Image from "next/image";
 import Link from "next/link";
+import TeamsPageSkeleton from "~/components/entities/skeletons/teams-skeleton";
 
 export const TeamsPage = () => {
   const [createTeamToggle, setCreateTeamToggle] = useState(false);
@@ -37,7 +38,7 @@ export const TeamsPage = () => {
 const PopulateTeams = () => {
   const { data: teams, isLoading, isError } = useGetTeams();
 
-  if (isLoading) return <Paragraph>Loading...</Paragraph>;
+  if (isLoading) return <TeamsPageSkeleton />;
   if (isError) return <Paragraph>Error loading teams.</Paragraph>;
   if (teams?.length === 0) return <Paragraph>No teams found.</Paragraph>;
 

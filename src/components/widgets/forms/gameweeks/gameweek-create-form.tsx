@@ -20,6 +20,9 @@ export const GameweekCreateForm = ({ toggle, setToggle }: Props) => {
 
   const form = useForm<z.infer<typeof gameweekSchema>>({
     resolver: zodResolver(gameweekSchema),
+    defaultValues: {
+      number: 0
+    }
   });
 
   function onSubmit({ number }: z.infer<typeof gameweekSchema>) {
@@ -34,11 +37,11 @@ export const GameweekCreateForm = ({ toggle, setToggle }: Props) => {
   if (!toggle) return <></>;
 
   return (
-    <div className="flex max-w-5xl flex-col gap-4 rounded-lg p-6 shadow-lg">
+    <div className="absolute left-0 top-0 right-0 bottom-0 z-20 mt-10 flex flex-col items-center justify-center gap-4 rounded-lg bg-black shadow-lg">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit, onInvalid)}
-          className="relative flex w-full flex-col gap-4"
+          className="relative flex max-w-[400px] flex-col gap-4"
         >
           <CloseButton closeClick={() => setToggle(false)} />
 

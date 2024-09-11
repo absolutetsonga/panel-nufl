@@ -16,6 +16,7 @@ import Image from "next/image";
 
 import type { IGameInGameweeks } from "~/components/shared/lib/models/games";
 import Link from "next/link";
+import GamesPageSkeleton from "~/components/entities/skeletons/gameweek-skeleton";
 
 // function extractUppercase(text: string): string {
 //   return text
@@ -31,7 +32,7 @@ export const GamesPage = () => {
   return (
     <PageContainer justify="normal">
       <div className="relative flex w-full flex-col gap-4 p-0 md:p-4">
-        <Heading1>Games</Heading1>
+        <Heading1>Gameweeks/Games</Heading1>
         <PopulateGameweeks toggle={createGameweekToggle} />
         <CreateButton
           toggle={createGameweekToggle}
@@ -51,17 +52,17 @@ export const GamesPage = () => {
 export const PopulateGameweeks = ({ toggle }: { toggle: boolean }) => {
   const { data: gameweeks, isLoading, isError } = useGetAllGameweeks();
 
-  if (!toggle) return <></>;
-  if (isLoading) return <Paragraph>Loading...</Paragraph>;
+  if (isLoading) return <GamesPageSkeleton/>;
   if (isError) return <Paragraph>Error loading games.</Paragraph>;
   if (gameweeks?.length === 0) return <Paragraph>No gameweeks.</Paragraph>;
+  if (toggle) return <></>
 
   return (
     <div className="flex flex-col gap-6 md:gap-8">
       {gameweeks?.map((gameweek) => (
         <div key={gameweek.id} className="flex flex-col gap-4">
           <Heading3>Gameweek {gameweek.number}</Heading3>
-
+          
           <PopulateGames games={gameweek.games} gameweek_id={gameweek.id} />
         </div>
       ))}
@@ -77,8 +78,6 @@ const PopulateGames = ({
   gameweek_id: number;
 }) => {
   const [createGameToggle, setCreateGameToggle] = useState(false);
-  if (!games) return <div>No games found.</div>;
-
   return (
     <>
       <CreateButton
@@ -94,7 +93,7 @@ const PopulateGames = ({
           setToggle={setCreateGameToggle}
         />
       ) : (
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 ">
           {games.map((game) => (
             <Link href={`games/${game.id}`} key={game.id}>
               <div className="flex w-full flex-row items-center justify-center gap-4 rounded-xl bg-[#E8BF77] p-2 font-bold text-black shadow-md">

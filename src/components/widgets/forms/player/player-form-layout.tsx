@@ -50,11 +50,11 @@ export const PlayerFormLayout = ({
   onInvalid,
 }: Props) => {
   return (
-    <div className={"flex max-w-5xl flex-col gap-4 rounded-lg p-6 shadow-lg"}>
+    <div className={"flex w-full flex-col justify-center items-center gap-4 rounded-lg p-6 shadow-lg"}>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit, onInvalid)}
-          className={"relative flex w-full flex-col gap-4"}
+          className={"relative flex w-full md:w-[80%] lg:max-w-[820px] flex-col gap-4"}
         >
           <CloseButton closeClick={() => setToggle(false)} />
 
