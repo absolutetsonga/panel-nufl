@@ -57,6 +57,7 @@ export interface ICreateAndUpdateGame {
   date: Date;
   match_report: string;
 }
+
 export interface IGoal {
   id: number;
   user_id: string;

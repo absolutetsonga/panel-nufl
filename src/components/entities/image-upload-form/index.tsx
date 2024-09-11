@@ -5,7 +5,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "~/components/entities/command/ui/form";
+} from "~/components/entities/command/form";
 import type {
   FieldValues,
   Path,

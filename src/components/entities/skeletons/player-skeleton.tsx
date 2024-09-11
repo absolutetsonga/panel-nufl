@@ -1,8 +1,6 @@
-import { Skeleton } from "~/components/shared/ui/skeleton"
-import { Spinner } from "~/components/shared/ui/spinner"
-import { PageContainer } from "~/components/shared/ui"
+import { PageContainer, Skeleton, Spinner } from "~/components/shared/ui";
 
-export default function PlayerPageSkeleton() {
+export function PlayerPageSkeleton() {
   return (
     <PageContainer>
       <div className="flex flex-col items-center gap-6 md:flex-row">
@@ -17,7 +15,7 @@ export default function PlayerPageSkeleton() {
         </div>
       </div>
     </PageContainer>
-  )
+  );
 }
 
 function PlayerViewSkeleton() {
@@ -44,5 +42,5 @@ function PlayerViewSkeleton() {
         ))}
       </div>
     </div>
-  )
+  );
 }

@@ -3,8 +3,8 @@
 import { forwardRef } from "react";
 
 import { Command as CommandPrimitive } from "cmdk";
-import { Dialog, DialogContent } from "~/components/entities/command/ui/dialog";
-import { cn } from "../../../shared/lib/utils/clsx";
+import { Dialog, DialogContent } from "~/components/entities/command/dialog";
+import { cn } from "~/components/shared/lib/utils/clsx";
 
 import { type DialogProps } from "@radix-ui/react-dialog";
 import type {

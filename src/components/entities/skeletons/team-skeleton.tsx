@@ -1,8 +1,6 @@
-import { Skeleton } from "~/components/shared/ui/skeleton";
-import { Spinner } from "~/components/shared/ui/spinner";
-import { PageContainer } from "~/components/shared/ui";
+import { PageContainer, Skeleton, Spinner } from "~/components/shared/ui";
 
-export default function TeamPageSkeleton() {
+export function TeamPageSkeleton() {
   return (
     <PageContainer justify="normal">
       <div className="flex w-full flex-col justify-center gap-2 md:gap-6">

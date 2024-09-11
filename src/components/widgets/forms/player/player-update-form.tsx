@@ -1,12 +1,14 @@
 import { useForm } from "react-hook-form";
 import { useUpdatePlayer } from "~/components/shared/lib/hooks/player";
-import type { z } from "zod";
+import { useState } from "react";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 
 import { playerSchema } from "../schemas";
 import { PlayerFormLayout } from "./player-form-layout";
-import { useState } from "react";
+
+import type { z } from "zod";
 
 type Props = {
   player: {
@@ -69,7 +71,7 @@ export const PlayerUpdateForm = ({ player, toggle, setToggle }: Props) => {
   if (!toggle) return <></>;
 
   return (
-    <div className="absolute left-0 top-0 right-0 bottom-0 z-20 w-full bg-black mt-10 flex flex-col items-center justify-center gap-4 rounded-lg bg-black shadow-lg">
+    <div className="absolute left-0 top-0 right-0 bottom-0 z-20 w-full mt-10 flex flex-col items-center justify-center gap-4 rounded-lg bg-black shadow-lg">
       <PlayerFormLayout
         isFoundation={isFoundation}
         setIsFoundation={setIsFoundation}

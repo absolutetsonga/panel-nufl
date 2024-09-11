@@ -5,26 +5,18 @@ import { useGetAllGameweeks } from "~/components/shared/lib/hooks/gameweeks";
 
 import { GameCreateForm } from "~/components/widgets/forms/games/game-create-form";
 import { GameweekCreateForm } from "~/components/widgets/forms/gameweeks/gameweek-create-form";
+import { GamesPageSkeleton } from "~/components/entities/skeletons/gameweek-skeleton";
 import { CreateButton } from "~/components/entities/create-button";
-import { PageContainer } from "~/components/shared/ui";
 import {
+  PageContainer,
   Heading1,
   Heading3,
   Paragraph,
-} from "~/components/shared/ui/typography";
+} from "~/components/shared/ui";
 import Image from "next/image";
+import Link from "next/link";
 
 import type { IGameInGameweeks } from "~/components/shared/lib/models/games";
-import Link from "next/link";
-import GamesPageSkeleton from "~/components/entities/skeletons/gameweek-skeleton";
-
-// function extractUppercase(text: string): string {
-//   return text
-//     .split(" ")
-//     .filter((word) => /^[A-Z]/.test(word))
-//     .map((word) => word[0])
-//     .join("");
-// }
 
 export const GamesPage = () => {
   const [createGameweekToggle, setCreateGameweekToggle] = useState(false);
@@ -32,7 +24,7 @@ export const GamesPage = () => {
   return (
     <PageContainer justify="normal">
       <div className="relative flex w-full flex-col gap-4 p-0 md:p-4">
-        <Heading1>Gameweeks/Games</Heading1>
+        <Heading1>Games</Heading1>
         <PopulateGameweeks toggle={createGameweekToggle} />
         <CreateButton
           toggle={createGameweekToggle}
@@ -52,17 +44,17 @@ export const GamesPage = () => {
 export const PopulateGameweeks = ({ toggle }: { toggle: boolean }) => {
   const { data: gameweeks, isLoading, isError } = useGetAllGameweeks();
 
-  if (isLoading) return <GamesPageSkeleton/>;
+  if (isLoading) return <GamesPageSkeleton />;
   if (isError) return <Paragraph>Error loading games.</Paragraph>;
   if (gameweeks?.length === 0) return <Paragraph>No gameweeks.</Paragraph>;
-  if (toggle) return <></>
+  if (toggle) return <></>;
 
   return (
     <div className="flex flex-col gap-6 md:gap-8">
       {gameweeks?.map((gameweek) => (
         <div key={gameweek.id} className="flex flex-col gap-4">
           <Heading3>Gameweek {gameweek.number}</Heading3>
-          
+
           <PopulateGames games={gameweek.games} gameweek_id={gameweek.id} />
         </div>
       ))}

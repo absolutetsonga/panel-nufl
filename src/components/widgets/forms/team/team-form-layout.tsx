@@ -1,12 +1,12 @@
-import { Form } from "~/components/entities/command/ui/form";
+import { Form } from "~/components/entities/command/form";
 import { InputForm } from "~/components/entities/input-form";
 import { SubmitButton } from "~/components/entities/submit-button";
+import { ImageUploadForm } from "~/components/entities/image-upload-form";
+import { CloseButton } from "~/components/entities/close-button";
 
 import type { UseFormReturn } from "react-hook-form";
 import type { teamSchema } from "../schemas";
 import type { z } from "zod";
-import { CloseButton } from "~/components/entities/close-button";
-import { ImageUploadForm } from "~/components/entities/image-upload-form";
 
 type Props = {
   toggle: boolean;

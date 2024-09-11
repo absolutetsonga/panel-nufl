@@ -1,6 +1,4 @@
-import { alertDialogComponents, Button } from "~/components/shared/ui";
-
-const {
+import {
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
@@ -10,7 +8,8 @@ const {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} = alertDialogComponents;
+  Button,
+} from "~/components/shared/ui";
 
 type Props = {
   trigger: string;
@@ -19,6 +18,7 @@ type Props = {
   onConfirm: () => void;
   onCancel: () => void;
 };
+
 export const DeleteAlert = ({
   trigger,
   title,

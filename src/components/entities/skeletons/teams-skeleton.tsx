@@ -1,7 +1,6 @@
-import { Skeleton } from "~/components/shared/ui/skeleton";
-import { Spinner } from "~/components/shared/ui/spinner";
+import { Spinner, Skeleton } from "~/components/shared/ui";
 
-export default function TeamsPageSkeleton() {
+export function TeamsPageSkeleton() {
   return (
     <div className="w-full">
       <div className="grid grid-cols-1 items-center justify-center gap-4 md:grid-cols-2 lg:grid-cols-3">

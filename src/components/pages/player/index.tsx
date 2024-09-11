@@ -9,11 +9,11 @@ import {
   useGetPlayer,
 } from "~/components/shared/lib/hooks/player";
 
-import { PageContainer } from "~/components/shared/ui";
-import { PlayerUpdateForm } from "~/components/widgets/forms/player/player-update-form";
 import { PlayerView } from "./player-view";
+import { PlayerUpdateForm } from "~/components/widgets/forms/player/player-update-form";
 import { DeleteAlert } from "~/components/entities/delete-alert/ui";
-import PlayerPageSkeleton from "~/components/entities/skeletons/player-skeleton";
+import { PlayerPageSkeleton } from "~/components/entities/skeletons/player-skeleton";
+import { PageContainer } from "~/components/shared/ui";
 
 export const PlayerPage = ({ playerId }: { playerId: string }) => {
   const player_id = Number(playerId);
@@ -25,7 +25,7 @@ export const PlayerPage = ({ playerId }: { playerId: string }) => {
   const [deleteToggle, setDeleteToggle] = useState<boolean>(false);
   const { data: player, isLoading, isError } = useGetPlayer(player_id);
 
-  if (isLoading) return <PlayerPageSkeleton/>;
+  if (isLoading) return <PlayerPageSkeleton />;
   if (isError) return <PageContainer>Error loading player.</PageContainer>;
   if (!player) throw new Error("Player not found");
 

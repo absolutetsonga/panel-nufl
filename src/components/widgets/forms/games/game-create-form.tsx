@@ -4,8 +4,9 @@ import { useGetTeams } from "~/components/shared/lib/hooks/team";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { gameSchema } from "../schemas";
-import type { z } from "zod";
 import { GameFormLayout } from "./game-form-layout";
+
+import type { z } from "zod";
 
 type Props = {
   toggle: boolean;

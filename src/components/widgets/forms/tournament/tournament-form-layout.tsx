@@ -1,7 +1,7 @@
 import { SubmitButton } from "~/components/entities/submit-button";
 import { CloseButton } from "~/components/entities/close-button";
 import { InputForm } from "~/components/entities/input-form";
-import { Form } from "~/components/entities/command/ui/form";
+import { Form } from "~/components/entities/command/form";
 
 import type { Dispatch, SetStateAction } from "react";
 import type { UseFormReturn } from "react-hook-form";

@@ -1,6 +1,7 @@
-import * as React from "react";
+import { useRef } from "react";
+
 import { Clock } from "lucide-react";
-import { Label } from "~/components/shared/ui/label";
+import { Label } from "~/components/shared/ui";
 import { TimePickerInput } from "~/components/entities/time-picker-input";
 
 interface TimePickerDemoProps {
@@ -9,9 +10,9 @@ interface TimePickerDemoProps {
 }
 
 export function TimePickerDemo({ date, setDate }: TimePickerDemoProps) {
-  const minuteRef = React.useRef<HTMLInputElement>(null);
-  const hourRef = React.useRef<HTMLInputElement>(null);
-  const secondRef = React.useRef<HTMLInputElement>(null);
+  const minuteRef = useRef<HTMLInputElement>(null);
+  const hourRef = useRef<HTMLInputElement>(null);
+  const secondRef = useRef<HTMLInputElement>(null);
 
   return (
     <div className="flex items-end gap-2">

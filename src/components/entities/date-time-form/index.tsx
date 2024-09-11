@@ -7,15 +7,15 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "../command/ui/form";
+} from "../command/form";
+
 import {
+  Button,
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "~/components/shared/ui/popover";
-
-import { Button } from "~/components/shared/ui";
-import { Calendar } from "~/components/shared/ui/calendar";
+  Calendar,
+} from "~/components/shared/ui";
 import { TimePickerDemo } from "~/components/widgets/time-picker";
 import { CalendarIcon } from "lucide-react";
 

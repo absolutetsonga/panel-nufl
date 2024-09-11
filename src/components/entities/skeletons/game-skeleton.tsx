@@ -1,21 +1,22 @@
-import { Skeleton } from "~/components/shared/ui/skeleton"
-import { Spinner } from "~/components/shared/ui/spinner"
-import { PageContainer } from "~/components/shared/ui"
-import {  Heading3 } from "~/components/shared/ui/typography"
+import {
+  PageContainer,
+  Skeleton,
+  Spinner,
+  Heading3,
+} from "~/components/shared/ui";
 
-export default function GamesPageSkeleton() {
+export function GamesPageSkeleton() {
   return (
     <PageContainer justify="normal">
-        <PopulateGameweeksSkeleton />
-        <Skeleton className="h-10 w-10 rounded-full absolute right-0 top-0" />
+      <PopulateGameweeksSkeleton />
+      <Skeleton className="h-10 w-10 rounded-full absolute right-0 top-0" />
     </PageContainer>
-  )
+  );
 }
 
 function PopulateGameweeksSkeleton() {
   return (
     <div className="flex flex-col gap-6 md:gap-8">
-      
       {[0, 1, 2].map((_, index) => (
         <div key={index} className="flex flex-col gap-4">
           <Heading3>
@@ -25,7 +26,7 @@ function PopulateGameweeksSkeleton() {
         </div>
       ))}
     </div>
-  )
+  );
 }
 
 function PopulateGamesSkeleton() {
@@ -52,5 +53,5 @@ function PopulateGamesSkeleton() {
         </Skeleton>
       ))}
     </div>
-  )
+  );
 }

@@ -1,17 +1,17 @@
 import "src/components/shared/ui/styles/globals.css";
 import "@uploadthing/react/styles.css";
+
+import { ClerkProvider } from "@clerk/nextjs";
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
+import { GeistSans } from "geist/font/sans";
 import { extractRouterConfig } from "uploadthing/server";
 import { ourFileRouter } from "~/app/api/uploadthing/core";
 
-import { GeistSans } from "geist/font/sans";
-import { type Metadata } from "next";
-
-import Menubar from "~/components/widgets/menubar/ui";
-import { Toaster } from "~/components/shared/ui/sonner";
-
 import { ReactQueryProvider } from "~/components/app/providers/query";
-import { ClerkProvider } from "@clerk/nextjs";
+import { Menubar } from "~/components/widgets/menubar/ui";
+import { Toaster } from "~/components/shared/ui";
+
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Panel NUFL",

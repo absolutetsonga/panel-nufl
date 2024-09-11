@@ -1,12 +1,12 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import type { z } from "zod";
-
 import { useCreatePlayer } from "~/components/shared/lib/hooks/player";
 import { useState } from "react";
-import { toast } from "sonner";
 import { playerSchema } from "../schemas";
 import { PlayerFormLayout } from "./player-form-layout";
+import { toast } from "sonner";
+
+import type { z } from "zod";
 
 type Props = {
   team_id: number;

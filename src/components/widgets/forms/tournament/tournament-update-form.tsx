@@ -1,16 +1,16 @@
 import { useForm } from "react-hook-form";
-import type { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-
-import React from "react";
-
 import { useUpdateTournament } from "~/components/shared/lib/hooks/tournament";
+
+import { zodResolver } from "@hookform/resolvers/zod";
 import { tournamentSchema } from "../schemas";
 import { TournamentFormLayout } from "./tournament-form-layout";
 
+import type { z } from "zod";
+import type { Dispatch, SetStateAction } from "react";
+
 type Props = {
   toggle: boolean;
-  setToggle: React.Dispatch<React.SetStateAction<boolean>>;
+  setToggle: Dispatch<SetStateAction<boolean>>;
   tournament: {
     name: string;
     id: number;

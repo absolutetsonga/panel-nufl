@@ -4,12 +4,12 @@ import {
   Command,
   CommandItem,
   CommandList,
-} from "~/components/entities/command/ui/command";
+} from "~/components/entities/command/command";
 import { COMMANDS } from "~/components/entities/command/constants";
 
 import Link from "next/link";
 
-const Menubar = () => {
+export const Menubar = () => {
   return (
     <div className={`w-[92px] px-4 py-10 sm:w-[300px]`}>
       <SignedOut>
@@ -31,7 +31,7 @@ const Menubar = () => {
           </div>
           <Command className="flex flex-1 grow pt-6">
             <CommandList>
-              <div className="flex flex-row flex-col gap-3 sm:gap-1">
+              <div className="flex flex-col gap-3 sm:gap-1">
                 {COMMANDS.map((command) => (
                   <Link
                     href={"/" + command.id}
@@ -53,5 +53,3 @@ const Menubar = () => {
     </div>
   );
 };
-
-export default Menubar;

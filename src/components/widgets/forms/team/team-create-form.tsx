@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { TeamFormLayout } from "./team-form-layout";
 import { teamSchema } from "../schemas";
 
-import { type Dispatch, type SetStateAction } from "react";
+import type { Dispatch, SetStateAction } from "react";
 import type { z } from "zod";
 
 type Props = {
@@ -36,7 +36,7 @@ export const TeamCreateForm = ({ toggle, setToggle }: Props) => {
   if (!toggle) return <></>;
 
   return (
-    <div className="absolute left-0 top-0 right-0 bottom-0 z-20 w-full bg-black mt-10 flex flex-col items-center justify-center gap-4 rounded-lg bg-black shadow-lg">
+    <div className="absolute left-0 top-0 right-0 bottom-0 z-20 w-full mt-10 flex flex-col items-center justify-center gap-4 rounded-lg bg-black shadow-lg">
       <TeamFormLayout
         toggle={toggle}
         setToggle={setToggle}

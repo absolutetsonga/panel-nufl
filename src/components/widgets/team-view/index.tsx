@@ -1,12 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
-import Image from "next/image";
 import { useDeleteTeam } from "~/components/shared/lib/hooks/team";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
+
 import { DeleteAlert } from "~/components/entities/delete-alert/ui";
 import { TeamUpdateForm } from "../forms/team/team-update-form";
 import { PencilIcon, Trash2Icon } from "lucide-react";
+import Image from "next/image";
 
 type TeamViewProps = {
   team: {

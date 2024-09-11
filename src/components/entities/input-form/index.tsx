@@ -7,7 +7,7 @@ import {
   FormLabel,
   FormDescription,
   FormMessage,
-} from "~/components/entities/command/ui/form";
+} from "~/components/entities/command/form";
 import { Input } from "~/components/shared/ui";
 
 type InputFormProps<T extends FieldValues> = {

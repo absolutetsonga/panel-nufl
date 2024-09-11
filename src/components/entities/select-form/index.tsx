@@ -14,7 +14,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "~/components/shared/ui/select";
+} from "~/components/shared/ui";
 
 type itemValue = {
   value: string;

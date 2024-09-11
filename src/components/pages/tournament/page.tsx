@@ -1,6 +1,5 @@
 "use client";
 
-import { PencilIcon, Trash2Icon } from "lucide-react";
 import {
   useDeleteTournament,
   useGetTournaments,
@@ -8,12 +7,12 @@ import {
 import { useState } from "react";
 
 import { TournamentCreateForm } from "~/components/widgets/forms/tournament/tournament-create-form";
-import { PageContainer } from "~/components/shared/ui";
-import { Heading1, Paragraph } from "~/components/shared/ui/typography";
+import { TournamentUpdateForm } from "~/components/widgets/forms/tournament/tournament-update-form";
 import { CreateButton } from "~/components/entities/create-button";
 import { DeleteAlert } from "~/components/entities/delete-alert/ui";
-import { TournamentUpdateForm } from "~/components/widgets/forms/tournament/tournament-update-form";
-import TournamentPageSkeleton from "~/components/entities/skeletons/tournament-skeleton";
+import { TournamentPageSkeleton } from "~/components/entities/skeletons/tournament-skeleton";
+import { PageContainer, Heading1, Paragraph } from "~/components/shared/ui";
+import { PencilIcon, Trash2Icon } from "lucide-react";
 
 export const TournamentPage = () => {
   const [createTournamentToggle, setCreateTournamentToggle] = useState(false);

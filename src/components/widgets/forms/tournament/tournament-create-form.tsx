@@ -1,17 +1,16 @@
-import React from "react";
-
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-
 import { useCreateTournament } from "~/components/shared/lib/hooks/tournament";
+
+import { zodResolver } from "@hookform/resolvers/zod";
 import { tournamentSchema } from "../schemas";
 import { TournamentFormLayout } from "./tournament-form-layout";
 
 import type { z } from "zod";
+import type { Dispatch, SetStateAction } from "react";
 
 type Props = {
   toggle: boolean;
-  setToggle: React.Dispatch<React.SetStateAction<boolean>>;
+  setToggle: Dispatch<SetStateAction<boolean>>;
 };
 
 export const TournamentCreateForm = ({ toggle, setToggle }: Props) => {
@@ -36,7 +35,7 @@ export const TournamentCreateForm = ({ toggle, setToggle }: Props) => {
   if (!toggle) return <></>;
 
   return (
-    <div className="absolute left-0 top-0 right-0 bottom-0 z-20 w-full bg-black mt-10 flex flex-col items-center justify-center gap-4 rounded-lg bg-black shadow-lg">
+    <div className="absolute left-0 top-0 right-0 bottom-0 z-20 w-full mt-10 flex flex-col items-center justify-center gap-4 rounded-lg bg-black shadow-lg">
       <TournamentFormLayout
         form={form}
         toggle={toggle}

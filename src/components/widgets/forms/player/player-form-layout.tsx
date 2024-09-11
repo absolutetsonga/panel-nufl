@@ -1,4 +1,4 @@
-import { Form } from "~/components/entities/command/ui/form";
+import { Form } from "~/components/entities/command/form";
 import { SelectForm } from "~/components/entities/select-form";
 import { InputForm } from "~/components/entities/input-form";
 import { SubmitButton } from "~/components/entities/submit-button";
@@ -50,11 +50,17 @@ export const PlayerFormLayout = ({
   onInvalid,
 }: Props) => {
   return (
-    <div className={"flex w-full flex-col justify-center items-center gap-4 rounded-lg p-6 shadow-lg"}>
+    <div
+      className={
+        "flex w-full flex-col justify-center items-center gap-4 rounded-lg p-6 shadow-lg"
+      }
+    >
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit, onInvalid)}
-          className={"relative flex w-full md:w-[80%] lg:max-w-[820px] flex-col gap-4"}
+          className={
+            "relative flex w-full md:w-[80%] lg:max-w-[820px] flex-col gap-4"
+          }
         >
           <CloseButton closeClick={() => setToggle(false)} />
 

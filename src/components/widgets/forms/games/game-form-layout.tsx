@@ -1,15 +1,13 @@
 import { InputForm } from "~/components/entities/input-form";
 import { SubmitButton } from "~/components/entities/submit-button";
 import { CloseButton } from "~/components/entities/close-button";
-
-import { Form } from "~/components/entities/command/ui/form";
-
 import { SelectForm } from "~/components/entities/select-form";
+import { DateTimeForm } from "~/components/entities/date-time-form";
+import { Form } from "~/components/entities/command/form";
+
 import type { UseFormReturn } from "react-hook-form";
 import type { gameSchema } from "../schemas";
-
 import type { z } from "zod";
-import { DateTimeForm } from "~/components/entities/date-time-form";
 
 type Props = {
   toggle: boolean;
@@ -41,7 +39,6 @@ export const GameFormLayout = ({
   onInvalid,
   setToggle,
 }: Props) => {
-
   return (
     <div className="flex max-w-[600px] flex-col items-center justify-center gap-4 rounded-lg p-6 shadow-lg">
       <Form {...form}>

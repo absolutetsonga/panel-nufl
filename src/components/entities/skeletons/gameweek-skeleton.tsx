@@ -1,14 +1,12 @@
-import { Skeleton } from "~/components/shared/ui/skeleton"
-import { Spinner } from "~/components/shared/ui/spinner"
-import { Heading3 } from "~/components/shared/ui/typography"
+import { Skeleton, Spinner, Heading3 } from "~/components/shared/ui";
 
-export default function GamesPageSkeleton() {
+export function GamesPageSkeleton() {
   return (
-      <div className="relative flex w-full flex-col gap-4">
-        <PopulateGameweeksSkeleton />
-        <Skeleton className="h-10 w-10 rounded-full absolute right-0 top-0" />
-      </div>
-  )
+    <div className="relative flex w-full flex-col gap-4">
+      <PopulateGameweeksSkeleton />
+      <Skeleton className="h-10 w-10 rounded-full absolute right-0 top-0" />
+    </div>
+  );
 }
 
 function PopulateGameweeksSkeleton() {
@@ -23,7 +21,7 @@ function PopulateGameweeksSkeleton() {
         </div>
       ))}
     </div>
-  )
+  );
 }
 
 function PopulateGamesSkeleton() {
@@ -42,7 +40,7 @@ function PopulateGamesSkeleton() {
           </div>
           <Skeleton className="h-6 w-8 bg-gray-400/5" />
           <div className="flex flex-row items-center justify-center gap-2 sm:gap-4 text-left">
-          <Skeleton className="flex items-center justify-center h-10 w-10 rounded-full bg-gray-400/5">
+            <Skeleton className="flex items-center justify-center h-10 w-10 rounded-full bg-gray-400/5">
               <Spinner size="sm" color="primary" className="text-gray-400/20" />
             </Skeleton>
             <Skeleton className="h-4 w-24 bg-gray-400/5" />
@@ -50,5 +48,5 @@ function PopulateGamesSkeleton() {
         </Skeleton>
       ))}
     </div>
-  )
+  );
 }

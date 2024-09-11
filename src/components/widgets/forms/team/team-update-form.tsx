@@ -1,13 +1,13 @@
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-
-import { TeamFormLayout } from "./team-form-layout";
 import { useUpdateTeam } from "~/components/shared/lib/hooks/team";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { TeamFormLayout } from "./team-form-layout";
+
+import { teamSchema } from "../schemas";
 
 import type { z } from "zod";
 import type { Dispatch, SetStateAction } from "react";
-
-import { teamSchema } from "../schemas";
 
 type Props = {
   toggle: boolean;
@@ -38,7 +38,7 @@ export const TeamUpdateForm = ({ toggle, setToggle, team }: Props) => {
   if (!toggle) return <></>;
 
   return (
-    <div className="absolute left-0 top-0 right-0 bottom-0 z-20 w-full bg-black mt-10 flex flex-col items-center justify-center gap-4 rounded-lg bg-black shadow-lg">
+    <div className="absolute left-0 top-0 right-0 bottom-0 z-20 w-fullmt-10 flex flex-col items-center justify-center gap-4 rounded-lg bg-black shadow-lg">
       <TeamFormLayout
         toggle={toggle}
         setToggle={setToggle}

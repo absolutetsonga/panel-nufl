@@ -1,14 +1,15 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { useCreateGameweek } from "~/components/shared/lib/hooks/gameweeks";
 
-import { Form } from "~/components/entities/command/ui/form";
+import { Form } from "~/components/entities/command/form";
 import { InputForm } from "~/components/entities/input-form";
 import { CloseButton } from "~/components/entities/close-button";
 import { SubmitButton } from "~/components/entities/submit-button";
 
-import { gameweekSchema } from "../schemas";
+import { useForm } from "react-hook-form";
+import { useCreateGameweek } from "~/components/shared/lib/hooks/gameweeks";
+
 import type { z } from "zod";
+import { gameweekSchema } from "../schemas";
 
 type Props = {
   toggle: boolean;
@@ -21,8 +22,8 @@ export const GameweekCreateForm = ({ toggle, setToggle }: Props) => {
   const form = useForm<z.infer<typeof gameweekSchema>>({
     resolver: zodResolver(gameweekSchema),
     defaultValues: {
-      number: 0
-    }
+      number: 0,
+    },
   });
 
   function onSubmit({ number }: z.infer<typeof gameweekSchema>) {
