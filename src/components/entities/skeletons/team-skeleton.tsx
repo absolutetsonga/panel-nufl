@@ -40,7 +40,7 @@ function PlayersViewSkeleton() {
           <Skeleton className="h-8 w-8 rounded-full bg-gray-400/5" />
         </div>
         <div className="grid grid-cols-1 items-center justify-center gap-4 md:grid-cols-2">
-          {[...Array(12)].map((_, index) => (
+          {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((_, index) => (
             <Skeleton
               key={index}
               className="h-24 w-full border-[1px] border-gray-400/20 bg-gray-400/3 rounded-xl p-4 flex items-center"

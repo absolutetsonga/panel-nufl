@@ -36,7 +36,7 @@ function PlayerViewSkeleton() {
       <div className="mt-6 space-y-2">
         <Skeleton className="h-8 w-32 mb-4 bg-gray-400/5" />
 
-        {[...Array(11)].map((_, index) => (
+        {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((_, index) => (
           <div key={index} className="flex items-center">
             <Skeleton className="h-5 w-32 mr-2 bg-gray-400/5" />
             <Skeleton className="h-5 w-24 bg-gray-400/5" />

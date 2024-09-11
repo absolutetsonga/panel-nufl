@@ -1,7 +1,6 @@
 import { Skeleton } from "~/components/shared/ui/skeleton"
 import { Spinner } from "~/components/shared/ui/spinner"
-import { PageContainer } from "~/components/shared/ui"
-import { Heading1, Heading3 } from "~/components/shared/ui/typography"
+import { Heading3 } from "~/components/shared/ui/typography"
 
 export default function GamesPageSkeleton() {
   return (
@@ -15,7 +14,7 @@ export default function GamesPageSkeleton() {
 function PopulateGameweeksSkeleton() {
   return (
     <div className="flex flex-col gap-6 md:gap-8">
-      {[...Array(3)].map((_, index) => (
+      {[0, 1, 2].map((_, index) => (
         <div key={index} className="flex flex-col gap-4">
           <Heading3>
             <Skeleton className="h-6 w-60 bg-gray-400/5" />
@@ -30,7 +29,7 @@ function PopulateGameweeksSkeleton() {
 function PopulateGamesSkeleton() {
   return (
     <div className="grid grid-cols-1 gap-4">
-      {[...Array(4)].map((_, index) => (
+      {[0, 1, 2, 3].map((_, index) => (
         <Skeleton
           key={index}
           className="flex w-full flex-row items-center justify-center gap-2 sm:gap-4 rounded-xl p-2 h-16 bg-gray-400/5"
