@@ -4,7 +4,10 @@ import { games } from "../schema";
 import { eq, desc } from "drizzle-orm";
 
 import { AuthenticationService } from "~/server/utils";
-import type { ICreateAndUpdateGame } from "~/components/shared/lib/models/games";
+import type {
+  ICreateGame,
+  IUpdateGame,
+} from "~/components/shared/lib/models/games";
 
 class GameService extends AuthenticationService {
   constructor() {
@@ -14,6 +17,10 @@ class GameService extends AuthenticationService {
   async getGame(id: number) {
     return await db.query.games.findFirst({
       where: (model, { eq }) => eq(model.id, id),
+      with: {
+        home_team: true,
+        away_team: true,
+      },
     });
   }
 
@@ -28,7 +35,7 @@ class GameService extends AuthenticationService {
     });
   }
 
-  async createGame(game: ICreateAndUpdateGame) {
+  async createGame(game: ICreateGame) {
     const [newGame] = await db
       .insert(games)
       .values({
@@ -42,6 +49,21 @@ class GameService extends AuthenticationService {
       .returning();
 
     return newGame;
+  }
+
+  async updateGame(game: IUpdateGame) {
+    const [updatedGame] = await db
+      .update(games)
+      .set({
+        ...game,
+        user_id: this.user.userId,
+        result: "Not Started",
+        updatedAt: new Date(),
+      })
+      .where(eq(games.id, game.game_id))
+      .returning();
+
+    return updatedGame;
   }
 
   async deleteGame(id: number) {
@@ -64,6 +86,8 @@ const gameService = new GameService();
 
 export const getGame = async (id: number) => gameService.getGame(id);
 export const getGames = async () => gameService.getGames();
-export const createGame = async (game: ICreateAndUpdateGame) =>
+export const createGame = async (game: ICreateGame) =>
   gameService.createGame(game);
+export const updateGame = async (game: IUpdateGame) =>
+  gameService.updateGame(game);
 export const deleteGame = async (id: number) => gameService.deleteGame(id);

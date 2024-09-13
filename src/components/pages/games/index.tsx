@@ -71,12 +71,10 @@ export const PopulateGameweeks = ({ toggle }: { toggle: boolean }) => {
             <Heading3>Gameweek {gameweek.number}</Heading3>
 
             <div className="left-40 top-0 gap-6 p-2">
-              <div className="flex flex-row gap-4">
-                <Trash2Icon
-                  className="h-4 w-4 cursor-pointer"
-                  onClick={() => setDeleteGameweekId(gameweek.id)}
-                />
-              </div>
+              <Trash2Icon
+                className="h-4 w-4 cursor-pointer"
+                onClick={() => setDeleteGameweekId(gameweek.id)}
+              />
             </div>
           </div>
 
@@ -109,7 +107,13 @@ const PopulateGames = ({
   const [createGameToggle, setCreateGameToggle] = useState(false);
   return (
     <div>
-      <CreateButton toggle={createGameToggle} setToggle={setCreateGameToggle} />
+      <div className="relative">
+        <CreateButton
+          toggle={createGameToggle}
+          setToggle={setCreateGameToggle}
+          className="absolute right-0 -top-14"
+        />
+      </div>
 
       {createGameToggle ? (
         <GameCreateForm

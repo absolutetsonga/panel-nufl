@@ -40,74 +40,76 @@ export const GameFormLayout = ({
   setToggle,
 }: Props) => {
   return (
-    <div className="flex max-w-[600px] flex-col items-center justify-center gap-4 rounded-lg p-6 shadow-lg">
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit, onInvalid)}
-          className="relative flex w-full flex-col gap-4"
-        >
-          <CloseButton closeClick={() => setToggle(false)} />
+    <div className="absolute left-0 right-0 top-0 bottom-0 bg-black text-white z-20 flex flex-col items-center justify-center gap-4 rounded-lg p-6 shadow-lg">
+      <div className="max-w-[600px] ">
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit, onInvalid)}
+            className="relative flex w-full flex-col gap-4"
+          >
+            <CloseButton closeClick={() => setToggle(false)} />
 
-          <div className="mt-10 flex flex-row items-center justify-center gap-4">
+            <div className="mt-10 flex flex-row items-center justify-center gap-4">
+              <SelectForm
+                form={form}
+                name={"home_team_id"}
+                label={"Home Team"}
+                itemValues={selectTeams}
+                placeholder="Select home team"
+                description="Please select the home team of the game"
+                onValueChange={(value) => {
+                  form.setValue("home_team_id", Number(value));
+                }}
+              />
+              <SelectForm
+                form={form}
+                name={"away_team_id"}
+                label={"Away Team"}
+                itemValues={selectTeams}
+                placeholder="Select away team"
+                description="Please select the away team of the game"
+                onValueChange={(value) => {
+                  form.setValue("away_team_id", Number(value));
+                }}
+              />
+            </div>
+
             <SelectForm
               form={form}
-              name={"home_team_id"}
-              label={"Home Team"}
-              itemValues={selectTeams}
-              placeholder="Select home team"
-              description="Please select the home team of the game"
-              onValueChange={(value) => {
-                form.setValue("home_team_id", Number(value));
-              }}
+              name={"venue"}
+              label={"Venue"}
+              itemValues={[
+                { value: "Sports Center", name: "Sports Center" },
+                { value: "Athetic Center", name: "Athetic Center" },
+              ]}
+              placeholder="Select venue"
+              description="Please select the venue of the game"
             />
-            <SelectForm
+
+            <InputForm
+              name={"match_report"}
+              onChange={undefined}
               form={form}
-              name={"away_team_id"}
-              label={"Away Team"}
-              itemValues={selectTeams}
-              placeholder="Select away team"
-              description="Please select the away team of the game"
-              onValueChange={(value) => {
-                form.setValue("away_team_id", Number(value));
-              }}
+              label={"Match Report (Optional)"}
+              placeholder={"John Doe is MVP of the game"}
+              description={"Write an interesting event occured on the game"}
             />
-          </div>
 
-          <SelectForm
-            form={form}
-            name={"venue"}
-            label={"Venue"}
-            itemValues={[
-              { value: "Sports Center", name: "Sports Center" },
-              { value: "Athetic Center", name: "Athetic Center" },
-            ]}
-            placeholder="Select venue"
-            description="Please select the venue of the game"
-          />
+            <DateTimeForm
+              form={form}
+              name={"date"}
+              label={"Date Time"}
+              description={"Please pick a date time of the game"}
+              placeholder={"Pick a date time"}
+              fromDate={new Date(2024, 8, 0o1)}
+              toDate={new Date(2025, 11, 31)}
+              withTimePicker={true}
+            />
 
-          <DateTimeForm
-            form={form}
-            name={"date"}
-            label={"Date Time"}
-            description={"Please pick a date time of the game"}
-            placeholder={"Pick a date time"}
-            fromDate={new Date(2024, 9, 0o1)}
-            toDate={new Date(2025, 11, 31)}
-            withTimePicker={true}
-          />
-
-          <InputForm
-            name={"match_report"}
-            onChange={undefined}
-            form={form}
-            label={"Math Report (Optional)"}
-            placeholder={"John Doe is MVP of the game"}
-            description={"Write an interesting event occured on the game"}
-          />
-
-          <SubmitButton />
-        </form>
-      </Form>
+            <SubmitButton />
+          </form>
+        </Form>
+      </div>
     </div>
   );
 };

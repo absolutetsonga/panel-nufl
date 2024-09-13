@@ -49,10 +49,19 @@ export interface IGameInGameweeks {
   };
 }
 
-export interface ICreateAndUpdateGame {
+export interface ICreateGame {
   home_team_id: number;
   away_team_id: number;
   gameweek_id: number;
+  venue: string;
+  date: Date;
+  match_report: string;
+}
+
+export interface IUpdateGame {
+  game_id: number;
+  home_team_id: number;
+  away_team_id: number;
   venue: string;
   date: Date;
   match_report: string;
