@@ -53,3 +53,21 @@ export const gameSchema = z.object({
   }),
   match_report: z.string().default(""),
 });
+
+export const goalSchema = z.object({
+  game_id: z.number(),
+  player_id: z.number(),
+  is_own_goal: z.boolean(),
+});
+
+export const assistSchema = z.object({
+  game_id: z.number(),
+  player_id: z.number(),
+  goal_id: z.number(),
+});
+
+export const cardSchema = z.object({
+  game_id: z.number(),
+  player_id: z.number(),
+  is_yellow: z.boolean(),
+});

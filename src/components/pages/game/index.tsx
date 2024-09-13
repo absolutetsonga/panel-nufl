@@ -8,6 +8,7 @@ import { CardsView } from "./cards-view";
 import { PageContainer } from "~/components/shared/ui";
 
 export const GamePage = ({ id }: { id: string }) => {
+  const gameId = Number(id);
   const { data: game, isLoading, isError } = useGetGame(Number(id));
 
   if (isLoading) return <div>Loading...</div>;
@@ -18,10 +19,17 @@ export const GamePage = ({ id }: { id: string }) => {
     <PageContainer justify="start">
       <GameHeader game={game} />
 
-      <div className="grid grid-cols-3 w-full justify-center">
-        <GoalsView />
-        <AssistsView />
-        <CardsView />
+      <div className="w-full flex flex-row justify-between gap-4">
+        <div className="flex flex-col gap-4 w-full justify-center text-right">
+          <GoalsView gameId={gameId} className="flex-row" />
+          <AssistsView gameId={gameId} className="flex-row" />
+          <CardsView gameId={gameId} className="flex-row" />
+        </div>
+        <div className="flex flex-col gap-4 w-full justify-center text-left">
+          <GoalsView gameId={gameId} className="flex-row-reverse" />
+          <AssistsView gameId={gameId} className="flex-row-reverse" />
+          <CardsView gameId={gameId} className="flex-row-reverse" />
+        </div>
       </div>
     </PageContainer>
   );

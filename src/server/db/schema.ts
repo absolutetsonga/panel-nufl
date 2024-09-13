@@ -43,6 +43,11 @@ export const teams = createTable(
   }),
 );
 
+export const teamsRelations = relations(teams, ({ many }) => ({
+  home_games: many(games, { relationName: "home_team" }),
+  away_games: many(games, { relationName: "away_team" }),
+}));
+
 export const players = createTable("player", {
   id: serial("id").primaryKey(),
   team_id: integer("team_id").notNull(),
@@ -73,6 +78,10 @@ export const players = createTable("player", {
   ),
 });
 
+export const playersRelation = relations(players, ({ many }) => ({
+  goals: many(goals),
+}));
+
 export const gameweeks = createTable("gameweek", {
   id: serial("id").primaryKey(),
   tournament_id: integer("tournament_id").notNull(),
@@ -85,6 +94,10 @@ export const gameweeks = createTable("gameweek", {
     .$onUpdate(() => new Date())
     .notNull(),
 });
+
+export const gameweeksRelations = relations(gameweeks, ({ many }) => ({
+  games: many(games),
+}));
 
 export const games = createTable("game", {
   id: serial("id").primaryKey(),
@@ -109,38 +122,6 @@ export const games = createTable("game", {
     .notNull(),
 });
 
-export const goals = createTable("goal", {
-  id: serial("id").primaryKey(),
-  user_id: varchar("user_id", { length: 256 }).notNull(),
-  game_id: integer("game_id").notNull(),
-  player_id: integer("player_id").notNull(),
-  is_own_goal: boolean("is_own_goal").default(false),
-});
-
-export const assists = createTable("assist", {
-  id: serial("id").primaryKey(),
-  user_id: varchar("user_id", { length: 256 }).notNull(),
-  game_id: integer("game_id").notNull(),
-  player_id: integer("player_id").notNull(),
-  goal_id: integer("goal_id").notNull(),
-});
-
-export const clean_sheets = createTable("clean_sheet", {
-  id: serial("id").primaryKey(),
-  user_id: varchar("user_id", { length: 256 }).notNull(),
-  game_id: integer("game_id").notNull(),
-  player_id: integer("player_id").notNull(),
-});
-
-export const cards = createTable("card", {
-  id: serial("id").primaryKey(),
-  user_id: varchar("user_id", { length: 256 }).notNull(),
-  game_id: integer("game_id").notNull(),
-  player_id: integer("player_id").notNull(),
-  is_yellow: boolean("is_yellow").notNull(),
-});
-
-// relations
 export const gamesRelations = relations(games, ({ one }) => ({
   home_team: one(teams, {
     fields: [games.home_team_id],
@@ -158,14 +139,70 @@ export const gamesRelations = relations(games, ({ one }) => ({
   }),
 }));
 
-export const teamsRelations = relations(teams, ({ many }) => ({
-  home_games: many(games, { relationName: "home_team" }),
-  away_games: many(games, { relationName: "away_team" }),
+export const goals = createTable("goal", {
+  id: serial("id").primaryKey(),
+  user_id: varchar("user_id", { length: 256 }).notNull(),
+  game_id: integer("game_id").notNull(),
+  player_id: integer("player_id").notNull(),
+  is_own_goal: boolean("is_own_goal").default(false),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .$onUpdate(() => new Date())
+    .notNull(),
+});
+
+export const goalsRelations = relations(goals, ({ one }) => ({
+  players: one(players, {
+    fields: [goals.player_id],
+    references: [players.id],
+    relationName: "goals",
+  }),
 }));
 
-export const gameweeksRelations = relations(gameweeks, ({ many }) => ({
-  games: many(games),
-}));
+export const assists = createTable("assist", {
+  id: serial("id").primaryKey(),
+  user_id: varchar("user_id", { length: 256 }).notNull(),
+  game_id: integer("game_id").notNull(),
+  player_id: integer("player_id").notNull(),
+  goal_id: integer("goal_id").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .$onUpdate(() => new Date())
+    .notNull(),
+});
+
+export const clean_sheets = createTable("clean_sheet", {
+  id: serial("id").primaryKey(),
+  user_id: varchar("user_id", { length: 256 }).notNull(),
+  game_id: integer("game_id").notNull(),
+  player_id: integer("player_id").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .$onUpdate(() => new Date())
+    .notNull(),
+});
+
+export const cards = createTable("card", {
+  id: serial("id").primaryKey(),
+  user_id: varchar("user_id", { length: 256 }).notNull(),
+  game_id: integer("game_id").notNull(),
+  player_id: integer("player_id").notNull(),
+  is_yellow: boolean("is_yellow").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .$onUpdate(() => new Date())
+    .notNull(),
+});
+
+// relations
 
 // i need to create relations for gameweeks and games
 // gameweeks can have many games, and game can have one gameweek

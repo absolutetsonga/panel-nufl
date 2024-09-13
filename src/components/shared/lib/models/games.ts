@@ -75,9 +75,21 @@ export interface IGoal {
   is_own_goal: boolean;
 }
 
+export interface ICreateGoal {
+  game_id: number;
+  player_id: number;
+  is_own_goal: boolean;
+}
+
 export interface IAssist {
   id: number;
   user_id: string;
+  game_id: number;
+  player_id: number;
+  goal_id: number;
+}
+
+export interface ICreateAssist {
   game_id: number;
   player_id: number;
   goal_id: number;
@@ -92,6 +104,13 @@ export interface ICleanSheet {
 
 export interface ICard {
   id: number;
+  user_id: string;
+  game_id: number;
+  player_id: number;
+  is_yellow: boolean;
+}
+
+export interface ICreateCard {
   user_id: string;
   game_id: number;
   player_id: number;
