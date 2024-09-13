@@ -7,7 +7,7 @@ import {
   FormLabel,
   FormDescription,
   FormMessage,
-} from "~/components/entities/command/ui/form";
+} from "~/components/entities/command/form";
 import {
   Select,
   SelectContent,

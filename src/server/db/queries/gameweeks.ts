@@ -2,7 +2,7 @@
 
 import { db } from "..";
 import { gameweeks, tournaments } from "../schema";
-import { eq, asc } from "drizzle-orm";
+import { eq, asc, and } from "drizzle-orm";
 import { AuthenticationService } from "~/server/utils";
 
 class GameweekService extends AuthenticationService {
@@ -53,10 +53,23 @@ class GameweekService extends AuthenticationService {
     return newGameweek;
   }
 
+  async updateGameweek(gameweek: { id: number; number: number }) {
+    const [updatedPlayer] = await db
+      .update(gameweeks)
+      .set({ number: gameweek.number, updatedAt: new Date() })
+      .where(
+        eq(gameweeks.id, gameweek.id) &&
+          eq(gameweeks.user_id, this.user.userId),
+      )
+      .returning();
+
+    return updatedPlayer;
+  }
+
   async deleteGameweek(id: number) {
     const [deletedGameweek] = await db
       .delete(gameweeks)
-      .where(eq(gameweeks.id, id) && eq(gameweeks.user_id, this.user.userId))
+      .where(and(eq(gameweeks.id, id), eq(gameweeks.user_id, this.user.userId)))
       .returning();
 
     return deletedGameweek;
@@ -70,5 +83,9 @@ export const getGameweek = async (id: number) =>
 export const getGameweeks = async () => gameweekService.getGameweeks();
 export const createGameweek = async (number: number) =>
   gameweekService.createGameweek(number);
+export const updateGameweek = async (gameweek: {
+  id: number;
+  number: number;
+}) => gameweekService.updateGameweek(gameweek);
 export const deleteGameweek = async (id: number) =>
   gameweekService.deleteGameweek(id);

@@ -5,6 +5,7 @@ import {
   deleteGameweek,
   getGameweek,
   getGameweeks,
+  updateGameweek,
 } from "~/server/db/queries/gameweeks";
 
 // read one gameweek
@@ -52,6 +53,35 @@ export const useCreateGameweek = () => {
   });
 };
 
+// update gameweek
+export const useUpdateGameweek = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (gameweek: { id: number; number: number }) => {
+      return await updateGameweek(gameweek);
+    },
+    onSuccess: async (data) => {
+      try {
+        if (data && !(data instanceof Error)) {
+          toast.success(`Gameweek updated successfully`);
+          await queryClient.invalidateQueries({
+            queryKey: ["gameweeks"],
+          });
+        } else {
+          toast.error("Gameweek update failed.");
+        }
+      } catch (error) {
+        console.error("Error updating gameweek:", error);
+        toast.error("Error");
+      }
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+};
+
 // delete gameweek
 export const useDeleteGameweek = () => {
   const queryClient = useQueryClient();
@@ -62,9 +92,6 @@ export const useDeleteGameweek = () => {
       try {
         if (data && !(data instanceof Error)) {
           toast.success(`Gameweek deleted successfully`);
-          await queryClient.invalidateQueries({
-            queryKey: ["gameweeks"],
-          });
           await queryClient.invalidateQueries({
             queryKey: ["gameweeks"],
           });

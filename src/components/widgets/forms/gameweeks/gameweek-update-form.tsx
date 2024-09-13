@@ -1,30 +1,36 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-
 import { useForm } from "react-hook-form";
-import { useCreateGameweek } from "~/components/shared/lib/hooks/gameweeks";
+import { useUpdateGameweek } from "~/components/shared/lib/hooks/gameweeks";
 
-import { gameweekSchema } from "../schemas";
 import { GameweekFormLayout } from "./gameweek-form-layout";
 
+import { gameweekSchema } from "../schemas";
+import { zodResolver } from "@hookform/resolvers/zod";
+
 import type { z } from "zod";
+import type { IGameWeek } from "~/components/shared/lib/models/games";
 
 type Props = {
   toggle: boolean;
   setToggle: React.Dispatch<React.SetStateAction<boolean>>;
+  gameweek: IGameWeek;
 };
 
-export const GameweekCreateForm = ({ toggle, setToggle }: Props) => {
-  const { mutate: server_createGameweek } = useCreateGameweek();
+export const GameweekUpdateForm = ({ toggle, setToggle, gameweek }: Props) => {
+  const { mutate: server_updateGameweek } = useUpdateGameweek();
+  if (gameweek === undefined) return <div>No gameweek found.</div>;
 
   const form = useForm<z.infer<typeof gameweekSchema>>({
     resolver: zodResolver(gameweekSchema),
     defaultValues: {
-      number: 0,
+      number: gameweek.number,
     },
   });
 
   function onSubmit({ number }: z.infer<typeof gameweekSchema>) {
-    server_createGameweek(number);
+    server_updateGameweek({
+      id: gameweek?.id,
+      number,
+    });
     setToggle(false);
   }
 
