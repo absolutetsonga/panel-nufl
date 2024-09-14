@@ -3,11 +3,10 @@ import { CloseButton } from "~/components/entities/close-button";
 import { InputForm } from "~/components/entities/input-form";
 import { SubmitButton } from "~/components/entities/submit-button";
 
-import { gameweekSchema } from "../schemas";
-
 import type { z } from "zod";
 import type { Dispatch, SetStateAction } from "react";
 import type { UseFormReturn } from "react-hook-form";
+import type { gameweekSchema } from "../schemas";
 
 type Props = {
   isFoundation?: boolean;

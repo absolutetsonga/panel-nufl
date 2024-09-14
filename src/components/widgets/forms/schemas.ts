@@ -12,35 +12,35 @@ export const playerSchema = z.object({
     ),
   position: z.string(),
   level_of_study: z.string().min(2, {
-    message: "Sorry, major is mandatory.",
+    message: "Major is mandatory.",
   }),
   school: z.string().min(2, {
-    message: "Sorry, school is mandatory.",
+    message: "School is mandatory.",
   }),
   year: z.number().min(0, {
-    message: "Please, provide course year.",
+    message: "Provide course year.",
   }),
   age: z.date().optional(),
 });
 
 export const teamSchema = z.object({
   name: z.string().min(2, {
-    message: "Team name must be at least 2 characters.",
+    message: "Team name is mandatory.",
   }),
   image: z.string().url({
-    message: "Please upload a valid team image URL.",
+    message: "Please upload an image.",
   }),
 });
 
 export const tournamentSchema = z.object({
   name: z.string().min(2, {
-    message: "Tounament name must be at least 2 characters.",
+    message: "Tournament name is mandatory",
   }),
 });
 
 export const gameweekSchema = z.object({
   number: z.number().min(1, {
-    message: "Please, provide a gameweek number.",
+    message: "Gameweek number is mandatory.",
   }),
 });
 
@@ -49,25 +49,22 @@ export const gameSchema = z.object({
   away_team_id: z.number(),
   date: z.date(),
   venue: z.string().min(2, {
-    message: "Please select a venue.",
+    message: "Venue is mandatory.",
   }),
   match_report: z.string().default(""),
 });
 
 export const goalSchema = z.object({
-  game_id: z.number(),
   player_id: z.number(),
   is_own_goal: z.boolean(),
 });
 
 export const assistSchema = z.object({
-  game_id: z.number(),
   player_id: z.number(),
   goal_id: z.number(),
 });
 
 export const cardSchema = z.object({
-  game_id: z.number(),
   player_id: z.number(),
   is_yellow: z.boolean(),
 });

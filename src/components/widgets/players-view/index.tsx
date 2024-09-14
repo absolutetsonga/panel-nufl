@@ -12,13 +12,13 @@ import type { ITeamPlayer } from "~/components/shared/lib/models/team";
 
 type PlayersViewProps = {
   team: {
-    teamPlayers: ITeamPlayer[];
+    players: ITeamPlayer[];
     team_id: number;
   };
 };
 
 export const PlayersView = ({ team }: PlayersViewProps) => {
-  const { teamPlayers, team_id } = team;
+  const { players, team_id } = team;
   const [createPlayerToggle, setCreatePlayerToggle] = useState(false);
 
   return (
@@ -33,7 +33,7 @@ export const PlayersView = ({ team }: PlayersViewProps) => {
             />
           </div>
 
-          <PopulatePlayers teamPlayers={teamPlayers} />
+          <PopulatePlayers players={players} />
         </div>
       )}
 
@@ -46,10 +46,10 @@ export const PlayersView = ({ team }: PlayersViewProps) => {
   );
 };
 
-const PopulatePlayers = ({ teamPlayers }: { teamPlayers: ITeamPlayer[] }) => {
+const PopulatePlayers = ({ players }: { players: ITeamPlayer[] }) => {
   return (
     <div className="grid grid-cols-1 items-center justify-center gap-4 md:grid-cols-2">
-      {teamPlayers?.map((player) => (
+      {players?.map((player) => (
         <div key={player.id}>
           <Link href={`/players/${player.id}`}>
             <div className="flex flex-row items-center gap-4 rounded-xl border-2 border-gray-400 p-4">

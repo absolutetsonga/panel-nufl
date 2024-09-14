@@ -6,6 +6,7 @@ import { Skeleton } from "./skeleton";
 import { Calendar } from "./calendar";
 import { Toaster } from "./sonner";
 import { Spinner } from "./spinner";
+import { Checkbox } from "./checkbox";
 import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 import {
   Heading1,
@@ -44,6 +45,7 @@ export {
   Button,
   Input,
   Label,
+  Checkbox,
   AlertDialog,
   AlertDialogPortal,
   AlertDialogOverlay,

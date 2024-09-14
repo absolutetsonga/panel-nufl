@@ -1,7 +1,7 @@
 "use server";
 import { db } from "..";
-import { players, teams, tournaments } from "../schema";
-import { eq } from "drizzle-orm";
+import { teams, tournaments } from "../schema";
+import { and, eq } from "drizzle-orm";
 import { AuthenticationService } from "~/server/utils";
 import type {
   ICreateTeam,
@@ -16,16 +16,13 @@ class TeamService extends AuthenticationService {
   async getTeam(id: number) {
     const team = await db.query.teams.findFirst({
       where: (model, { eq }) =>
-        eq(model.id, id) && eq(model.user_id, this.user.userId),
+        and(eq(model.id, id), eq(model.user_id, this.user.userId)),
+      with: { players: true },
     });
 
     if (!team) throw new Error("Team not found");
 
-    const teamPlayers = await db.query.players.findMany({
-      where: eq(players.team_id, team.id),
-    });
-
-    return { ...team, teamPlayers };
+    return team;
   }
 
   async getTeams() {
@@ -40,7 +37,7 @@ class TeamService extends AuthenticationService {
     });
 
     if (!tournament) throw new Error("No tournament found for this user.");
-    
+
     const [newTeam] = await db
       .insert(teams)
       .values({

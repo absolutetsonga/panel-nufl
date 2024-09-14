@@ -27,7 +27,7 @@ export const AssistsView = ({ className, gameId }: AssistViewProps) => {
         </div>
 
         {assists?.map((assist) => {
-          return <div>{assist.player_id}</div>;
+          return <div key={assist.id}>{assist.player_id}</div>;
         })}
       </div>
     </div>

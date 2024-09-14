@@ -4,10 +4,11 @@ import { useRouter } from "next/navigation";
 
 import { GameUpdateForm } from "~/components/widgets/forms/games/game-update-form";
 import { DeleteAlert } from "~/components/entities/delete-alert/ui";
-import { IGameInGameweeks } from "~/components/shared/lib/models/games";
 import { Heading3 } from "~/components/shared/ui";
 import { PencilIcon, TrashIcon } from "lucide-react";
 import Image from "next/image";
+
+import type { IGameInGameweeks } from "~/components/shared/lib/models/games";
 
 type GameHeaderProps = {
   game: IGameInGameweeks;

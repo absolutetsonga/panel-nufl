@@ -28,7 +28,7 @@ export const CardsView = ({ className, gameId }: CardViewProps) => {
         </div>
 
         {cards?.map((card) => {
-          return <div>{card.player_id}</div>;
+          return <div key={card.id}>{card.player_id}</div>;
         })}
       </div>
     </div>

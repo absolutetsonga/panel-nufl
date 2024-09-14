@@ -18,8 +18,8 @@ class GameService extends AuthenticationService {
     return await db.query.games.findFirst({
       where: (model, { eq }) => eq(model.id, id),
       with: {
-        home_team: true,
-        away_team: true,
+        home_team: { with: { players: true } },
+        away_team: { with: { players: true } },
       },
     });
   }
@@ -27,10 +27,7 @@ class GameService extends AuthenticationService {
   async getGames() {
     return await db.query.games.findMany({
       where: eq(games.user_id, this.user.userId),
-      with: {
-        home_team: true,
-        away_team: true,
-      },
+      with: { home_team: true, away_team: true },
       orderBy: desc(games.date),
     });
   }

@@ -17,7 +17,6 @@ type Props = {
 
 export const GameweekUpdateForm = ({ toggle, setToggle, gameweek }: Props) => {
   const { mutate: server_updateGameweek } = useUpdateGameweek();
-  if (gameweek === undefined) return <div>No gameweek found.</div>;
 
   const form = useForm<z.infer<typeof gameweekSchema>>({
     resolver: zodResolver(gameweekSchema),

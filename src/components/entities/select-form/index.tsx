@@ -65,7 +65,7 @@ export const SelectForm = <T extends FieldValues>({
             <SelectContent className="bg-black ">
               {itemValues.map((iv) => (
                 <SelectItem
-                  key={iv.name}
+                  key={iv.value}
                   value={iv.value}
                   className={`${iv.isHidden ? "hidden" : "block"}`}
                 >
