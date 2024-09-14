@@ -108,8 +108,8 @@ export const games = createTable("game", {
 
   venue: varchar("venue", { length: 256 }).notNull(),
   date: timestamp("date", { withTimezone: true }).notNull(),
-  home_team_score: integer("home_team_score").default(sql`null`),
-  away_team_score: integer("away_team_score").default(sql`null`),
+  home_team_score: integer("home_team_score").default(0).notNull(),
+  away_team_score: integer("away_team_score").default(0).notNull(),
   result: varchar("result", { length: 256 }).notNull(),
   match_report: varchar("match_report", { length: 256 }).default("").notNull(),
 

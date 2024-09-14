@@ -25,8 +25,8 @@ export interface IGameInGameweeks {
 
   venue: string;
   date: Date;
-  home_team_score: number | null;
-  away_team_score: number | null;
+  home_team_score: number;
+  away_team_score: number;
   result: string;
   match_report: string;
 

@@ -1,10 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useCreateGoal } from "~/components/shared/lib/hooks/goals";
 import { useUpdateGameScore } from "~/components/shared/lib/hooks/games";
-import {
-  useUpdatePlayer,
-  useUpdatePlayerGoalScore,
-} from "~/components/shared/lib/hooks/player";
+import { useUpdatePlayerGoalScore } from "~/components/shared/lib/hooks/player";
 
 import { goalSchema } from "../schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
