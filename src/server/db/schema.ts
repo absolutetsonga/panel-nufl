@@ -221,6 +221,7 @@ export const teamsRelations = relations(teams, ({ many }) => ({
 export const playersRelation = relations(players, ({ one, many }) => ({
   goals: many(goals, { relationName: "one_player_many_goals" }),
   assists: many(assists, { relationName: "one_player_many_assists" }),
+  cards: many(cards, { relationName: "one_player_many_cards" }),
   team: one(teams, {
     fields: [players.team_id],
     references: [teams.id],
@@ -249,6 +250,7 @@ export const gamesRelations = relations(games, ({ one, many }) => ({
     relationName: "one_gameweek_many_games",
   }),
   goals: many(goals, { relationName: "one_game_many_goals" }),
+  cards: many(cards, { relationName: "one_game_many_cards" }),
 }));
 
 export const goalsRelations = relations(goals, ({ one }) => ({
@@ -279,5 +281,18 @@ export const assistsRelations = relations(assists, ({ one }) => ({
     fields: [assists.player_id],
     references: [players.id],
     relationName: "one_player_many_assists",
+  }),
+}));
+
+export const cardsRelations = relations(cards, ({ one }) => ({
+  player: one(players, {
+    fields: [cards.player_id],
+    references: [players.id],
+    relationName: "one_player_many_cards",
+  }),
+  game: one(games, {
+    fields: [cards.game_id],
+    references: [games.id],
+    relationName: "one_game_many_cards",
   }),
 }));

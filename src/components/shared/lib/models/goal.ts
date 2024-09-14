@@ -10,7 +10,7 @@ export interface IGoal {
 export interface ICreateGoal {
   game_id: number;
   player_id: number;
-  assist_player_id: number;
+  assist_player_id: number | null;
   team_id: number;
   is_own_goal: boolean;
 }

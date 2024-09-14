@@ -31,11 +31,8 @@ class GoalService extends AuthenticationService {
       })
       .returning();
 
-    if (!newGoal) return newGoal;
-
-    const [newAssist] = await db
-      .insert(assists)
-      .values({
+    if (goal.assist_player_id && newGoal) {
+      await db.insert(assists).values({
         user_id: this.user.userId,
         game_id: goal.game_id,
         player_id: goal.assist_player_id,
@@ -43,9 +40,8 @@ class GoalService extends AuthenticationService {
         team_id: goal.team_id,
         createdAt: new Date(),
         updatedAt: new Date(),
-      })
-      .returning();
-
+      });
+    }
     return newGoal;
   }
 

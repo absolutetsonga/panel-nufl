@@ -22,6 +22,7 @@ class GameService extends AuthenticationService {
         home_team: { with: { players: true } },
         away_team: { with: { players: true } },
         goals: { with: { player: true, assist: { with: { player: true } } } },
+        cards: { with: { player: true } },
       },
     });
   }

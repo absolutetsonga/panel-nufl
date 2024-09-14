@@ -38,7 +38,7 @@ export const GameHeader = ({ game }: GameHeaderProps) => {
   return (
     <div className="w-full flex flex-col items-center justify-center gap-4 text-black rounded-xl shadow-md p-4 font-bold bg-slate-200">
       <div className="relative flex w-full flex-row items-center justify-center gap-4">
-        <div className="flex flex-row items-center justify-center gap-4 text-right">
+        <div className="flex flex-col-reverse lg:flex-row items-center justify-center gap-2 text-right">
           <p className="text-[14px]">{game.home_team.name}</p>
           <Image
             src={game.home_team.image ?? ""}
@@ -51,7 +51,7 @@ export const GameHeader = ({ game }: GameHeaderProps) => {
         <Heading3>
           {game.home_team_score} : {game.away_team_score}
         </Heading3>
-        <div className="flex flex-row items-center justify-center gap-4 text-left">
+        <div className="flex flex-col lg:flex-row items-center justify-center gap-2 text-left">
           <Image
             src={game.away_team.image ?? ""}
             width={40}
@@ -62,12 +62,12 @@ export const GameHeader = ({ game }: GameHeaderProps) => {
           <p className="text-[14px]">{game.away_team.name}</p>
         </div>
 
-        <div className="absolute right-2 top-2 flex flex-row items-center gap-4 cursor-pointer">
+        <div className="absolute right-2 top-[120px] md:right-2 md:top-2 flex flex-row items-center gap-4 cursor-pointer">
           <PencilIcon onClick={() => setEditToggle(true)} />
           <TrashIcon onClick={() => setDeleteToggle(true)} />
         </div>
       </div>
-      <div className="flex flex-row gap-4">
+      <div className="w-full flex flex-col justify-normal sm:justify-center md:flex-row gap-1 md:gap-4">
         <div className="text-[12px]">Venue: {game.venue}</div>
         <div className="text-[12px]">Time: {formatDate(game.date)}</div>
         <div className="text-[12px]">Result: {game.result}</div>

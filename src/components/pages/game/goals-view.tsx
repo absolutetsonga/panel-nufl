@@ -5,8 +5,8 @@ import { CreateButton } from "~/components/entities/create-button";
 import { Heading3 } from "~/components/shared/ui";
 import Image from "next/image";
 
-import type { IGameInGameweeksWithTeamPlayersAndGoals } from "~/components/shared/lib/models/game";
 import { cn } from "~/components/shared/lib/utils/clsx";
+import type { IGameInGameweeksWithTeamPlayersAndGoals } from "~/components/shared/lib/models/game";
 
 type GoalsViewProps = {
   game: IGameInGameweeksWithTeamPlayersAndGoals;
@@ -14,8 +14,12 @@ type GoalsViewProps = {
 };
 
 export const GoalsView = ({ game, teamType }: GoalsViewProps) => {
-  console.log(game);
-  const titleClassname = cn("flex justify-between", {
+  const headerClassname = cn("flex justify-between mb-4", {
+    "flex-row": teamType === "home",
+    "flex-row-reverse": teamType === "away",
+  });
+
+  const titleClassname = cn("flex items-center gap-4", {
     "flex-row": teamType === "home",
     "flex-row-reverse": teamType === "away",
   });
@@ -23,6 +27,11 @@ export const GoalsView = ({ game, teamType }: GoalsViewProps) => {
   const goalsClassname = cn("flex justify-end items-center gap-2", {
     "flex-row": teamType === "home",
     "flex-row-reverse": teamType === "away",
+  });
+
+  const playersClassname = cn("flex gap-2 text-[12px] md:text-normal", {
+    "flex-row-reverse": teamType === "home",
+    "flex-row": teamType === "away",
   });
 
   const [createGoalToggle, setCreateGoalToggle] = useState<boolean>(false);
@@ -35,35 +44,49 @@ export const GoalsView = ({ game, teamType }: GoalsViewProps) => {
   }
 
   const teamGoals = getTeamGoals(teamType);
+  const imageSrc =
+    teamType === "home" ? game.home_team.image : game.away_team.image;
 
   return (
-    <div className="flex flex-col">
-      <div className={titleClassname}>
+    <div className="w-full flex flex-col">
+      <div className={headerClassname}>
         <CreateButton
           toggle={createGoalToggle}
           setToggle={setCreateGoalToggle}
         />
-        <Heading3>Goals</Heading3>
+        <div className={titleClassname}>
+          <Heading3>Goals</Heading3>
+
+          <Image
+            src={imageSrc ?? ""}
+            width={32}
+            height={32}
+            className="h-8 w-8 rounded-full object-cover"
+            alt={`Image of ${game.home_team.name}`}
+          />
+        </div>
       </div>
 
-      {teamGoals?.map((goal) => {
-        return (
-          <div key={goal.id} className={goalsClassname}>
-            <div>
-              <p>{goal.player.fullname}</p>
-              <p>({goal.assist?.player.fullname}) </p>
-            </div>
+      <div className="flex flex-col gap-1">
+        {teamGoals?.map((goal) => {
+          return (
+            <div key={goal.id} className={goalsClassname}>
+              <div className={playersClassname}>
+                <p>{goal.player.fullname}</p>
+                <p>{goal.assist ? `(${goal.assist.player.fullname})` : ""} </p>
+              </div>
 
-            <Image
-              width={20}
-              height={20}
-              className="object-cover rounded-full"
-              alt={goal.player.fullname}
-              src={goal.player.image}
-            />
-          </div>
-        );
-      })}
+              <Image
+                width={20}
+                height={20}
+                className="object-cover rounded-full"
+                alt={goal.player.fullname}
+                src={goal.player.image}
+              />
+            </div>
+          );
+        })}
+      </div>
 
       {createGoalToggle && (
         <GoalCreateForm

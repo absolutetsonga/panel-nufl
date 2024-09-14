@@ -106,6 +106,15 @@ export interface IGameInGameweeksWithTeamPlayersAndGoals {
       player: ITeamPlayer;
     };
   }[];
+  cards: {
+    id: number;
+    user_id: string;
+    game_id: number;
+    player_id: number;
+    team_id: number;
+    is_yellow: boolean;
+    player: ITeamPlayer;
+  }[];
 }
 
 export interface ICreateGame {

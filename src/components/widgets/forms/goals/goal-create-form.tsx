@@ -102,32 +102,31 @@ export const GoalCreateForm = ({
         (pl) => pl.id === values.assist_player_id,
       );
 
-      if (!scoredPlayer) return "Can not update scored player goals score";
-      if (!assistPlayer) return "Can not update assist player goals score";
-
       const updateScoredPlayer = {
         player: {
-          id: scoredPlayer.id,
-          goals: scoredPlayer.goals + 1,
+          id: scoredPlayer?.id!,
+          goals: scoredPlayer?.goals! + 1,
         },
       };
 
-      const updateAssistPlayer = {
-        player: {
-          id: assistPlayer.id,
-          assists: assistPlayer.assists + 1,
-        },
-      };
+      if (assistPlayer) {
+        const updateAssistPlayer = {
+          player: {
+            id: assistPlayer?.id!,
+            assists: assistPlayer?.assists + 1,
+          },
+        };
+        server_updatePlayerAssistScore(updateAssistPlayer);
+      }
 
       server_createGoal({
         ...values,
         game_id: game.id,
         team_id: teamId,
-        assist_player_id: assistPlayer.id,
+        assist_player_id: assistPlayer?.id ? assistPlayer?.id : null,
       });
       server_updateGameScore(updateGame);
       server_updatePlayerGoalScore(updateScoredPlayer);
-      server_updatePlayerAssistScore(updateAssistPlayer);
     } else if (teamType === "away") {
       const updateGame = {
         game_id: game.id,
@@ -157,7 +156,9 @@ export const GoalCreateForm = ({
           onSubmit={form.handleSubmit(onSubmit, onInvalid)}
           className="relative flex max-w-[400px] flex-col gap-4"
         >
-          <CloseButton closeClick={() => setToggle(false)} />
+          <div className="absolute -right-2 -top-14">
+            <CloseButton closeClick={() => setToggle(false)} />
+          </div>
 
           <FormField
             control={form.control}
