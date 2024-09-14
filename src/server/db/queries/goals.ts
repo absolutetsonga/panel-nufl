@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "..";
-import { goals } from "../schema";
+import { assists, goals } from "../schema";
 import { and, eq } from "drizzle-orm";
 import { AuthenticationService } from "~/server/utils";
 
@@ -20,11 +20,8 @@ class GoalService extends AuthenticationService {
     });
   }
 
-  // when creating goal:
-  // 1. changing the score of the team in the game.
-  // 2. updating the goal score of the player.
   async createGoal(goal: ICreateGoal) {
-    const [newPlayer] = await db
+    const [newGoal] = await db
       .insert(goals)
       .values({
         ...goal,
@@ -34,7 +31,22 @@ class GoalService extends AuthenticationService {
       })
       .returning();
 
-    return newPlayer;
+    if (!newGoal) return newGoal;
+
+    const [newAssist] = await db
+      .insert(assists)
+      .values({
+        user_id: this.user.userId,
+        game_id: goal.game_id,
+        player_id: goal.assist_player_id,
+        goal_id: newGoal.id,
+        team_id: goal.team_id,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      })
+      .returning();
+
+    return newGoal;
   }
 
   async deleteGoal(id: number) {
@@ -50,6 +62,6 @@ class GoalService extends AuthenticationService {
 const goalService = new GoalService();
 
 export const getGoals = async (gameId: number) => goalService.getGoals(gameId);
-export const createGoal = async (team: ICreateGoal) =>
-  goalService.createGoal(team);
+export const createGoal = async (goal: ICreateGoal) =>
+  goalService.createGoal(goal);
 export const deleteGoal = async (id: number) => goalService.deleteGoal(id);

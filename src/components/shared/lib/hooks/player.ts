@@ -6,11 +6,13 @@ import {
   getPlayer,
   getPlayers,
   updatePlayer,
+  updatePlayerAssistScore,
   updatePlayerGoalScore,
 } from "~/server/db/queries/player";
 import type {
   ICreatePlayer,
   IUpdatePlayer,
+  IUpdatePlayerAssistScore,
   IUpdatePlayerGoalScore,
 } from "../models/player";
 
@@ -101,12 +103,43 @@ export const useUpdatePlayerGoalScore = () => {
     onSuccess: async (data) => {
       try {
         if (data && !(data instanceof Error)) {
-          toast.success(`Player goal score updated successfully`);
+          toast.success(
+            `Player ${data.fullname} goal score updated successfully`,
+          );
           await queryClient.invalidateQueries({
             queryKey: ["players", data.id],
           });
         } else {
-          toast.error("Player goal score update failed");
+          toast.error(`Player goal score update failed`);
+        }
+      } catch (error) {
+        console.error("Error invalidating queries:", error);
+      }
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+};
+
+// update assist
+export const useUpdatePlayerAssistScore = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ player }: { player: IUpdatePlayerAssistScore }) =>
+      updatePlayerAssistScore(player),
+    onSuccess: async (data) => {
+      try {
+        if (data && !(data instanceof Error)) {
+          toast.success(
+            `Player ${data.fullname} assist score updated successfully`,
+          );
+          await queryClient.invalidateQueries({
+            queryKey: ["players", data.id],
+          });
+        } else {
+          toast.error("Player assist score update failed");
         }
       } catch (error) {
         console.error("Error invalidating queries:", error);

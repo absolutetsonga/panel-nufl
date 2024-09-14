@@ -220,6 +220,7 @@ export const teamsRelations = relations(teams, ({ many }) => ({
 
 export const playersRelation = relations(players, ({ one, many }) => ({
   goals: many(goals, { relationName: "one_player_many_goals" }),
+  assists: many(assists, { relationName: "one_player_many_assists" }),
   team: one(teams, {
     fields: [players.team_id],
     references: [teams.id],
@@ -260,5 +261,23 @@ export const goalsRelations = relations(goals, ({ one }) => ({
     fields: [goals.game_id],
     references: [games.id],
     relationName: "one_game_many_goals",
+  }),
+  assist: one(assists, {
+    fields: [goals.id],
+    references: [assists.goal_id],
+    relationName: "one_goal_one_assist",
+  }),
+}));
+
+export const assistsRelations = relations(assists, ({ one }) => ({
+  goal: one(goals, {
+    fields: [assists.goal_id],
+    references: [goals.id],
+    relationName: "one_goal_one_assist",
+  }),
+  player: one(players, {
+    fields: [assists.player_id],
+    references: [players.id],
+    relationName: "one_player_many_assists",
   }),
 }));

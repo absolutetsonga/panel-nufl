@@ -26,6 +26,11 @@ export interface IUpdatePlayerGoalScore {
   goals: number;
 }
 
+export interface IUpdatePlayerAssistScore {
+  id: number;
+  assists: number;
+}
+
 export interface ITeamPlayer {
   id: number;
   team_id: number;

@@ -57,6 +57,7 @@ export const gameSchema = z.object({
 export const goalSchema = z.object({
   player_id: z.number(),
   is_own_goal: z.boolean(),
+  assist_player_id: z.number(),
 });
 
 export const assistSchema = z.object({

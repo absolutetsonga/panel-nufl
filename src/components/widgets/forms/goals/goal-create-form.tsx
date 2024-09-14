@@ -1,7 +1,10 @@
 import { useForm } from "react-hook-form";
 import { useCreateGoal } from "~/components/shared/lib/hooks/goals";
 import { useUpdateGameScore } from "~/components/shared/lib/hooks/games";
-import { useUpdatePlayerGoalScore } from "~/components/shared/lib/hooks/player";
+import {
+  useUpdatePlayerAssistScore,
+  useUpdatePlayerGoalScore,
+} from "~/components/shared/lib/hooks/player";
 
 import { goalSchema } from "../schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -37,11 +40,14 @@ export const GoalCreateForm = ({
   const { mutate: server_createGoal } = useCreateGoal();
   const { mutate: server_updateGameScore } = useUpdateGameScore();
   const { mutate: server_updatePlayerGoalScore } = useUpdatePlayerGoalScore();
+  const { mutate: server_updatePlayerAssistScore } =
+    useUpdatePlayerAssistScore();
 
   const form = useForm<z.infer<typeof goalSchema>>({
     resolver: zodResolver(goalSchema),
     defaultValues: {
       player_id: 0,
+      assist_player_id: 0,
       is_own_goal: false,
     },
   });
@@ -81,7 +87,6 @@ export const GoalCreateForm = ({
 
   function onSubmit(values: z.infer<typeof goalSchema>) {
     const teamId = findTeamId(form.getValues().is_own_goal, teamType, game);
-    server_createGoal({ ...values, game_id: game.id, team_id: teamId });
 
     if (teamType === "home") {
       const updateGame = {
@@ -93,7 +98,12 @@ export const GoalCreateForm = ({
       const [scoredPlayer] = game.home_team.players.filter(
         (pl) => pl.id === values.player_id,
       );
+      const [assistPlayer] = game.home_team.players.filter(
+        (pl) => pl.id === values.assist_player_id,
+      );
+
       if (!scoredPlayer) return "Can not update scored player goals score";
+      if (!assistPlayer) return "Can not update assist player goals score";
 
       const updateScoredPlayer = {
         player: {
@@ -102,8 +112,22 @@ export const GoalCreateForm = ({
         },
       };
 
-      server_updatePlayerGoalScore(updateScoredPlayer);
+      const updateAssistPlayer = {
+        player: {
+          id: assistPlayer.id,
+          assists: assistPlayer.assists + 1,
+        },
+      };
+
+      server_createGoal({
+        ...values,
+        game_id: game.id,
+        team_id: teamId,
+        assist_player_id: assistPlayer.id,
+      });
       server_updateGameScore(updateGame);
+      server_updatePlayerGoalScore(updateScoredPlayer);
+      server_updatePlayerAssistScore(updateAssistPlayer);
     } else if (teamType === "away") {
       const updateGame = {
         game_id: game.id,
@@ -156,12 +180,24 @@ export const GoalCreateForm = ({
           <SelectForm
             form={form}
             name={"player_id"}
-            label={"Select Player"}
+            label={"Scored Player"}
             placeholder={"ex: John Doe"}
             description={"Player scored a goal"}
             itemValues={selectItemValues}
             onValueChange={(value) => {
               form.setValue("player_id", Number(value));
+            }}
+          />
+
+          <SelectForm
+            form={form}
+            name={"assist_player_id"}
+            label={"Assisted Player"}
+            placeholder={"ex: John Doe"}
+            description={"Player assisted"}
+            itemValues={selectItemValues}
+            onValueChange={(value) => {
+              form.setValue("assist_player_id", Number(value));
             }}
           />
           <SubmitButton />

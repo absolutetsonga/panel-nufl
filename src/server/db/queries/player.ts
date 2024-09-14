@@ -6,6 +6,7 @@ import { and, eq } from "drizzle-orm";
 import type {
   ICreatePlayer,
   IUpdatePlayer,
+  IUpdatePlayerAssistScore,
   IUpdatePlayerGoalScore,
 } from "~/components/shared/lib/models/player";
 import { AuthenticationService } from "~/server/utils";
@@ -71,6 +72,18 @@ class PlayerService extends AuthenticationService {
     return updatedPlayer;
   }
 
+  async updatePlayerAssistScore(player: IUpdatePlayerAssistScore) {
+    const [updatedPlayer] = await db
+      .update(players)
+      .set({ assists: player.assists })
+      .where(
+        and(eq(players.id, player.id), eq(players.user_id, this.user.userId)),
+      )
+      .returning();
+
+    return updatedPlayer;
+  }
+
   async deletePlayer(id: number) {
     const [deletedPlayer] = await db
       .delete(players)
@@ -86,11 +99,19 @@ const playerService = new PlayerService();
 export const getPlayer = async (id: number) => playerService.getPlayer(id);
 export const getPlayers = async (team_id: number) =>
   playerService.getPlayers(team_id);
+
 export const createPlayer = async (player: ICreatePlayer) =>
   playerService.createPlayer(player);
+
 export const updatePlayer = async (player: IUpdatePlayer) =>
   playerService.updatePlayer(player);
+
 export const updatePlayerGoalScore = async (player: IUpdatePlayerGoalScore) =>
   playerService.updatePlayerGoalScore(player);
+
+export const updatePlayerAssistScore = async (
+  player: IUpdatePlayerAssistScore,
+) => playerService.updatePlayerAssistScore(player);
+
 export const deletePlayer = async (id: number) =>
   playerService.deletePlayer(id);

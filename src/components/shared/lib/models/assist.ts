@@ -5,6 +5,8 @@ export interface IAssist {
   player_id: number;
   team_id: number;
   goal_id: number;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface ICreateAssist {

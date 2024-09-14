@@ -1,3 +1,4 @@
+import { IAssist } from "./assist";
 import type { ITeamPlayer } from "./player";
 
 export interface IGame {
@@ -93,6 +94,17 @@ export interface IGameInGameweeksWithTeamPlayersAndGoals {
     player_id: number;
     is_own_goal: boolean;
     player: ITeamPlayer;
+    assist: {
+      id: number;
+      user_id: string;
+      game_id: number;
+      player_id: number;
+      team_id: number;
+      goal_id: number;
+      createdAt: Date;
+      updatedAt: Date;
+      player: ITeamPlayer;
+    };
   }[];
 }
 

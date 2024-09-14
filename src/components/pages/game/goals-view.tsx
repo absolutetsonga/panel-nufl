@@ -14,6 +14,7 @@ type GoalsViewProps = {
 };
 
 export const GoalsView = ({ game, teamType }: GoalsViewProps) => {
+  console.log(game);
   const titleClassname = cn("flex justify-between", {
     "flex-row": teamType === "home",
     "flex-row-reverse": teamType === "away",
@@ -48,7 +49,11 @@ export const GoalsView = ({ game, teamType }: GoalsViewProps) => {
       {teamGoals?.map((goal) => {
         return (
           <div key={goal.id} className={goalsClassname}>
-            <p>{goal.player.fullname}</p>
+            <div>
+              <p>{goal.player.fullname}</p>
+              <p>({goal.assist?.player.fullname}) </p>
+            </div>
+
             <Image
               width={20}
               height={20}
