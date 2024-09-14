@@ -18,6 +18,9 @@ class GoalService extends AuthenticationService {
         eq(goals.game_id, gameId),
         eq(goals.user_id, this.user.userId),
       ),
+      with: {
+        player: true,
+      },
     });
   }
 

@@ -76,7 +76,7 @@ export function useUpdateTeam() {
           toast.error("Team update failed.");
         }
       } catch (error) {
-        console.log("Error updating team", error);
+        console.error("Error updating team", error);
       }
     },
     onError: (error) => {

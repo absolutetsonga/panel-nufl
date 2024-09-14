@@ -4,25 +4,45 @@ import { useGetGoals } from "~/components/shared/lib/hooks/goals";
 import { GoalCreateForm } from "~/components/widgets/forms/goals/goal-create-form";
 import { CreateButton } from "~/components/entities/create-button";
 import { Heading3 } from "~/components/shared/ui";
+import Image from "next/image";
 
 import type { IGameInGameweeksWithTeamPlayers } from "~/components/shared/lib/models/games";
+import { cn } from "~/components/shared/lib/utils/clsx";
 
 type GoalsViewProps = {
-  className: string;
   game: IGameInGameweeksWithTeamPlayers;
   teamType: "home" | "away";
 };
 
-export const GoalsView = ({ className, game, teamType }: GoalsViewProps) => {
+export const GoalsView = ({ game, teamType }: GoalsViewProps) => {
+  const titleClassname = cn("flex justify-between", {
+    "flex-row": teamType === "home",
+    "flex-row-reverse": teamType === "away",
+  });
+
+  const goalsClassname = cn("flex justify-end items-center gap-2", {
+    "flex-row": teamType === "home",
+    "flex-row-reverse": teamType === "away",
+  });
+
   const { data: goals, isLoading, isError } = useGetGoals(game.id);
   const [createGoalToggle, setCreateGoalToggle] = useState<boolean>(false);
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Something went wrong...</div>;
 
+  function getTeamGoals(teamType: "home" | "away") {
+    if (teamType === "home") {
+      return goals?.filter((gl) => gl.team_id === game.home_team_id);
+    }
+    return goals?.filter((gl) => gl.team_id === game.away_team_id);
+  }
+
+  const teamGoals = getTeamGoals(teamType);
+
   return (
     <div className="flex flex-col">
-      <div className={`flex justify-between ${className}`}>
+      <div className={titleClassname}>
         <CreateButton
           toggle={createGoalToggle}
           setToggle={setCreateGoalToggle}
@@ -30,8 +50,19 @@ export const GoalsView = ({ className, game, teamType }: GoalsViewProps) => {
         <Heading3>Goals</Heading3>
       </div>
 
-      {goals?.map((goal) => {
-        return <div key={goal.id}>{goal.player_id}</div>;
+      {teamGoals?.map((goal) => {
+        return (
+          <div key={goal.id} className={goalsClassname}>
+            <p>{goal.player.fullname}</p>
+            <Image
+              width={20}
+              height={20}
+              className="object-cover rounded-full"
+              alt={goal.player.fullname}
+              src={goal.player.image}
+            />
+          </div>
+        );
       })}
 
       {createGoalToggle && (

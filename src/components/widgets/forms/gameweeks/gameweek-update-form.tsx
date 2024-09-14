@@ -27,7 +27,7 @@ export const GameweekUpdateForm = ({ toggle, setToggle, gameweek }: Props) => {
 
   function onSubmit({ number }: z.infer<typeof gameweekSchema>) {
     server_updateGameweek({
-      id: gameweek?.id,
+      id: gameweek.id,
       number,
     });
     setToggle(false);

@@ -32,7 +32,7 @@ export const GamePage = ({ id }: { id: string }) => {
               alt={`Image of ${game.home_team.name}`}
             />
           </div>
-          <GoalsView className="flex-row" game={game} teamType={"home"} />
+          <GoalsView game={game} teamType={"home"} />
           <AssistsView gameId={gameId} className="flex-row" />
           <CardsView gameId={gameId} className="flex-row" />
         </div>
@@ -47,11 +47,7 @@ export const GamePage = ({ id }: { id: string }) => {
             />
             <p className="text-[18px]">{game.away_team.name}</p>
           </div>
-          <GoalsView
-            game={game}
-            className="flex-row-reverse"
-            teamType={"away"}
-          />
+          <GoalsView game={game} teamType={"away"} />
           <AssistsView gameId={gameId} className="flex-row-reverse" />
           <CardsView gameId={gameId} className="flex-row-reverse" />
         </div>

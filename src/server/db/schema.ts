@@ -220,6 +220,3 @@ export const goalsRelations = relations(goals, ({ one }) => ({
     relationName: "goals",
   }),
 }));
-
-// i need to create relations for gameweeks and games
-// gameweeks can have many games, and game can have one gameweek

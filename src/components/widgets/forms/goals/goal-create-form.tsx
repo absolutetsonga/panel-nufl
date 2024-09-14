@@ -76,10 +76,8 @@ export const GoalCreateForm = ({
 
   const selectItemValues = findSelectItemValues(teamType, game);
   console.log(selectItemValues);
-
   function onSubmit(values: z.infer<typeof goalSchema>) {
     const teamId = findTeamId(form.getValues().is_own_goal, teamType, game);
-    console.log(teamId);
     server_createGoal({ ...values, game_id: game.id, team_id: teamId });
     setToggle(false);
   }
