@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import {
-  useCreateGame,
+  // useCreateGame,
   useUpdateGame,
 } from "~/components/shared/lib/hooks/games";
 import { useGetTeams } from "~/components/shared/lib/hooks/team";
@@ -10,7 +10,7 @@ import { gameSchema } from "../schemas";
 import { GameFormLayout } from "./game-form-layout";
 
 import type { z } from "zod";
-import type { IGame } from "~/components/shared/lib/models/games";
+import type { IGame } from "~/components/shared/lib/models/game";
 
 type Props = {
   toggle: boolean;

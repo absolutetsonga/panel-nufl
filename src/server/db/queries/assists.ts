@@ -4,7 +4,7 @@ import { assists, games, goals } from "../schema";
 import { and, eq } from "drizzle-orm";
 import { AuthenticationService } from "~/server/utils";
 
-import type { ICreateAssist } from "~/components/shared/lib/models/games";
+import type { ICreateAssist } from "~/components/shared/lib/models/assist";
 
 class AssistService extends AuthenticationService {
   constructor() {

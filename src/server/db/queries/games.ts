@@ -7,7 +7,7 @@ import { AuthenticationService } from "~/server/utils";
 import type {
   ICreateGame,
   IUpdateGame,
-} from "~/components/shared/lib/models/games";
+} from "~/components/shared/lib/models/game";
 
 class GameService extends AuthenticationService {
   constructor() {

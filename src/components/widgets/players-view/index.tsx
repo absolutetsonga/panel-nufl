@@ -8,7 +8,7 @@ import { Heading3 } from "~/components/shared/ui";
 import Image from "next/image";
 import Link from "next/link";
 
-import type { ITeamPlayer } from "~/components/shared/lib/models/team";
+import type { ITeamPlayer } from "~/components/shared/lib/models/player";
 
 type PlayersViewProps = {
   team: {

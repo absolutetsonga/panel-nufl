@@ -2,7 +2,7 @@ import { toast } from "sonner";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createAssist, getAssists } from "~/server/db/queries/assists";
 
-import type { ICreateAssist } from "../models/games";
+import type { ICreateAssist } from "../models/assist";
 
 // read assists
 export const useGetAssists = (gameId: number) => {

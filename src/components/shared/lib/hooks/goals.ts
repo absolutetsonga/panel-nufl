@@ -1,7 +1,7 @@
 import { toast } from "sonner";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createGoal, getGoals, deleteGoal } from "~/server/db/queries/goals";
-import type { ICreateGoal } from "../models/games";
+import type { ICreateGoal } from "../models/goal";
 
 // read goals in game
 export const useGetGoals = (gameId: number) => {

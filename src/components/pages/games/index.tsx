@@ -21,7 +21,7 @@ import { Trash2Icon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-import type { IGameInGameweeks } from "~/components/shared/lib/models/games";
+import type { IGameInGameweeks } from "~/components/shared/lib/models/game";
 
 export const GamesPage = () => {
   const [createGameweekToggle, setCreateGameweekToggle] = useState(false);

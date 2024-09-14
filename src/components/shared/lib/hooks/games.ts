@@ -1,6 +1,6 @@
 import { toast } from "sonner";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import type { ICreateGame, IUpdateGame } from "../models/games";
+import type { ICreateGame, IUpdateGame } from "../models/game";
 import {
   createGame,
   deleteGame,

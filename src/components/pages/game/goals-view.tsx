@@ -1,12 +1,11 @@
 import { useState } from "react";
-import { useGetGoals } from "~/components/shared/lib/hooks/goals";
 
 import { GoalCreateForm } from "~/components/widgets/forms/goals/goal-create-form";
 import { CreateButton } from "~/components/entities/create-button";
 import { Heading3 } from "~/components/shared/ui";
 import Image from "next/image";
 
-import type { IGameInGameweeksWithTeamPlayersAndGoals } from "~/components/shared/lib/models/games";
+import type { IGameInGameweeksWithTeamPlayersAndGoals } from "~/components/shared/lib/models/game";
 import { cn } from "~/components/shared/lib/utils/clsx";
 
 type GoalsViewProps = {

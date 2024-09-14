@@ -6,7 +6,7 @@ import { and, eq } from "drizzle-orm";
 import type {
   ICreatePlayer,
   IUpdatePlayer,
-} from "~/components/shared/lib/models/team";
+} from "~/components/shared/lib/models/player";
 import { AuthenticationService } from "~/server/utils";
 
 class PlayerService extends AuthenticationService {

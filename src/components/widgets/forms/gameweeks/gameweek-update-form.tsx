@@ -7,7 +7,7 @@ import { gameweekSchema } from "../schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import type { z } from "zod";
-import type { IGameWeek } from "~/components/shared/lib/models/games";
+import type { IGameWeek } from "~/components/shared/lib/models/gameweek";
 
 type Props = {
   toggle: boolean;

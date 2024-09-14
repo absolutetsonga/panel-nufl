@@ -1,7 +1,7 @@
 import { toast } from "sonner";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getCards, createCard } from "~/server/db/queries/cards";
-import type { ICreateCard } from "../models/games";
+import type { ICreateCard } from "../models/card";
 
 // read assists
 export const useGetCards = (gameId: number) => {

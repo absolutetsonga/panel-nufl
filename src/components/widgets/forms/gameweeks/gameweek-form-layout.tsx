@@ -26,7 +26,6 @@ type Props = {
 };
 
 export const GameweekFormLayout = ({
-  toggle,
   form,
   setToggle,
   onSubmit,

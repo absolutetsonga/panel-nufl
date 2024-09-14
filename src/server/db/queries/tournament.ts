@@ -7,7 +7,7 @@ import { AuthenticationService } from "~/server/utils";
 import type {
   ICreateTournament,
   IUpdateTournament,
-} from "~/components/shared/lib/models/team";
+} from "~/components/shared/lib/models/tournament";
 
 class TournamentService extends AuthenticationService {
   constructor() {

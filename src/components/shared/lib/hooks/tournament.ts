@@ -7,14 +7,10 @@ import {
   updateTournament,
 } from "~/server/db/queries/tournament";
 
-interface ICreateTournament {
-  name: string;
-}
-
-interface IUpdateTournament {
-  id: number;
-  name: string;
-}
+import type {
+  ICreateTournament,
+  IUpdateTournament,
+} from "../models/tournament";
 
 // read
 export const useGetTournaments = () => {

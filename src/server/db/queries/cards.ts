@@ -4,7 +4,7 @@ import { games, cards } from "~/server/db/schema";
 import { and, eq } from "drizzle-orm";
 import { AuthenticationService } from "~/server/utils";
 
-import type { ICreateCard } from "~/components/shared/lib/models/games";
+import type { ICreateCard } from "~/components/shared/lib/models/card";
 
 class CardService extends AuthenticationService {
   constructor() {

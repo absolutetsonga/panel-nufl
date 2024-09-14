@@ -1,5 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useCreateGoal } from "~/components/shared/lib/hooks/goals";
+import { useUpdateGame } from "~/components/shared/lib/hooks/games";
+// import { useUpdatePlayer } from "~/components/shared/lib/hooks/player";
 
 import { goalSchema } from "../schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -13,12 +15,11 @@ import {
 } from "~/components/entities/command/form";
 import { CloseButton } from "~/components/entities/close-button";
 import { SubmitButton } from "~/components/entities/submit-button";
-
 import { Checkbox } from "~/components/shared/ui";
 import { SelectForm } from "~/components/entities/select-form";
 
 import type { z } from "zod";
-import type { IGameInGameweeksWithTeamPlayersAndGoals } from "~/components/shared/lib/models/games";
+import type { IGameInGameweeksWithTeamPlayersAndGoals } from "~/components/shared/lib/models/game";
 
 type Props = {
   toggle: boolean;
@@ -34,6 +35,8 @@ export const GoalCreateForm = ({
   setToggle,
 }: Props) => {
   const { mutate: server_createGoal } = useCreateGoal();
+  const { mutate: server_updateGame } = useUpdateGame();
+  // const { mutate: server_updatePlayer } = useUpdatePlayer();
 
   const form = useForm<z.infer<typeof goalSchema>>({
     resolver: zodResolver(goalSchema),
@@ -76,7 +79,27 @@ export const GoalCreateForm = ({
 
   const selectItemValues = findSelectItemValues(teamType, game);
   console.log(selectItemValues);
+
   function onSubmit(values: z.infer<typeof goalSchema>) {
+    if (teamType === "home") {
+      const updateGame = {
+        game_id: game.id,
+        home_team_score: game.home_team_score + 1,
+        away_team_score: game.away_team_score,
+        venue: game.venue,
+        date: game.date,
+        match_report: game.match_report,
+      };
+
+      // const playerId = values.player_id;
+      // const updatePlayer = game.home_team.players.map(
+      //   (pl) => pl.id === playerId,
+      // );
+
+      server_updateGame(updateGame);
+      // server_updatePlayer({ ...updatePlayer });
+    }
+
     const teamId = findTeamId(form.getValues().is_own_goal, teamType, game);
     server_createGoal({ ...values, game_id: game.id, team_id: teamId });
     setToggle(false);

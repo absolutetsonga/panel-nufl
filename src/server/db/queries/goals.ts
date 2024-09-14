@@ -5,7 +5,7 @@ import { goals } from "../schema";
 import { and, eq } from "drizzle-orm";
 import { AuthenticationService } from "~/server/utils";
 
-import type { ICreateGoal } from "~/components/shared/lib/models/games";
+import type { ICreateGoal } from "~/components/shared/lib/models/goal";
 
 class GoalService extends AuthenticationService {
   constructor() {
@@ -20,6 +20,9 @@ class GoalService extends AuthenticationService {
     });
   }
 
+  // when creating goal:
+  // 1. changing the score of the team in the game.
+  // 2. updating the goal score of the player.
   async createGoal(goal: ICreateGoal) {
     const [newPlayer] = await db
       .insert(goals)
