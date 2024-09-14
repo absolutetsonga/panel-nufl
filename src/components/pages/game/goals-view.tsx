@@ -31,7 +31,7 @@ export const GoalsView = ({ className, game, teamType }: GoalsViewProps) => {
       </div>
 
       {goals?.map((goal) => {
-        return <div>{goal.player_id}</div>;
+        return <div key={goal.id}>{goal.player_id}</div>;
       })}
 
       {createGoalToggle && (

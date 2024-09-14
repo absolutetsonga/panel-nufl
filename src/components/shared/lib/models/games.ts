@@ -1,4 +1,4 @@
-import { ITeamPlayer } from "./team";
+import type { ITeamPlayer } from "./team";
 
 export interface IGame {
   id: number;

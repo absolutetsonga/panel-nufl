@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "..";
-import { games, goals } from "../schema";
+import { goals } from "../schema";
 import { and, eq } from "drizzle-orm";
 import { AuthenticationService } from "~/server/utils";
 

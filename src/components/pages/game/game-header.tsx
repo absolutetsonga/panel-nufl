@@ -30,7 +30,7 @@ export const GameHeader = ({ game }: GameHeaderProps) => {
   const [deleteToggle, setDeleteToggle] = useState(false);
   const { mutate: server_deleteGame } = useDeleteGame();
 
-  const onDelete = async (id: number) => {
+  const onDelete = (id: number) => {
     server_deleteGame(id);
     router.push("/games");
   };
@@ -85,9 +85,7 @@ export const GameHeader = ({ game }: GameHeaderProps) => {
           trigger="Delete?"
           title={`Delete Gameweek`}
           description="Are you sure? This action cannot be undone. This will permanently delete this team and remove all games, scores, players, their goals, assists, clean sheets data with this team from our servers. In special cases we recommend to contact with developer to delete the team."
-          onConfirm={() => {
-            onDelete(game.id);
-          }}
+          onConfirm={() => onDelete(game.id)}
           onCancel={() => setDeleteToggle(false)}
         />
       )}
