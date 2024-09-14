@@ -6,8 +6,13 @@ import {
   getPlayer,
   getPlayers,
   updatePlayer,
+  updatePlayerGoalScore,
 } from "~/server/db/queries/player";
-import type { ICreatePlayer, IUpdatePlayer } from "../models/player";
+import type {
+  ICreatePlayer,
+  IUpdatePlayer,
+  IUpdatePlayerGoalScore,
+} from "../models/player";
 
 // read player
 export const useGetPlayer = (player_id: number) => {
@@ -85,6 +90,34 @@ export const useUpdatePlayer = () => {
     },
   });
 };
+
+// update goals
+export const useUpdatePlayerGoalScore = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ player }: { player: IUpdatePlayerGoalScore }) =>
+      updatePlayerGoalScore(player),
+    onSuccess: async (data) => {
+      try {
+        if (data && !(data instanceof Error)) {
+          toast.success(`Player goal score updated successfully`);
+          await queryClient.invalidateQueries({
+            queryKey: ["players", data.id],
+          });
+        } else {
+          toast.error("Player goal score update failed");
+        }
+      } catch (error) {
+        console.error("Error invalidating queries:", error);
+      }
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+};
+
 // delete
 export const useDeletePlayer = () => {
   const queryClient = useQueryClient();

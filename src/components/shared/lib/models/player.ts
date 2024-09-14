@@ -21,6 +21,11 @@ export interface IUpdatePlayer {
   year: number;
 }
 
+export interface IUpdatePlayerGoalScore {
+  id: number;
+  goals: number;
+}
+
 export interface ITeamPlayer {
   id: number;
   team_id: number;

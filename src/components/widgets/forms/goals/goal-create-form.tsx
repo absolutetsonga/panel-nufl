@@ -1,10 +1,10 @@
 import { useForm } from "react-hook-form";
 import { useCreateGoal } from "~/components/shared/lib/hooks/goals";
+import { useUpdateGameScore } from "~/components/shared/lib/hooks/games";
 import {
-  useUpdateGame,
-  useUpdateGameScore,
-} from "~/components/shared/lib/hooks/games";
-import { useUpdatePlayer } from "~/components/shared/lib/hooks/player";
+  useUpdatePlayer,
+  useUpdatePlayerGoalScore,
+} from "~/components/shared/lib/hooks/player";
 
 import { goalSchema } from "../schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -39,7 +39,7 @@ export const GoalCreateForm = ({
 }: Props) => {
   const { mutate: server_createGoal } = useCreateGoal();
   const { mutate: server_updateGameScore } = useUpdateGameScore();
-  const { mutate: server_updatePlayer } = useUpdatePlayer();
+  const { mutate: server_updatePlayerGoalScore } = useUpdatePlayerGoalScore();
 
   const form = useForm<z.infer<typeof goalSchema>>({
     resolver: zodResolver(goalSchema),
@@ -81,15 +81,31 @@ export const GoalCreateForm = ({
   }
 
   const selectItemValues = findSelectItemValues(teamType, game);
-  console.log(selectItemValues);
 
   function onSubmit(values: z.infer<typeof goalSchema>) {
+    const teamId = findTeamId(form.getValues().is_own_goal, teamType, game);
+    server_createGoal({ ...values, game_id: game.id, team_id: teamId });
+
     if (teamType === "home") {
       const updateGame = {
         game_id: game.id,
         home_team_score: game.home_team_score + 1,
         away_team_score: game.away_team_score,
       };
+
+      const [scoredPlayer] = game.home_team.players.filter(
+        (pl) => pl.id === values.player_id,
+      );
+      if (!scoredPlayer) return "Can not update scored player goals score";
+
+      const updateScoredPlayer = {
+        player: {
+          id: scoredPlayer.id,
+          goals: scoredPlayer.goals + 1,
+        },
+      };
+
+      server_updatePlayerGoalScore(updateScoredPlayer);
       server_updateGameScore(updateGame);
     } else if (teamType === "away") {
       const updateGame = {
@@ -97,11 +113,13 @@ export const GoalCreateForm = ({
         home_team_score: game.home_team_score,
         away_team_score: game.away_team_score + 1,
       };
+      const scoredPlayer = game.away_team.players.filter(
+        (pl) => pl.id === values.player_id,
+      );
+      console.log(scoredPlayer);
       server_updateGameScore(updateGame);
     }
 
-    const teamId = findTeamId(form.getValues().is_own_goal, teamType, game);
-    server_createGoal({ ...values, game_id: game.id, team_id: teamId });
     setToggle(false);
   }
 
