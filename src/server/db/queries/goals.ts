@@ -14,13 +14,9 @@ class GoalService extends AuthenticationService {
 
   async getGoals(gameId: number) {
     return await db.query.goals.findMany({
-      where: and(
-        eq(goals.game_id, gameId),
-        eq(goals.user_id, this.user.userId),
-      ),
-      with: {
-        player: true,
-      },
+      where: (model, { eq }) =>
+        and(eq(model.game_id, gameId), eq(goals.user_id, this.user.userId)),
+      with: { player: true },
     });
   }
 

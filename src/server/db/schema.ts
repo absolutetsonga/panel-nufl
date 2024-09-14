@@ -1,4 +1,4 @@
-import { relations, sql } from "drizzle-orm";
+import { Many, relations, sql } from "drizzle-orm";
 import {
   index,
   pgTableCreator,
@@ -135,7 +135,7 @@ export const goals = createTable("goal", {
     .notNull()
     .references(() => players.id, { onDelete: "cascade" }),
 
-  is_own_goal: boolean("is_own_goal").default(false),
+  is_own_goal: boolean("is_own_goal").default(false).notNull(),
 
   createdAt: timestamp("created_at", { withTimezone: true })
     .default(sql`CURRENT_TIMESTAMP`)
@@ -213,46 +213,52 @@ export const cards = createTable("card", {
 
 // relations
 export const teamsRelations = relations(teams, ({ many }) => ({
-  home_games: many(games, { relationName: "home_team" }),
-  away_games: many(games, { relationName: "away_team" }),
-  players: many(players, { relationName: "players" }),
+  home_games: many(games, { relationName: "one_team_many_home_games" }),
+  away_games: many(games, { relationName: "one_team_many_away_games" }),
+  players: many(players, { relationName: "one_team_many_players" }),
 }));
 
 export const playersRelation = relations(players, ({ one, many }) => ({
-  goals: many(goals, { relationName: "goals" }),
+  goals: many(goals, { relationName: "one_player_many_goals" }),
   team: one(teams, {
     fields: [players.team_id],
     references: [teams.id],
-    relationName: "players",
+    relationName: "one_team_many_players",
   }),
 }));
 
 export const gameweeksRelations = relations(gameweeks, ({ many }) => ({
-  games: many(games, { relationName: "games" }),
+  games: many(games, { relationName: "one_gameweek_many_games" }),
 }));
 
-export const gamesRelations = relations(games, ({ one }) => ({
+export const gamesRelations = relations(games, ({ one, many }) => ({
   home_team: one(teams, {
     fields: [games.home_team_id],
     references: [teams.id],
-    relationName: "home_team",
+    relationName: "one_team_many_home_games",
   }),
   away_team: one(teams, {
     fields: [games.away_team_id],
     references: [teams.id],
-    relationName: "away_team",
+    relationName: "one_team_many_away_games",
   }),
   gameweek: one(gameweeks, {
     fields: [games.gameweek_id],
     references: [gameweeks.id],
-    relationName: "games",
+    relationName: "one_gameweek_many_games",
   }),
+  goals: many(goals, { relationName: "one_game_many_goals" }),
 }));
 
 export const goalsRelations = relations(goals, ({ one }) => ({
   player: one(players, {
     fields: [goals.player_id],
     references: [players.id],
-    relationName: "goals",
+    relationName: "one_player_many_goals",
+  }),
+  game: one(games, {
+    fields: [goals.game_id],
+    references: [games.id],
+    relationName: "one_game_many_goals",
   }),
 }));

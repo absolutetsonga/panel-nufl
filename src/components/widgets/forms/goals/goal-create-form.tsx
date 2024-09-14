@@ -18,12 +18,12 @@ import { Checkbox } from "~/components/shared/ui";
 import { SelectForm } from "~/components/entities/select-form";
 
 import type { z } from "zod";
-import type { IGameInGameweeksWithTeamPlayers } from "~/components/shared/lib/models/games";
+import type { IGameInGameweeksWithTeamPlayersAndGoals } from "~/components/shared/lib/models/games";
 
 type Props = {
   toggle: boolean;
   setToggle: React.Dispatch<React.SetStateAction<boolean>>;
-  game: IGameInGameweeksWithTeamPlayers;
+  game: IGameInGameweeksWithTeamPlayersAndGoals;
   teamType: "home" | "away";
 };
 
@@ -46,7 +46,7 @@ export const GoalCreateForm = ({
   function findTeamId(
     isOwnGoal: boolean,
     teamType: "home" | "away",
-    game: IGameInGameweeksWithTeamPlayers,
+    game: IGameInGameweeksWithTeamPlayersAndGoals,
   ): number {
     if (isOwnGoal && teamType === "home") return game.away_team_id;
     else if (!isOwnGoal && teamType === "home") return game.home_team_id;
@@ -57,7 +57,7 @@ export const GoalCreateForm = ({
 
   function findSelectItemValues(
     teamType: "home" | "away",
-    game: IGameInGameweeksWithTeamPlayers,
+    game: IGameInGameweeksWithTeamPlayersAndGoals,
   ) {
     if (teamType === "home") {
       return game.home_team.players.map((pl) => ({

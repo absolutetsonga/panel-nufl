@@ -26,6 +26,9 @@ export const useCreateGoal = () => {
           await queryClient.invalidateQueries({
             queryKey: ["goals"],
           });
+          await queryClient.invalidateQueries({
+            queryKey: ["games"],
+          });
         } else {
           toast.error("Goal creation failed.");
         }

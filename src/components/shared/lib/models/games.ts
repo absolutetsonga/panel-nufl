@@ -51,7 +51,7 @@ export interface IGameInGameweeks {
   };
 }
 
-export interface IGameInGameweeksWithTeamPlayers {
+export interface IGameInGameweeksWithTeamPlayersAndGoals {
   id: number;
   user_id: string;
   home_team_id: number;
@@ -85,6 +85,15 @@ export interface IGameInGameweeksWithTeamPlayers {
     createdAt: Date;
     updatedAt: Date | null;
   };
+  goals: {
+    id: number;
+    user_id: string;
+    game_id: number;
+    team_id: number;
+    player_id: number;
+    is_own_goal: boolean;
+    player: ITeamPlayer;
+  }[];
 }
 
 export interface ICreateGame {

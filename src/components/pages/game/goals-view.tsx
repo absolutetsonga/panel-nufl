@@ -6,11 +6,11 @@ import { CreateButton } from "~/components/entities/create-button";
 import { Heading3 } from "~/components/shared/ui";
 import Image from "next/image";
 
-import type { IGameInGameweeksWithTeamPlayers } from "~/components/shared/lib/models/games";
+import type { IGameInGameweeksWithTeamPlayersAndGoals } from "~/components/shared/lib/models/games";
 import { cn } from "~/components/shared/lib/utils/clsx";
 
 type GoalsViewProps = {
-  game: IGameInGameweeksWithTeamPlayers;
+  game: IGameInGameweeksWithTeamPlayersAndGoals;
   teamType: "home" | "away";
 };
 
@@ -25,17 +25,13 @@ export const GoalsView = ({ game, teamType }: GoalsViewProps) => {
     "flex-row-reverse": teamType === "away",
   });
 
-  const { data: goals, isLoading, isError } = useGetGoals(game.id);
   const [createGoalToggle, setCreateGoalToggle] = useState<boolean>(false);
-
-  if (isLoading) return <div>Loading...</div>;
-  if (isError) return <div>Something went wrong...</div>;
 
   function getTeamGoals(teamType: "home" | "away") {
     if (teamType === "home") {
-      return goals?.filter((gl) => gl.team_id === game.home_team_id);
+      return game.goals.filter((gm) => gm.team_id === game.home_team_id);
     }
-    return goals?.filter((gl) => gl.team_id === game.away_team_id);
+    return game.goals.filter((gl) => gl.team_id === game.away_team_id);
   }
 
   const teamGoals = getTeamGoals(teamType);
