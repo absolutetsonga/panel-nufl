@@ -13,7 +13,7 @@ class GameweekService extends AuthenticationService {
   async getGameweek(id: number) {
     return await db.query.gameweeks.findFirst({
       where: (model, { eq }) =>
-        eq(model.id, id) && eq(model.user_id, this.user.userId),
+        and(eq(model.id, id), eq(model.user_id, this.user.userId)),
     });
   }
 
@@ -58,8 +58,10 @@ class GameweekService extends AuthenticationService {
       .update(gameweeks)
       .set({ number: gameweek.number, updatedAt: new Date() })
       .where(
-        eq(gameweeks.id, gameweek.id) &&
+        and(
+          eq(gameweeks.id, gameweek.id),
           eq(gameweeks.user_id, this.user.userId),
+        ),
       )
       .returning();
 

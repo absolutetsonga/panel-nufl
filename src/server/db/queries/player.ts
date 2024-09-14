@@ -1,7 +1,7 @@
 "use server";
 import { db } from "..";
 import { players } from "../schema";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 
 import type {
   ICreatePlayer,
@@ -17,14 +17,16 @@ class PlayerService extends AuthenticationService {
   async getPlayer(id: number) {
     return await db.query.players.findFirst({
       where: (model, { eq }) =>
-        eq(model.id, id) && eq(model.user_id, this.user.userId),
+        and(eq(model.id, id), eq(model.user_id, this.user.userId)),
     });
   }
 
   async getPlayers(team_id: number) {
     return await db.query.players.findMany({
-      where:
-        eq(players.team_id, team_id) && eq(players.user_id, this.user.userId),
+      where: and(
+        eq(players.team_id, team_id),
+        eq(players.user_id, this.user.userId),
+      ),
     });
   }
 
@@ -50,7 +52,7 @@ class PlayerService extends AuthenticationService {
     const [updatedPlayer] = await db
       .update(players)
       .set({ ...playerWithoutId, updatedAt: new Date() })
-      .where(eq(players.id, id) && eq(players.user_id, this.user.userId))
+      .where(and(eq(players.id, id), eq(players.user_id, this.user.userId)))
       .returning();
 
     return updatedPlayer;
@@ -59,7 +61,7 @@ class PlayerService extends AuthenticationService {
   async deletePlayer(id: number) {
     const [deletedPlayer] = await db
       .delete(players)
-      .where(eq(players.id, id) && eq(players.user_id, this.user.userId))
+      .where(and(eq(players.id, id), eq(players.user_id, this.user.userId)))
       .returning();
 
     return deletedPlayer;

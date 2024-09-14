@@ -61,7 +61,7 @@ class TeamService extends AuthenticationService {
         image: team.image,
         updatedAt: new Date(),
       })
-      .where(eq(teams.id, team.id) && eq(teams.user_id, this.user.userId))
+      .where(and(eq(teams.id, team.id), eq(teams.user_id, this.user.userId)))
       .returning();
 
     return updatedTeam;
@@ -70,7 +70,7 @@ class TeamService extends AuthenticationService {
   async deleteTeam(id: number) {
     const [deletedTeam] = await db
       .delete(teams)
-      .where(eq(teams.id, id) && eq(teams.user_id, this.user.userId))
+      .where(and(eq(teams.id, id), eq(teams.user_id, this.user.userId)))
       .returning();
 
     return deletedTeam;

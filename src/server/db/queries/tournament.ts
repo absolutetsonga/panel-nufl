@@ -2,7 +2,7 @@
 
 import { db } from "..";
 import { tournaments } from "../schema";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { AuthenticationService } from "~/server/utils";
 import type {
   ICreateTournament,
@@ -44,8 +44,10 @@ class TournamentService extends AuthenticationService {
         updatedAt: new Date(),
       })
       .where(
-        eq(tournaments.id, tournament.id) &&
+        and(
+          eq(tournaments.id, tournament.id),
           eq(tournaments.user_id, this.user.userId),
+        ),
       )
       .returning();
 
@@ -56,7 +58,7 @@ class TournamentService extends AuthenticationService {
     const [deletedTournament] = await db
       .delete(tournaments)
       .where(
-        eq(tournaments.id, id) && eq(tournaments.user_id, this.user.userId),
+        and(eq(tournaments.id, id), eq(tournaments.user_id, this.user.userId)),
       )
       .returning();
 
