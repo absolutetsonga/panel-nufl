@@ -8,8 +8,8 @@ export interface IGame {
 
   venue: string;
   date: Date;
-  home_team_score: number;
-  away_team_score: number;
+  home_team_score: number | null;
+  away_team_score: number | null;
   result: string;
   match_report: string;
 
@@ -25,8 +25,8 @@ export interface IGameInGameweeks {
 
   venue: string;
   date: Date;
-  home_team_score: number;
-  away_team_score: number;
+  home_team_score: number | null;
+  away_team_score: number | null;
   result: string;
   match_report: string;
 
@@ -110,6 +110,12 @@ export interface IUpdateGame {
   venue: string;
   date: Date;
   match_report: string;
+}
+
+export interface IUpdateGameScore {
+  game_id: number;
+  home_team_score: number;
+  away_team_score: number;
 }
 
 export interface ICleanSheet {

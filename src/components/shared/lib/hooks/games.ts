@@ -1,12 +1,17 @@
 import { toast } from "sonner";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import type { ICreateGame, IUpdateGame } from "../models/game";
+import type {
+  ICreateGame,
+  IUpdateGame,
+  IUpdateGameScore,
+} from "../models/game";
 import {
   createGame,
   deleteGame,
   getGames,
   getGame,
   updateGame,
+  updateGameScore,
 } from "~/server/db/queries/games";
 
 // read one game
@@ -80,6 +85,35 @@ export const useUpdateGame = () => {
     },
   });
 };
+
+// update score game:
+export const useUpdateGameScore = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (score: IUpdateGameScore) => {
+      return await updateGameScore(score);
+    },
+    onSuccess: async (data) => {
+      try {
+        if (data && !(data instanceof Error)) {
+          toast.success(`Game score updated successfully`);
+          await queryClient.invalidateQueries({
+            queryKey: ["games"],
+          });
+        } else {
+          toast.error("Game score update failed.");
+        }
+      } catch (error) {
+        console.error("Error invalidating queries:", error);
+      }
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+};
+
 // delete game
 export const useDeleteGame = () => {
   const queryClient = useQueryClient();

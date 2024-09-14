@@ -7,6 +7,7 @@ import { AuthenticationService } from "~/server/utils";
 import type {
   ICreateGame,
   IUpdateGame,
+  IUpdateGameScore,
 } from "~/components/shared/lib/models/game";
 
 class GameService extends AuthenticationService {
@@ -64,6 +65,19 @@ class GameService extends AuthenticationService {
     return updatedGame;
   }
 
+  async updateGameScore(score: IUpdateGameScore) {
+    const [updatedGame] = await db
+      .update(games)
+      .set({
+        home_team_score: score.home_team_score,
+        away_team_score: score.away_team_score,
+      })
+      .where(eq(games.id, score.game_id))
+      .returning();
+
+    return updatedGame;
+  }
+
   async deleteGame(id: number) {
     const game = await db.query.games.findFirst({
       where: (model, { eq }) => eq(model.id, id),
@@ -86,6 +100,9 @@ export const getGame = async (id: number) => gameService.getGame(id);
 export const getGames = async () => gameService.getGames();
 export const createGame = async (game: ICreateGame) =>
   gameService.createGame(game);
+
 export const updateGame = async (game: IUpdateGame) =>
   gameService.updateGame(game);
+export const updateGameScore = async (score: IUpdateGameScore) =>
+  gameService.updateGameScore(score);
 export const deleteGame = async (id: number) => gameService.deleteGame(id);

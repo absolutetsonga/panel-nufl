@@ -49,8 +49,8 @@ export const GameHeader = ({ game }: GameHeaderProps) => {
           />
         </div>
         <Heading3>
-          {game.home_team_score === -1 ? 0 : game.home_team_score} :{" "}
-          {game.away_team_score === -1 ? 0 : game.away_team_score}
+          {game.home_team_score === null ? 0 : game.home_team_score} :{" "}
+          {game.away_team_score === null ? 0 : game.away_team_score}
         </Heading3>
         <div className="flex flex-row items-center justify-center gap-4 text-left">
           <Image

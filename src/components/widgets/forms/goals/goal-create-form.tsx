@@ -1,7 +1,10 @@
 import { useForm } from "react-hook-form";
 import { useCreateGoal } from "~/components/shared/lib/hooks/goals";
-import { useUpdateGame } from "~/components/shared/lib/hooks/games";
-// import { useUpdatePlayer } from "~/components/shared/lib/hooks/player";
+import {
+  useUpdateGame,
+  useUpdateGameScore,
+} from "~/components/shared/lib/hooks/games";
+import { useUpdatePlayer } from "~/components/shared/lib/hooks/player";
 
 import { goalSchema } from "../schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -35,8 +38,8 @@ export const GoalCreateForm = ({
   setToggle,
 }: Props) => {
   const { mutate: server_createGoal } = useCreateGoal();
-  const { mutate: server_updateGame } = useUpdateGame();
-  // const { mutate: server_updatePlayer } = useUpdatePlayer();
+  const { mutate: server_updateGameScore } = useUpdateGameScore();
+  const { mutate: server_updatePlayer } = useUpdatePlayer();
 
   const form = useForm<z.infer<typeof goalSchema>>({
     resolver: zodResolver(goalSchema),
@@ -86,18 +89,15 @@ export const GoalCreateForm = ({
         game_id: game.id,
         home_team_score: game.home_team_score + 1,
         away_team_score: game.away_team_score,
-        venue: game.venue,
-        date: game.date,
-        match_report: game.match_report,
       };
-
-      // const playerId = values.player_id;
-      // const updatePlayer = game.home_team.players.map(
-      //   (pl) => pl.id === playerId,
-      // );
-
-      server_updateGame(updateGame);
-      // server_updatePlayer({ ...updatePlayer });
+      server_updateGameScore(updateGame);
+    } else if (teamType === "away") {
+      const updateGame = {
+        game_id: game.id,
+        home_team_score: game.home_team_score,
+        away_team_score: game.away_team_score + 1,
+      };
+      server_updateGameScore(updateGame);
     }
 
     const teamId = findTeamId(form.getValues().is_own_goal, teamType, game);
