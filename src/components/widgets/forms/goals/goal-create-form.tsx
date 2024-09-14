@@ -98,22 +98,26 @@ export const GoalCreateForm = ({
       const [scoredPlayer] = game.home_team.players.filter(
         (pl) => pl.id === values.player_id,
       );
+
       const [assistPlayer] = game.home_team.players.filter(
         (pl) => pl.id === values.assist_player_id,
       );
 
-      const updateScoredPlayer = {
-        player: {
-          id: scoredPlayer?.id!,
-          goals: scoredPlayer?.goals! + 1,
-        },
-      };
+      if (scoredPlayer) {
+        const updateScoredPlayer = {
+          player: {
+            id: scoredPlayer?.id,
+            goals: scoredPlayer?.goals + 1,
+          },
+        };
+        server_updatePlayerGoalScore(updateScoredPlayer);
+      }
 
       if (assistPlayer) {
         const updateAssistPlayer = {
           player: {
-            id: assistPlayer?.id!,
-            assists: assistPlayer?.assists + 1,
+            id: assistPlayer.id,
+            assists: assistPlayer.assists + 1,
           },
         };
         server_updatePlayerAssistScore(updateAssistPlayer);
@@ -126,17 +130,13 @@ export const GoalCreateForm = ({
         assist_player_id: assistPlayer?.id ? assistPlayer?.id : null,
       });
       server_updateGameScore(updateGame);
-      server_updatePlayerGoalScore(updateScoredPlayer);
     } else if (teamType === "away") {
       const updateGame = {
         game_id: game.id,
         home_team_score: game.home_team_score,
         away_team_score: game.away_team_score + 1,
       };
-      const scoredPlayer = game.away_team.players.filter(
-        (pl) => pl.id === values.player_id,
-      );
-      console.log(scoredPlayer);
+
       server_updateGameScore(updateGame);
     }
 

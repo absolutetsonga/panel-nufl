@@ -1,4 +1,3 @@
-import { IAssist } from "./assist";
 import type { ITeamPlayer } from "./player";
 
 export interface IGame {

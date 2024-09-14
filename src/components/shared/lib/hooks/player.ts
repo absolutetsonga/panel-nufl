@@ -13,6 +13,7 @@ import type {
   ICreatePlayer,
   IUpdatePlayer,
   IUpdatePlayerAssistScore,
+  IUpdatePlayerCardScore,
   IUpdatePlayerGoalScore,
 } from "../models/player";
 
@@ -150,6 +151,34 @@ export const useUpdatePlayerAssistScore = () => {
     },
   });
 };
+
+// update card score:
+// export const useUpdateCardScore = () => {
+//   const queryClient = useQueryClient();
+
+//   return useMutation({
+//     mutationFn: async (card: IUpdatePlayerCardScore) => {
+//       return await updatePlayerCardScore(card);
+//     },
+//     onSuccess: async (data) => {
+//       try {
+//         if (data && !(data instanceof Error)) {
+//           toast.success(`Game score updated successfully`);
+//           await queryClient.invalidateQueries({
+//             queryKey: ["games"],
+//           });
+//         } else {
+//           toast.error("Game score update failed.");
+//         }
+//       } catch (error) {
+//         console.error("Error invalidating queries:", error);
+//       }
+//     },
+//     onError: (error) => {
+//       toast.error(error.message);
+//     },
+//   });
+// };
 
 // delete
 export const useDeletePlayer = () => {
