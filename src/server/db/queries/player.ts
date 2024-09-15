@@ -1,7 +1,7 @@
 "use server";
 import { db } from "..";
 import { players } from "../schema";
-import { and, eq } from "drizzle-orm";
+import { and, desc, eq } from "drizzle-orm";
 
 import { AuthenticationService } from "~/server/utils";
 
@@ -28,6 +28,51 @@ class PlayerService extends AuthenticationService {
         eq(players.team_id, team_id),
         eq(players.user_id, this.user.userId),
       ),
+    });
+  }
+
+  async getTopGoalscorers() {
+    return await db.query.players.findMany({
+      where: (model, { eq }) => eq(model.user_id, this.user.userId),
+      with: { team: true },
+      orderBy: desc(players.goals),
+      limit: 10,
+    });
+  }
+
+  async getTopAssists() {
+    return await db.query.players.findMany({
+      where: (model, { eq }) => eq(model.user_id, this.user.userId),
+      with: { team: true },
+      orderBy: desc(players.assists),
+      limit: 10,
+    });
+  }
+
+  async getTopCleanSheets() {
+    return await db.query.players.findMany({
+      where: (model, { eq }) => eq(model.user_id, this.user.userId),
+      with: { team: true },
+      orderBy: desc(players.clean_sheets),
+      limit: 10,
+    });
+  }
+
+  async getTopYellowCards() {
+    return await db.query.players.findMany({
+      where: (model, { eq }) => eq(model.user_id, this.user.userId),
+      with: { team: true },
+      orderBy: desc(players.yellow_cards),
+      limit: 10,
+    });
+  }
+
+  async getTopRedCards() {
+    return await db.query.players.findMany({
+      where: (model, { eq }) => eq(model.user_id, this.user.userId),
+      with: { team: true },
+      orderBy: desc(players.red_cards),
+      limit: 10,
     });
   }
 
@@ -74,6 +119,12 @@ const playerService = new PlayerService();
 export const getPlayer = async (id: number) => playerService.getPlayer(id);
 export const getPlayers = async (team_id: number) =>
   playerService.getPlayers(team_id);
+
+export const getTopGoalscorers = async () => playerService.getTopGoalscorers();
+export const getTopAssists = async () => playerService.getTopAssists();
+export const getTopYellowCards = async () => playerService.getTopYellowCards();
+export const getTopRedCards = async () => playerService.getTopRedCards();
+export const getTopCleanSheets = async () => playerService.getTopCleanSheets();
 
 export const createPlayer = async (player: ICreatePlayer) =>
   playerService.createPlayer(player);

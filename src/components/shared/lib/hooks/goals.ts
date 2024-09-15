@@ -51,28 +51,28 @@ export const useCreateGoal = () => {
 };
 
 // delete goal
-export const useDeleteGoal = () => {
-  const queryClient = useQueryClient();
+// export const useDeleteGoal = () => {
+//   const queryClient = useQueryClient();
 
-  return useMutation({
-    mutationFn: (id: number) => deleteGoal(id),
-    onSuccess: async (data) => {
-      try {
-        if (data && !(data instanceof Error)) {
-          toast.success(`Goal deleted successfully`);
-          await queryClient.invalidateQueries({
-            queryKey: ["goals"],
-          });
-        } else {
-          toast.error("Goal deletion failed.");
-        }
-      } catch (error) {
-        console.error("Error invalidating queries:", error);
-        toast.error("Error");
-      }
-    },
-    onError: (error) => {
-      toast.error(error.message);
-    },
-  });
-};
+//   return useMutation({
+//     mutationFn: (id: number) => deleteGoal(id),
+//     onSuccess: async (data) => {
+//       try {
+//         if (data && !(data instanceof Error)) {
+//           toast.success(`Goal deleted successfully`);
+//           await queryClient.invalidateQueries({
+//             queryKey: ["goals"],
+//           });
+//         } else {
+//           toast.error("Goal deletion failed.");
+//         }
+//       } catch (error) {
+//         console.error("Error invalidating queries:", error);
+//         toast.error("Error");
+//       }
+//     },
+//     onError: (error) => {
+//       toast.error(error.message);
+//     },
+//   });
+// };

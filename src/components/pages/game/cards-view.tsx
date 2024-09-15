@@ -6,10 +6,11 @@ import Image from "next/image";
 import { cn } from "~/components/shared/lib/utils/clsx";
 
 import type { IGameInGameweeksWithTeamPlayersAndGoals } from "~/components/shared/lib/models/game";
+import type { ITeamPlayer } from "~/components/shared/lib/models/player";
 
 type CardViewProps = {
   game: IGameInGameweeksWithTeamPlayersAndGoals;
-  teamType: string;
+  teamType: "home" | "away";
 };
 
 export const CardsView = ({ game, teamType }: CardViewProps) => {
@@ -22,17 +23,6 @@ export const CardsView = ({ game, teamType }: CardViewProps) => {
     "flex-row": teamType === "home",
     "flex-row-reverse": teamType === "away",
   });
-
-  const cardClassName = cn("flex justify-end items-center gap-2", {
-    "flex-row": teamType === "home",
-    "flex-row-reverse": teamType === "away",
-  });
-
-  const playersClassname = cn("flex gap-2 text-[12px] md:text-normal", {
-    "flex-row-reverse": teamType === "home",
-    "flex-row": teamType === "away",
-  });
-
   const imageSrc =
     teamType === "home" ? game.home_team.image : game.away_team.image;
   const [createGoalToggle, setCreateGoalToggle] = useState<boolean>(false);
@@ -57,7 +47,39 @@ export const CardsView = ({ game, teamType }: CardViewProps) => {
         </div>
       </div>
 
-      {game.cards.map((card) => {
+      <PopulateCards cards={game.cards} teamType={teamType} />
+    </div>
+  );
+};
+
+const PopulateCards = ({
+  cards,
+  teamType,
+}: {
+  teamType: "home" | "away";
+  cards: {
+    id: number;
+    user_id: string;
+    game_id: number;
+    player_id: number;
+    team_id: number;
+    is_yellow: boolean;
+    player: ITeamPlayer;
+  }[];
+}) => {
+  const cardClassName = cn("flex justify-end items-center gap-2", {
+    "flex-row": teamType === "home",
+    "flex-row-reverse": teamType === "away",
+  });
+
+  const playersClassname = cn("flex gap-2 text-[12px] md:text-normal", {
+    "flex-row-reverse": teamType === "home",
+    "flex-row": teamType === "away",
+  });
+
+  return (
+    <div className="flex flex-col gap-1">
+      {cards.map((card) => {
         return (
           <div key={card.id} className={cardClassName}>
             <div className={playersClassname}>

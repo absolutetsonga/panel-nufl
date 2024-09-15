@@ -5,6 +5,11 @@ import {
   deletePlayer,
   getPlayer,
   getPlayers,
+  getTopAssists,
+  getTopCleanSheets,
+  getTopGoalscorers,
+  getTopRedCards,
+  getTopYellowCards,
   updatePlayer,
 } from "~/server/db/queries/player";
 import type { ICreatePlayer, IUpdatePlayer } from "../models/player";
@@ -21,6 +26,41 @@ export const useGetPlayer = (player_id: number) => {
 export const useGetPlayers = (team_id: number) => {
   return useQuery({
     queryFn: async () => await getPlayers(team_id),
+    queryKey: ["players"],
+  });
+};
+
+export const useGetGoalscorers = () => {
+  return useQuery({
+    queryFn: async () => await getTopGoalscorers(),
+    queryKey: ["players"],
+  });
+};
+
+export const useGetAssists = () => {
+  return useQuery({
+    queryFn: async () => await getTopAssists(),
+    queryKey: ["players"],
+  });
+};
+
+export const useGetCleanSheets = () => {
+  return useQuery({
+    queryFn: async () => await getTopCleanSheets(),
+    queryKey: ["players"],
+  });
+};
+
+export const useGetYellows = () => {
+  return useQuery({
+    queryFn: async () => await getTopYellowCards(),
+    queryKey: ["players"],
+  });
+};
+
+export const useGetReds = () => {
+  return useQuery({
+    queryFn: async () => await getTopRedCards(),
     queryKey: ["players"],
   });
 };

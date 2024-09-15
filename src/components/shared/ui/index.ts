@@ -40,12 +40,24 @@ import {
   AlertDialogAction,
   AlertDialogCancel,
 } from "./alert-dialog";
+import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
+import {
+  Card,
+  CardHeader,
+  CardFooter,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "./card";
 
 export {
   Button,
   Input,
   Label,
   Checkbox,
+  Avatar,
+  AvatarImage,
+  AvatarFallback,
   AlertDialog,
   AlertDialogPortal,
   AlertDialogOverlay,
@@ -57,6 +69,12 @@ export {
   AlertDialogDescription,
   AlertDialogAction,
   AlertDialogCancel,
+  Card,
+  CardHeader,
+  CardFooter,
+  CardTitle,
+  CardDescription,
+  CardContent,
   Select,
   SelectGroup,
   SelectValue,

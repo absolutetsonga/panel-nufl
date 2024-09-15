@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useDeleteGoal } from "~/components/shared/lib/hooks/goals";
+// import { useDeleteGoal } from "~/components/shared/lib/hooks/goals";
 
 import { GoalCreateForm } from "~/components/widgets/forms/goals/goal-create-form";
 import { PopulateGoals } from "./populate-goals";
@@ -29,7 +29,7 @@ export const GoalsView = ({ game, teamType }: GoalsViewProps) => {
 
   const [createGoalToggle, setCreateGoalToggle] = useState<boolean>(false);
   const [deleteGoalId, setDeleteGoalId] = useState<number | null>(null);
-  const { mutate: server_deleteGoal } = useDeleteGoal();
+  // const { mutate: server_deleteGoal } = useDeleteGoal();
 
   function getTeamGoals(teamType: "home" | "away") {
     if (teamType === "home") {

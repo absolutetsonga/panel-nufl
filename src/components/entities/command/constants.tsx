@@ -1,4 +1,4 @@
-import { TrophyIcon } from "lucide-react";
+import { TrophyIcon, ChartNoAxesColumnIcon } from "lucide-react";
 import { FutbolIcon, TeamIcon } from "~/components/shared/ui/svg";
 
 export const COMMANDS = [
@@ -24,6 +24,15 @@ export const COMMANDS = [
     icon: (
       <div className="flex h-8 w-8 items-center sm:h-6 sm:w-6">
         <FutbolIcon />
+      </div>
+    ),
+  },
+  {
+    id: "statistics",
+    name: "Statistics",
+    icon: (
+      <div className="flex h-8 w-8 items-center sm:h-6 sm:w-6">
+        <ChartNoAxesColumnIcon />
       </div>
     ),
   },
