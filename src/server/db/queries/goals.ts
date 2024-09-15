@@ -144,12 +144,13 @@ class GoalService extends AuthenticationService {
   }
 
   async deleteGoal(id: number) {
-    const [deletedTeam] = await db
-      .delete(goals)
-      .where(and(eq(goals.id, id), eq(goals.user_id, this.user.userId)))
-      .returning();
+    return id;
+    // const [deletedTeam] = await db
+    //   .delete(goals)
+    //   .where(and(eq(goals.id, id), eq(goals.user_id, this.user.userId)))
+    //   .returning();
 
-    return deletedTeam;
+    // return deletedTeam;
   }
 }
 

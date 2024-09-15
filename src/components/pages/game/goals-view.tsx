@@ -1,15 +1,15 @@
 import { useState } from "react";
+import { useDeleteGoal } from "~/components/shared/lib/hooks/goals";
 
 import { GoalCreateForm } from "~/components/widgets/forms/goals/goal-create-form";
+import { PopulateGoals } from "./populate-goals";
 import { CreateButton } from "~/components/entities/create-button";
-import { DeleteAlert } from "~/components/entities/delete-alert/ui";
 import { Heading3 } from "~/components/shared/ui";
-import { Trash2Icon } from "lucide-react";
 import Image from "next/image";
 
 import { cn } from "~/components/shared/lib/utils/clsx";
+
 import type { IGameInGameweeksWithTeamPlayersAndGoals } from "~/components/shared/lib/models/game";
-import { useDeleteGoal } from "~/components/shared/lib/hooks/goals";
 
 type GoalsViewProps = {
   game: IGameInGameweeksWithTeamPlayersAndGoals;
@@ -27,20 +27,6 @@ export const GoalsView = ({ game, teamType }: GoalsViewProps) => {
     "flex-row-reverse": teamType === "away",
   });
 
-  const goalsClassname = cn("flex justify-end items-center gap-1", {
-    "flex-row": teamType === "home",
-    "flex-row-reverse": teamType === "away",
-  });
-
-  const elementClassname = cn("flex justify-between", {
-    "flex-row": teamType === "home",
-    "flex-row-reverse": teamType === "away",
-  });
-  const playersClassname = cn("flex gap-2 text-[12px] md:text-normal", {
-    "flex-row-reverse": teamType === "home",
-    "flex-row": teamType === "away",
-  });
-
   const [createGoalToggle, setCreateGoalToggle] = useState<boolean>(false);
   const [deleteGoalId, setDeleteGoalId] = useState<number | null>(null);
   const { mutate: server_deleteGoal } = useDeleteGoal();
@@ -53,7 +39,8 @@ export const GoalsView = ({ game, teamType }: GoalsViewProps) => {
   }
 
   function onDelete(id: number) {
-    server_deleteGoal(id);
+    // server_deleteGoal(id);
+    console.log(id);
   }
 
   const teamGoals = getTeamGoals(teamType);
@@ -80,47 +67,13 @@ export const GoalsView = ({ game, teamType }: GoalsViewProps) => {
         </div>
       </div>
 
-      <div className="flex flex-col gap-1">
-        {teamGoals?.map((goal) => {
-          return (
-            <div key={goal.id} className={elementClassname}>
-              <Trash2Icon
-                className=" h-4 w-4 cursor-pointer"
-                onClick={() => setDeleteGoalId(goal.id)}
-              />
-
-              <div className={goalsClassname}>
-                <div className={playersClassname}>
-                  {goal.is_own_goal && <p>(OG)</p>}
-                  <p>{goal.player.fullname}</p>
-                  {goal.assist && <p>{`(${goal.assist.player.fullname})`}</p>}
-                </div>
-
-                <Image
-                  width={20}
-                  height={20}
-                  className="object-cover rounded-full"
-                  alt={goal.player.fullname}
-                  src={goal.player.image}
-                />
-
-                {deleteGoalId === goal.id && (
-                  <DeleteAlert
-                    trigger="Delete?"
-                    title={`Delete Gameweek`}
-                    description="Are you sure? This action cannot be undone. This will permanently delete this team and remove all games, scores, players, their goals, assists, clean sheets data with this team from our servers. In special cases we recommend to contact with developer to delete the team."
-                    onConfirm={() => {
-                      onDelete(deleteGoalId);
-                      setDeleteGoalId(null);
-                    }}
-                    onCancel={() => setDeleteGoalId(null)}
-                  />
-                )}
-              </div>
-            </div>
-          );
-        })}
-      </div>
+      <PopulateGoals
+        teamType={teamType}
+        deleteGoalId={deleteGoalId}
+        setDeleteGoalId={setDeleteGoalId}
+        teamGoals={teamGoals}
+        onDelete={onDelete}
+      />
 
       {createGoalToggle && (
         <GoalCreateForm

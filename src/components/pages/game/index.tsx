@@ -18,7 +18,7 @@ export const GamePage = ({ id }: { id: string }) => {
     <PageContainer justify="start">
       <GameHeader game={game} />
 
-      <div className="w-full flex flex-col justify-between gap-10">
+      <div className="w-full flex flex-col justify-between gap-4">
         <div className="p-4 w-full flex flex-col lg:flex-row justify-center gap-6 rounded-lg">
           <GoalsView game={game} teamType={"home"} />
           <GoalsView game={game} teamType={"away"} />
