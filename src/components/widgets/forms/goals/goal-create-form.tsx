@@ -80,7 +80,7 @@ export const GoalCreateForm = ({
           ...values,
           game_id: game.id,
           team_id: teamId,
-          assist_player_id: updatedAssistPlayer?.player.id || null,
+          assist_player_id: updatedAssistPlayer?.player.id ?? null,
         }),
       ]);
     } catch (err) {

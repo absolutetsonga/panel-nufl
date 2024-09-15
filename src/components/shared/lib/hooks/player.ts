@@ -14,7 +14,6 @@ import type {
   ICreatePlayer,
   IUpdatePlayer,
   IUpdatePlayerAssistScore,
-  IUpdatePlayerCardScore,
   IUpdatePlayerGoalScore,
   IUpdatePlayerOwnGoalScore,
 } from "../models/player";

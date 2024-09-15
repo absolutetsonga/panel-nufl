@@ -1,4 +1,4 @@
-import { IGameInGameweeksWithTeamPlayersAndGoals } from "~/components/shared/lib/models/game";
+import type { IGameInGameweeksWithTeamPlayersAndGoals } from "~/components/shared/lib/models/game";
 
 export function findTeamId(
   isOwnGoal: boolean,
