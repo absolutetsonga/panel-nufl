@@ -26,6 +26,11 @@ export interface IUpdatePlayerGoalScore {
   goals: number;
 }
 
+export interface IUpdatePlayerOwnGoalScore {
+  id: number;
+  own_goals: number;
+}
+
 export interface IUpdatePlayerAssistScore {
   id: number;
   assists: number;
@@ -49,6 +54,7 @@ export interface ITeamPlayer {
   position: string;
   played_matches: number;
   goals: number;
+  own_goals: number;
   assists: number;
   clean_sheets: number;
   yellow_cards: number;

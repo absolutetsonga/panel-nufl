@@ -37,10 +37,10 @@ export const SelectForm = <T extends FieldValues>({
   form,
   name,
   label,
+  className,
   itemValues,
   placeholder,
   description,
-  className,
   onValueChange,
 }: SelectFormProps<T>) => {
   return (

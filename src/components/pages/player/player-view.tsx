@@ -28,6 +28,7 @@ export const PlayerView = ({ player }: { player: ITeamPlayer }) => {
     year,
     played_matches,
     goals,
+    own_goals,
     assists,
     clean_sheets,
     yellow_cards,
@@ -91,6 +92,10 @@ export const PlayerView = ({ player }: { player: ITeamPlayer }) => {
         <p className="text-slate-50">
           <strong className="font-semibold text-slate-50">Goals:</strong>{" "}
           {goals}
+        </p>
+        <p className="text-slate-50">
+          <strong className="font-semibold text-slate-50">Own Goals:</strong>{" "}
+          {own_goals}
         </p>
         <p className="text-slate-50">
           <strong className="font-semibold text-slate-50">Assists:</strong>{" "}

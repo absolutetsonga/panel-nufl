@@ -55,7 +55,9 @@ export const gameSchema = z.object({
 });
 
 export const goalSchema = z.object({
-  player_id: z.number(),
+  player_id: z.number().min(1, {
+    message: "Goal scored player is required",
+  }),
   is_own_goal: z.boolean(),
   assist_player_id: z.number().optional(),
 });

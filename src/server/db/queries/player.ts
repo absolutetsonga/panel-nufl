@@ -10,6 +10,7 @@ import type {
   IUpdatePlayer,
   IUpdatePlayerAssistScore,
   IUpdatePlayerGoalScore,
+  IUpdatePlayerOwnGoalScore,
 } from "~/components/shared/lib/models/player";
 
 class PlayerService extends AuthenticationService {
@@ -85,6 +86,17 @@ class PlayerService extends AuthenticationService {
     return updatedPlayer;
   }
 
+  async updatePlayerOwnGoalScore(player: IUpdatePlayerOwnGoalScore) {
+    const [updatedPlayer] = await db
+      .update(players)
+      .set({ own_goals: player.own_goals })
+      .where(
+        and(eq(players.id, player.id), eq(players.user_id, this.user.userId)),
+      )
+      .returning();
+
+    return updatedPlayer;
+  }
   // async updatePlayerCardScore(player: IUpdatePlayerCardScore) {
   //   const [updatedPlayer] = await db
   //     .update(players)
@@ -121,6 +133,10 @@ export const updatePlayer = async (player: IUpdatePlayer) =>
 
 export const updatePlayerGoalScore = async (player: IUpdatePlayerGoalScore) =>
   playerService.updatePlayerGoalScore(player);
+
+export const updatePlayerOwnGoalScore = async (
+  player: IUpdatePlayerOwnGoalScore,
+) => playerService.updatePlayerOwnGoalScore(player);
 
 export const updatePlayerAssistScore = async (
   player: IUpdatePlayerAssistScore,

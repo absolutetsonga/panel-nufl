@@ -72,8 +72,9 @@ export const GoalsView = ({ game, teamType }: GoalsViewProps) => {
           return (
             <div key={goal.id} className={goalsClassname}>
               <div className={playersClassname}>
+                {goal.is_own_goal && <p>(OG)</p>}
                 <p>{goal.player.fullname}</p>
-                <p>{goal.assist ? `(${goal.assist.player.fullname})` : ""} </p>
+                {goal.assist && <p>{`(${goal.assist.player.fullname})`}</p>}
               </div>
 
               <Image

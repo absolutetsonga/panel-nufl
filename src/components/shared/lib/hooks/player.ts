@@ -8,6 +8,7 @@ import {
   updatePlayer,
   updatePlayerAssistScore,
   updatePlayerGoalScore,
+  updatePlayerOwnGoalScore,
 } from "~/server/db/queries/player";
 import type {
   ICreatePlayer,
@@ -15,6 +16,7 @@ import type {
   IUpdatePlayerAssistScore,
   IUpdatePlayerCardScore,
   IUpdatePlayerGoalScore,
+  IUpdatePlayerOwnGoalScore,
 } from "../models/player";
 
 // read player
@@ -112,6 +114,35 @@ export const useUpdatePlayerGoalScore = () => {
           });
         } else {
           toast.error(`Player goal score update failed`);
+        }
+      } catch (error) {
+        console.error("Error invalidating queries:", error);
+      }
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+};
+
+// update own goals
+export const useUpdatePlayerOwnGoalScore = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ player }: { player: IUpdatePlayerOwnGoalScore }) =>
+      updatePlayerOwnGoalScore(player),
+    onSuccess: async (data) => {
+      try {
+        if (data && !(data instanceof Error)) {
+          toast.success(
+            `Player ${data.fullname} own goal score updated successfully`,
+          );
+          await queryClient.invalidateQueries({
+            queryKey: ["players", data.id],
+          });
+        } else {
+          toast.error(`Player own goal score update failed`);
         }
       } catch (error) {
         console.error("Error invalidating queries:", error);

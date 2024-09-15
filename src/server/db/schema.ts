@@ -64,6 +64,7 @@ export const players = createTable("player", {
   year: integer("year").notNull().default(0),
   played_matches: integer("played_matches").notNull().default(0),
   goals: integer("goals").notNull().default(0),
+  own_goals: integer("own_goals").notNull().default(0),
   assists: integer("assists").notNull().default(0),
   clean_sheets: integer("clean_sheets").notNull().default(0),
   yellow_cards: integer("yellow_cards").notNull().default(0),
