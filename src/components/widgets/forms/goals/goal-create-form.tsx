@@ -1,11 +1,4 @@
 import { useForm } from "react-hook-form";
-import { useCreateGoal } from "~/components/shared/lib/hooks/goals";
-import { useUpdateGameScore } from "~/components/shared/lib/hooks/games";
-import {
-  useUpdatePlayerAssistScore,
-  useUpdatePlayerGoalScore,
-  useUpdatePlayerOwnGoalScore,
-} from "~/components/shared/lib/hooks/player";
 
 import { goalSchema } from "../schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,14 +11,8 @@ import { SelectForm } from "~/components/entities/select-form";
 import type { z } from "zod";
 import type { IGameInGameweeksWithTeamPlayersAndGoals } from "~/components/shared/lib/models/game";
 import { CheckboxForm } from "~/components/entities/checkbox-form";
-import {
-  findAssistedPlayer,
-  findGoalScorePlayer,
-  findOwnGoalScorePlayer,
-  findSelectItemValues,
-  findTeamId,
-  updateGameScore,
-} from "./utils";
+import { findSelectItemValues } from "./utils";
+import { useCreateGoal } from "~/components/shared/lib/hooks/goals";
 
 type Props = {
   toggle: boolean;
@@ -41,13 +28,6 @@ export const GoalCreateForm = ({
   setToggle,
 }: Props) => {
   const { mutate: server_createGoal } = useCreateGoal();
-  const { mutate: server_updateGameScore } = useUpdateGameScore();
-  const { mutate: server_updatePlayerGoalScore } = useUpdatePlayerGoalScore();
-  const { mutate: server_updatePlayerOwnGoalScore } =
-    useUpdatePlayerOwnGoalScore();
-  const { mutate: server_updatePlayerAssistScore } =
-    useUpdatePlayerAssistScore();
-
   const form = useForm<z.infer<typeof goalSchema>>({
     resolver: zodResolver(goalSchema),
     defaultValues: {
@@ -60,33 +40,7 @@ export const GoalCreateForm = ({
   const selectItemValues = findSelectItemValues(teamType, game);
 
   async function onSubmit(values: z.infer<typeof goalSchema>) {
-    const teamId = findTeamId(form.getValues().is_own_goal, teamType, game);
-
-    const updatedOwnScoredPlayer = findOwnGoalScorePlayer(values, game);
-    const updatedAssistPlayer = findAssistedPlayer(values, game);
-    const updatedScoredPlayer = findGoalScorePlayer(values, game);
-    const updatedGameScore = updateGameScore(values, game, teamType);
-
-    try {
-      await Promise.all([
-        updatedOwnScoredPlayer &&
-          server_updatePlayerOwnGoalScore(updatedOwnScoredPlayer),
-        updatedAssistPlayer &&
-          server_updatePlayerAssistScore(updatedAssistPlayer),
-        updatedScoredPlayer &&
-          server_updatePlayerGoalScore(updatedScoredPlayer),
-        server_updateGameScore(updatedGameScore),
-        server_createGoal({
-          ...values,
-          game_id: game.id,
-          team_id: teamId,
-          assist_player_id: updatedAssistPlayer?.player.id ?? null,
-        }),
-      ]);
-    } catch (err) {
-      console.error("Error updating game data:", err);
-    }
-
+    server_createGoal({ goal: values, game, teamType });
     setToggle(false);
   }
 

@@ -1,4 +1,5 @@
 import type { IGameInGameweeksWithTeamPlayersAndGoals } from "~/components/shared/lib/models/game";
+import { ICreateGoal } from "~/components/shared/lib/models/goal";
 
 export function findTeamId(
   isOwnGoal: boolean,
@@ -51,38 +52,24 @@ export function findOwnGoalScorePlayer(
     );
 
     if (ownScoredPlayer) {
-      const updateOwnScoredPlayer = {
-        player: {
-          id: ownScoredPlayer.id,
-          own_goals: ownScoredPlayer.own_goals + 1,
-        },
-      };
-      return updateOwnScoredPlayer;
+      return ownScoredPlayer;
     }
-
     return null;
   }
   return null;
 }
 
 export function findGoalScorePlayer(
-  values: FormValues,
+  goal: ICreateGoal,
   game: IGameInGameweeksWithTeamPlayersAndGoals,
 ) {
-  if (values.player_id && !values.is_own_goal) {
+  if (goal.player_id && !goal.is_own_goal) {
     const [scoredPlayer] = game.home_team.players.filter(
-      (pl) => pl.id === values.player_id,
+      (pl) => pl.id === goal.player_id,
     );
 
     if (scoredPlayer) {
-      const updateScoredPlayer = {
-        player: {
-          id: scoredPlayer.id,
-          goals: scoredPlayer.goals + 1,
-        },
-      };
-
-      return updateScoredPlayer;
+      return scoredPlayer;
     }
     return null;
   }
@@ -99,14 +86,7 @@ export function findAssistedPlayer(
     );
 
     if (assistPlayer) {
-      const updateAssistPlayer = {
-        player: {
-          id: assistPlayer.id,
-          assists: assistPlayer.assists + 1,
-        },
-      };
-
-      return updateAssistPlayer;
+      return assistPlayer;
     }
     return null;
   }
@@ -114,11 +94,11 @@ export function findAssistedPlayer(
 }
 
 export function updateGameScore(
-  values: FormValues,
+  goal: ICreateGoal,
   game: IGameInGameweeksWithTeamPlayersAndGoals,
   teamType: "home" | "away",
 ) {
-  const scoringTeam = values.is_own_goal
+  const scoringTeam = goal.is_own_goal
     ? teamType === "home"
       ? "away"
       : "home"

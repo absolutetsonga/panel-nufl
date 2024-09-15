@@ -21,26 +21,6 @@ export interface IUpdatePlayer {
   year: number;
 }
 
-export interface IUpdatePlayerGoalScore {
-  id: number;
-  goals: number;
-}
-
-export interface IUpdatePlayerOwnGoalScore {
-  id: number;
-  own_goals: number;
-}
-
-export interface IUpdatePlayerAssistScore {
-  id: number;
-  assists: number;
-}
-
-export interface IUpdatePlayerCardScore {
-  id: number;
-  cards: number;
-}
-
 export interface ITeamPlayer {
   id: number;
   team_id: number;

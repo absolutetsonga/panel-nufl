@@ -6,17 +6,8 @@ import {
   getPlayer,
   getPlayers,
   updatePlayer,
-  updatePlayerAssistScore,
-  updatePlayerGoalScore,
-  updatePlayerOwnGoalScore,
 } from "~/server/db/queries/player";
-import type {
-  ICreatePlayer,
-  IUpdatePlayer,
-  IUpdatePlayerAssistScore,
-  IUpdatePlayerGoalScore,
-  IUpdatePlayerOwnGoalScore,
-} from "../models/player";
+import type { ICreatePlayer, IUpdatePlayer } from "../models/player";
 
 // read player
 export const useGetPlayer = (player_id: number) => {
@@ -94,121 +85,6 @@ export const useUpdatePlayer = () => {
     },
   });
 };
-
-// update goals
-export const useUpdatePlayerGoalScore = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: ({ player }: { player: IUpdatePlayerGoalScore }) =>
-      updatePlayerGoalScore(player),
-    onSuccess: async (data) => {
-      try {
-        if (data && !(data instanceof Error)) {
-          toast.success(
-            `Player ${data.fullname} goal score updated successfully`,
-          );
-          await queryClient.invalidateQueries({
-            queryKey: ["players", data.id],
-          });
-        } else {
-          toast.error(`Player goal score update failed`);
-        }
-      } catch (error) {
-        console.error("Error invalidating queries:", error);
-      }
-    },
-    onError: (error) => {
-      toast.error(error.message);
-    },
-  });
-};
-
-// update own goals
-export const useUpdatePlayerOwnGoalScore = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: ({ player }: { player: IUpdatePlayerOwnGoalScore }) =>
-      updatePlayerOwnGoalScore(player),
-    onSuccess: async (data) => {
-      try {
-        if (data && !(data instanceof Error)) {
-          toast.success(
-            `Player ${data.fullname} own goal score updated successfully`,
-          );
-          await queryClient.invalidateQueries({
-            queryKey: ["players", data.id],
-          });
-        } else {
-          toast.error(`Player own goal score update failed`);
-        }
-      } catch (error) {
-        console.error("Error invalidating queries:", error);
-      }
-    },
-    onError: (error) => {
-      toast.error(error.message);
-    },
-  });
-};
-
-// update assist
-export const useUpdatePlayerAssistScore = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: ({ player }: { player: IUpdatePlayerAssistScore }) =>
-      updatePlayerAssistScore(player),
-    onSuccess: async (data) => {
-      try {
-        if (data && !(data instanceof Error)) {
-          toast.success(
-            `Player ${data.fullname} assist score updated successfully`,
-          );
-          await queryClient.invalidateQueries({
-            queryKey: ["players", data.id],
-          });
-        } else {
-          toast.error("Player assist score update failed");
-        }
-      } catch (error) {
-        console.error("Error invalidating queries:", error);
-      }
-    },
-    onError: (error) => {
-      toast.error(error.message);
-    },
-  });
-};
-
-// update card score:
-// export const useUpdateCardScore = () => {
-//   const queryClient = useQueryClient();
-
-//   return useMutation({
-//     mutationFn: async (card: IUpdatePlayerCardScore) => {
-//       return await updatePlayerCardScore(card);
-//     },
-//     onSuccess: async (data) => {
-//       try {
-//         if (data && !(data instanceof Error)) {
-//           toast.success(`Game score updated successfully`);
-//           await queryClient.invalidateQueries({
-//             queryKey: ["games"],
-//           });
-//         } else {
-//           toast.error("Game score update failed.");
-//         }
-//       } catch (error) {
-//         console.error("Error invalidating queries:", error);
-//       }
-//     },
-//     onError: (error) => {
-//       toast.error(error.message);
-//     },
-//   });
-// };
 
 // delete
 export const useDeletePlayer = () => {

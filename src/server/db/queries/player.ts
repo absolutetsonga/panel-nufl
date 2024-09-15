@@ -8,9 +8,6 @@ import { AuthenticationService } from "~/server/utils";
 import type {
   ICreatePlayer,
   IUpdatePlayer,
-  IUpdatePlayerAssistScore,
-  IUpdatePlayerGoalScore,
-  IUpdatePlayerOwnGoalScore,
 } from "~/components/shared/lib/models/player";
 
 class PlayerService extends AuthenticationService {
@@ -62,53 +59,6 @@ class PlayerService extends AuthenticationService {
     return updatedPlayer;
   }
 
-  async updatePlayerGoalScore(player: IUpdatePlayerGoalScore) {
-    const [updatedPlayer] = await db
-      .update(players)
-      .set({ goals: player.goals })
-      .where(
-        and(eq(players.id, player.id), eq(players.user_id, this.user.userId)),
-      )
-      .returning();
-
-    return updatedPlayer;
-  }
-
-  async updatePlayerAssistScore(player: IUpdatePlayerAssistScore) {
-    const [updatedPlayer] = await db
-      .update(players)
-      .set({ assists: player.assists })
-      .where(
-        and(eq(players.id, player.id), eq(players.user_id, this.user.userId)),
-      )
-      .returning();
-
-    return updatedPlayer;
-  }
-
-  async updatePlayerOwnGoalScore(player: IUpdatePlayerOwnGoalScore) {
-    const [updatedPlayer] = await db
-      .update(players)
-      .set({ own_goals: player.own_goals })
-      .where(
-        and(eq(players.id, player.id), eq(players.user_id, this.user.userId)),
-      )
-      .returning();
-
-    return updatedPlayer;
-  }
-  // async updatePlayerCardScore(player: IUpdatePlayerCardScore) {
-  //   const [updatedPlayer] = await db
-  //     .update(players)
-  //     .set({ yellow_cards: player.cards })
-  //     .where(
-  //       and(eq(players.id, player.id), eq(players.user_id, this.user.userId)),
-  //     )
-  //     .returning();
-
-  //   return updatedPlayer;
-  // }
-
   async deletePlayer(id: number) {
     const [deletedPlayer] = await db
       .delete(players)
@@ -131,18 +81,5 @@ export const createPlayer = async (player: ICreatePlayer) =>
 export const updatePlayer = async (player: IUpdatePlayer) =>
   playerService.updatePlayer(player);
 
-export const updatePlayerGoalScore = async (player: IUpdatePlayerGoalScore) =>
-  playerService.updatePlayerGoalScore(player);
-
-export const updatePlayerOwnGoalScore = async (
-  player: IUpdatePlayerOwnGoalScore,
-) => playerService.updatePlayerOwnGoalScore(player);
-
-export const updatePlayerAssistScore = async (
-  player: IUpdatePlayerAssistScore,
-) => playerService.updatePlayerAssistScore(player);
-
-// export const updatePlayerCardScore = async (player: IUpdatePlayerCardScore) =>
-//   playerService.updatePlayerCardScore(player);
 export const deletePlayer = async (id: number) =>
   playerService.deletePlayer(id);

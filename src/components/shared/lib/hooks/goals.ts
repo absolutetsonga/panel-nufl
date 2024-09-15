@@ -2,6 +2,13 @@ import { toast } from "sonner";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createGoal, getGoals, deleteGoal } from "~/server/db/queries/goals";
 import type { ICreateGoal } from "../models/goal";
+import type { IGameInGameweeksWithTeamPlayersAndGoals } from "../models/game";
+
+type createGoalParams = {
+  goal: ICreateGoal;
+  game: IGameInGameweeksWithTeamPlayersAndGoals;
+  teamType: "home" | "away";
+};
 
 // read goals in game
 export const useGetGoals = (gameId: number) => {
@@ -16,8 +23,8 @@ export const useCreateGoal = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (goal: ICreateGoal) => {
-      return await createGoal(goal);
+    mutationFn: async ({ goal, game, teamType }: createGoalParams) => {
+      return await createGoal({ goal, game, teamType });
     },
     onSuccess: async (data) => {
       try {
