@@ -8,9 +8,8 @@ export interface ICard {
 }
 
 export interface ICreateCard {
-  user_id: string;
-  game_id: number;
   player_id: number;
-  team_id: number;
   is_yellow: boolean;
+  team_id: number;
+  game_id: number;
 }

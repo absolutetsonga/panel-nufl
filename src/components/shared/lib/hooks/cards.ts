@@ -26,6 +26,9 @@ export const useCreateCard = () => {
           await queryClient.invalidateQueries({
             queryKey: ["cards"],
           });
+          await queryClient.invalidateQueries({
+            queryKey: ["games"],
+          });
         } else {
           toast.error("Card creation failed.");
         }

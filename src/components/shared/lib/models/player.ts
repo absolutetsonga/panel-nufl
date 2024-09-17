@@ -1,4 +1,4 @@
-import { ITeamForPlayer } from "./team";
+import type { ITeamForPlayer } from "./team";
 
 export interface ICreatePlayer {
   team_id: number;

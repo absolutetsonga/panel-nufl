@@ -1,5 +1,5 @@
 import type { IGameInGameweeksWithTeamPlayersAndGoals } from "~/components/shared/lib/models/game";
-import { ICreateGoal } from "~/components/shared/lib/models/goal";
+import type { ICreateGoal } from "~/components/shared/lib/models/goal";
 
 export function findTeamId(
   isOwnGoal: boolean,
